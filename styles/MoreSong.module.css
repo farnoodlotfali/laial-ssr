@@ -1,0 +1,30 @@
+.moreSong {
+  height: 100px;
+  min-height: 100px;
+  background-color: rgb(18, 18, 18);
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 100vh;
+  justify-content: center;
+}
+/* .moreSong__items {
+  padding: 0 10px 0 0;
+  display: flex;
+  overflow: hidden;
+  flex-wrap: wrap;
+  justify-content: center;
+} */
+/* .rowItemPart {
+  width: 16.1%;
+  height: 378px;
+  margin-right: 5px;
+  border-radius: 5px;
+  margin-left: 5px;
+  min-width: 240px;
+  transition: transform 450ms;
+} */
+.infiniteScroll {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

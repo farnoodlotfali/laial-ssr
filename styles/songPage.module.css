@@ -1,0 +1,45 @@
+.songPage {
+  background-color: rgb(18, 18, 18);
+}
+
+.musicInfo__right {
+  flex: 0.2;
+}
+.musicInfo__left {
+  flex: 0.7;
+}
+.musicInfo {
+  direction: rtl;
+}
+.musicInfo__image {
+  padding: 10px;
+  width: 455px;
+  height: 455px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 5px 5px rgb(168 179 211 / 70%);
+}
+.musicInfo__left hr {
+  border-top: 1px solid rgb(34, 35, 39) !important;
+}
+.icon {
+  color: white !important;
+}
+.musicInfo__name {
+}
+.musicInfo__singer {
+}
+.favoritePart,
+.viewPart {
+  display: grid;
+}
+.view,
+.download,
+.add,
+.favorite {
+  display: grid;
+  color: white !important;
+}
+
+.favorite:hover {
+  color: rgb(165, 49, 49) !important;
+}

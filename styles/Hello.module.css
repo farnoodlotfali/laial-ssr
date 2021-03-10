@@ -1,0 +1,29 @@
+/*! Flickity v2.2.2
+https://flickity.metafizzy.co
+---------------------------------------------- */
+.rowList {
+  margin-top: 20px;
+  background-color: rgb(18, 18, 18);
+}
+.carousel {
+  outline-width: 0px;
+  height: 400px;
+  padding-bottom: 20px;
+  padding-top: 10px;
+  background-color: rgb(18, 18, 18);
+}
+
+/* .carouselCell {
+  width: 100%;
+  height: 400px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carouselcellimage {
+  height: 400px;
+  width: 100%;
+  display: block;
+  max-height: 100%;
+} */

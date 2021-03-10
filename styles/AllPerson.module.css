@@ -1,0 +1,11 @@
+.allPerson {
+  padding: 20px;
+  min-height: 100vh;
+  padding-top: 40px;
+  background-color: rgb(18, 18, 18);
+}
+.infiniteScroll {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

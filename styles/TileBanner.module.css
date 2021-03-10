@@ -1,0 +1,15 @@
+.tileBannerSlider {
+  background-color: rgb(18, 18, 18);
+  height: 300px;
+}
+.itemImg {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .tileBannerSlider {
+    height: 150px;
+  }
+}
