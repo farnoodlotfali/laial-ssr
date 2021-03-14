@@ -9,6 +9,7 @@ export default function ScrollToTop() {
       // console.log(pathanme);
       window.scrollTo(0, 0);
     }
+
     // eslint-disable-next-line
   }, [pathanme]);
 

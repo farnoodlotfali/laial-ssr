@@ -9,8 +9,11 @@ body {
   background-color: rgb(18, 18, 18);
   font-family: vazir;
 }
-
+body::-webkit-scrollbar {
+  display: none;
+}
 a {
+  font-family: vazir !important;
   color: inherit;
   text-decoration: none;
 }
@@ -164,4 +167,13 @@ https://flickity.metafizzy.co
 
 .flickity-page-dots .dot.is-selected {
   opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .carousel {
+    height: 210px;
+  }
+  .flickity-viewport {
+    height: 190.8px !important;
+  }
 }

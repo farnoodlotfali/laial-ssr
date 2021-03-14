@@ -1,12 +1,26 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from '../styles/Login.module.css';
+import authContext from '../contexts/auth/authContext';
+import { useRouter } from 'next/router';
 const Login = () => {
+  const { login, user } = useContext(authContext);
   const [userInfo, setUserInfo] = useState({
     username: '',
     email: '',
     password: '',
   });
+  const router = useRouter();
+
+  useEffect(() => {
+    console.log(user);
+    if (user) {
+      // props.history.back();
+      router.back();
+    }
+    // eslint-disable-next-line
+  }, [user, router]);
+
   const { email, password } = userInfo;
   const onchange = (e) => {
     setUserInfo({
@@ -31,10 +45,10 @@ const Login = () => {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                // login({
-                //   email,
-                //   password,
-                // });
+                login({
+                  email,
+                  password,
+                });
               }}
             >
               <div className={styles.inputBox}>

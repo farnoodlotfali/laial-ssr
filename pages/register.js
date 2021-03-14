@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from '../styles/Register.module.css';
+import authContext from '../contexts/auth/authContext';
+import { useRouter } from 'next/router';
 const Register = () => {
+  const { register, user } = useContext(authContext);
   const [userInfo, setUserInfo] = useState({
     username: '',
     email: '',
@@ -10,6 +13,15 @@ const Register = () => {
     first_name: '',
     last_name: '',
   });
+  const router = useRouter();
+  useEffect(() => {
+    console.log(user);
+    if (user) {
+      // props.history.back();
+      router.back();
+    }
+    // eslint-disable-next-line
+  }, [user, router]);
   const {
     username,
     email,
@@ -48,17 +60,17 @@ const Register = () => {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                // if (password !== password2) {
-                //   passNotSame();
-                // } else {
-                //   register({
-                //     username,
-                //     email,
-                //     password,
-                //     first_name,
-                //     last_name,
-                //   });
-                // }
+                if (password !== password2) {
+                  passNotSame();
+                } else {
+                  register({
+                    username,
+                    email,
+                    password,
+                    first_name,
+                    last_name,
+                  });
+                }
               }}
             >
               <div className={styles.inputBox}>

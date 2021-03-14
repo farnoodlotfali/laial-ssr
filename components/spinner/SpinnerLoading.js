@@ -1,5 +1,3 @@
-import SpinnerLoad from './SpinnerLoad.gif';
-
 const SpinnerLoading = () => {
   return (
     <div
@@ -14,13 +12,23 @@ const SpinnerLoading = () => {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
+        width: '30px',
+        height: '30px',
+        position: 'inherit',
+        transform: 'none',
       }}
     >
       <img
         // className='mr-auto'
-        src={SpinnerLoad}
+        src={'/SpinnerLoad.gif'}
         alt='..loading'
-        style={{ widows: '200px', display: 'block' }}
+        style={{
+          widows: '200px',
+          display: 'block',
+          display: 'block',
+          width: '100% ',
+          height: '100% ',
+        }}
       />
     </div>
   );

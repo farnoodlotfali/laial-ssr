@@ -47,7 +47,7 @@ const MoreSong = ({ data }) => {
   };
 
   return (
-    <div className={`${styles.moreSong}  pb-3 pt-5`}>
+    <div className={`${styles.moreSong}  pb-5 pt-5`}>
       <div className='moreSong__title text-light text-center mb-3'>
         <h3> {data.block.name}</h3>
       </div>
@@ -95,7 +95,9 @@ const MoreSong = ({ data }) => {
 };
 export async function getServerSideProps({ params }) {
   const req = await axios.instanceApi.get(`/block/${params.id}/`);
-
+  if (req.status == 404) {
+    console.log(1);
+  }
   // console.log(params.id);
   return {
     props: { data: req.data },

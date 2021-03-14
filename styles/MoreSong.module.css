@@ -1,6 +1,4 @@
 .moreSong {
-  height: 100px;
-  min-height: 100px;
   background-color: rgb(18, 18, 18);
   display: flex;
   flex-wrap: wrap;

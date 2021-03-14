@@ -1,0 +1,142 @@
+.playList {
+  width: 50%;
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 999;
+  background-color: rgb(18, 18, 18);
+  box-shadow: 5px 18px 18px 0 rgba(168, 179, 211, 0.38);
+  transition: left 500ms ease-in-out;
+  direction: ltr;
+  /* left: -100%; */
+}
+.bg__gray {
+  background-color: rgb(34, 35, 39);
+}
+.closeBtn {
+  margin-left: 90%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.closeBtn:hover {
+  color: #6c7480;
+  cursor: pointer;
+}
+.playerInfo {
+  /* justify-content: flex-end; */
+  direction: rtl;
+}
+.info__image {
+  height: 100px;
+  width: 100px;
+  border-radius: 10px;
+}
+.info__image img {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  margin-right: 1rem;
+}
+.info {
+  display: grid;
+  align-self: center;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: right;
+  margin-right: 2rem;
+  /* margin-right: 10px; */
+}
+
+.info__title {
+  font-weight: 900;
+  font-size: 22px;
+  max-height: 47px;
+  overflow: hidden;
+}
+.info__person {
+  font-weight: 600;
+  font-size: 15px;
+  color: #6c7480;
+}
+.icons {
+  justify-content: flex-end;
+}
+.icon:hover,
+.icon_press {
+  cursor: pointer;
+  color: #6c7480 !important;
+}
+.current_time {
+  flex: 0.1;
+  text-align: right;
+}
+.player {
+  flex: 2;
+}
+.last_time {
+  flex: 0.1;
+}
+.songs {
+  direction: rtl;
+  overflow-y: scroll;
+}
+.songs::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.songs::-webkit-scrollbar-track {
+  /* box-shadow: inset 0 0 5px rgba(83, 83, 83, 0.021); */
+  border-radius: 10px;
+}
+
+/* Handle */
+.songs::-webkit-scrollbar-thumb {
+  background: rgba(105, 104, 109, 0.685);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.songs::-webkit-scrollbar-thumb:hover {
+  background: rgb(63, 63, 63);
+}
+.playerSlider span:nth-child(1),
+.playerSlider span:nth-child(2) {
+  height: 4px !important;
+}
+.playerSlider {
+  color: white !important;
+}
+
+@media (max-width: 768px) {
+  .playList {
+    width: 100%;
+  }
+  .closeBtn {
+    display: none !important;
+    margin-left: 87%;
+  }
+  .playerInfo {
+    margin-top: 10px;
+  }
+  .info__title {
+    font-size: 17px;
+  }
+  .info__person {
+    margin-bottom: 0 !important;
+  }
+  .icons {
+    margin-bottom: 0 !important;
+  }
+  .playlist__musicBar {
+    font-size: 10px;
+    margin-bottom: 0 !important;
+  }
+  .songs::-webkit-scrollbar-track {
+    /* box-shadow: inset 0 0 5px rgba(83, 83, 83, 0.021); */
+    border-radius: 5px;
+  }
+}

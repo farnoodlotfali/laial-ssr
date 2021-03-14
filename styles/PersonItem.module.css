@@ -25,6 +25,9 @@
 .personItem a:hover {
   text-decoration: none !important;
 }
+.personItem img {
+  justify-self: center;
+}
 
 @media (max-width: 768px) {
   .personItem img {

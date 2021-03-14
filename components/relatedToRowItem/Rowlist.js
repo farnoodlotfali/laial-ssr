@@ -15,12 +15,12 @@ const Rowlist = ({ slug, id, title, data }) => {
   };
   const { context, pageinate } = data;
   return (
-    <div className={styles.rowlist}>
-      <div
-        className={`${styles.rowList__title} d-flex  ${
-          id === 1 ? 'top__radius' : ''
-        }`}
-      >
+    <div
+      className={`${styles.rowlist} ${
+        id === 1 ? ` ${styles.top__radius}` : ''
+      }`}
+    >
+      <div className={`${styles.rowList__title} d-flex `}>
         <Link href={`/moresong/${slug}`}>
           <div className={` ${styles.rowList__title__title} mx-3`}>{title}</div>
         </Link>
@@ -36,10 +36,7 @@ const Rowlist = ({ slug, id, title, data }) => {
         )}
       </div>
 
-      <Flickity
-        className={`${styles.carousel} col px-2 py-0`}
-        options={flickityOptions}
-      >
+      <Flickity className={`carousel col px-2 py-0`} options={flickityOptions}>
         {context.map((item, i) => {
           // console.log(item);
           return (

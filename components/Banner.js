@@ -1,4 +1,4 @@
-import styles from '../styles/x.module.css';
+import styles from '../styles/Banner.module.css';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Autoplay, EffectFade } from 'swiper';
@@ -8,7 +8,7 @@ const Banner = ({ imgs }) => {
   // console.log(imgs);
   return (
     <Swiper
-      className={styles.xslider}
+      className={styles.bannerslider}
       fadeEffect={{ crossFade: true }}
       loop={true}
       autoplay={{

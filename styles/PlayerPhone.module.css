@@ -1,0 +1,104 @@
+.phoneMusicBar {
+  direction: rtl;
+  position: fixed;
+  z-index: 12200;
+  height: 61px;
+  bottom: 49px;
+  right: 0;
+  left: 0;
+  display: none !important;
+  transition: top 0.3s;
+  background-color: #343a40 !important;
+}
+
+.phoneMusicBar__slide {
+  z-index: 12200;
+  display: none !important;
+}
+
+.phoneMusicBar__left {
+  flex: 0.6;
+}
+
+.phoneMusicBar__img {
+  width: 40px;
+  height: 40px;
+  margin: 0.5rem;
+}
+.phoneMusicBar__info {
+  margin-right: 0.5rem;
+}
+
+.phoneMusicBar__title {
+  overflow: hidden;
+  width: 140px;
+  height: 100%;
+  font-size: 15px;
+  font-weight: 700;
+}
+.phoneMusicBar__title div {
+  white-space: nowrap;
+}
+
+.scroll {
+  animation: animate 4s linear infinite;
+}
+@keyframes animate {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.phoneMusicBar__singer {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.phoneMusicBar__right {
+  flex: 0.4;
+}
+.current_time {
+  flex: 0.12;
+  justify-content: center;
+  display: flex;
+}
+.player {
+  flex: 0.9;
+  align-self: center;
+}
+.last_time {
+  flex: 0.1;
+  justify-content: center;
+  display: flex;
+}
+.icon {
+  margin-right: 0.5rem;
+  align-self: center;
+}
+.mobileSound {
+  width: 125px;
+  display: flex;
+  margin-right: 0.5rem;
+  align-self: center;
+}
+.player__zone {
+  height: 46px;
+  display: flex;
+  color: whitesmoke;
+  font-size: 10px;
+}
+.showSongInfo {
+  height: 36px;
+}
+
+@media (max-width: 768px) {
+  .phoneMusicBar {
+    display: flex !important;
+  }
+  .phoneMusicBar__slide {
+    display: block !important;
+  }
+}

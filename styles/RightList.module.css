@@ -1,0 +1,71 @@
+.phoneList {
+  display: block;
+}
+
+/* .x .MuiDrawer-paperAnchorRight {
+  background-image: linear-gradient(
+    to bottom right,
+    rgb(18, 18, 18),
+    rgb(72, 76, 87)
+  ) !important;
+  box-shadow: 5px 18px 18px 0 rgba(168, 179, 211, 0.38) !important;
+} */
+
+.phoneList__title {
+  font-family: vazir;
+  border-bottom: 1px solid rgb(222, 225, 235);
+  direction: rtl;
+}
+.phoneList__title a {
+  color: white;
+  text-decoration: none;
+}
+.phoneList__title a:hover {
+  text-decoration: none;
+}
+
+.phoneList__title__close {
+  cursor: pointer;
+}
+.phoneList__loginBTn {
+  color: white;
+}
+.phoneList__loginBTn a {
+  text-decoration: none;
+}
+.phoneList__loginBTn:hover {
+  text-decoration: none;
+  color: whitesmoke;
+}
+.phoneList__list {
+  width: 250px;
+}
+.phoneList__list a {
+  color: white;
+}
+
+.phoneList__list a:hover {
+  text-decoration: none;
+  color: rgb(179, 181, 187);
+}
+.phoneList__item .MuiListItemText-root {
+  display: flex;
+  direction: rtl;
+}
+.phoneList__item svg {
+  color: white !important;
+}
+
+.item {
+  /* background-color: red !important; */
+  font-family: vazir !important;
+  text-align: right !important;
+}
+.item span {
+  color: white;
+  font-family: vazir !important;
+}
+.item:hover span {
+  text-decoration: none;
+  color: rgb(179, 181, 187);
+}

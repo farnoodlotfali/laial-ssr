@@ -140,6 +140,7 @@
   margin-top: 10px;
   margin-bottom: 10px;
   text-align: center;
+  display: grid;
 }
 .myProfile__content__right {
   flex: 0.4;
@@ -170,6 +171,7 @@
 .myProfile__reset__password form {
   display: flex;
   direction: rtl;
+  text-align: center;
   flex-wrap: wrap;
 }
 .inputBoxPass {
@@ -206,6 +208,7 @@
   font-weight: 600;
 }
 .myProfile__reset__password__title {
+  text-align: center;
   margin: 10px 0px;
 }
 

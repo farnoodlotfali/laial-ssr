@@ -20,6 +20,7 @@
 }
 .rowList__title__title {
   padding-top: 10px;
+  cursor: pointer;
   padding-right: 5px;
   font-size: 30px;
   font-weight: 700;
@@ -33,98 +34,25 @@
   cursor: pointer;
 }
 
-/* .rowItemPart {
-  border-radius: 7px;
-  transition: transform 450ms;
-  align-self: center;
-  height: 378px;
-  
-  overflow: hidden;
-  margin-left: 7px;
-  margin-right: 7px;
-}
-
-.rowItemPart:hover {
-  cursor: context-menu;
-  transform: scale(1.04);
-  opacity: 0.8;
-}
-.rowItemPart span {
-  overflow: hidden;
-  transition: 0.5s;
-}
-
-.rowItemPart span:nth-child(1) {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(to right, transparent, gray);
-  animation: animate1 2s linear infinite;
-}
-
-@keyframes animate1 {
-  0% {
-    transform: translateX(-100%);
+@media (max-width: 768px) {
+  .rowlist {
+    margin-top: 5px;
+    margin-bottom: 3rem;
   }
-  100% {
-    transform: translateX(100%);
+  .rowList__title__title {
+    font-size: 19px;
+  }
+  .moreSong {
+    margin-left: 10px;
+    font-size: 13px;
+  }
+  .rowList__title {
+    justify-content: space-between;
+  }
+  .top__radius {
+    position: sticky;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    margin-top: -25px;
   }
 }
-.rowItemPart span:nth-child(2) {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(to bottom, transparent, gray);
-  animation: animate2 2s linear infinite;
-  animation-delay: 1s;
-}
-
-@keyframes animate2 {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(100%);
-  }
-}
-.rowItemPart span:nth-child(3) {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(to left, transparent, gray);
-  animation: animate3 2s linear infinite;
-}
-
-@keyframes animate3 {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-.rowItemPart span:nth-child(4) {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(to top, transparent, gray);
-  animation: animate4 2s linear infinite;
-  animation-delay: 1s;
-}
-
-@keyframes animate4 {
-  0% {
-    transform: translateY(100%);
-  }
-  100% {
-    transform: translateY(-100%);
-  }
-} */

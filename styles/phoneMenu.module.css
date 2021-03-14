@@ -1,0 +1,25 @@
+.phoneMenu {
+  direction: rtl;
+  position: fixed;
+  background-color: rgb(34, 35, 39) !important;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: white;
+  text-align: center;
+  z-index: 14000;
+  display: none !important  ;
+}
+.phoneMenu__item a {
+  color: white;
+  text-decoration: none !important;
+  display: grid;
+}
+.phoneMenu__item {
+  display: grid;
+}
+@media (max-width: 768px) {
+  .phoneMenu {
+    display: block !important;
+  }
+}
