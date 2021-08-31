@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 let tryCount = 0;
 
 const instanceApi = axios.create({
-  baseURL: 'http://laial.7negare.ir/api',
+  baseURL: "https://nejat.safine.co/api",
 });
 instanceApi.interceptors.response.use(
   (response) => {
@@ -11,7 +11,7 @@ instanceApi.interceptors.response.use(
 
   async (error) => {
     console.log(error.config);
-    // console.log(error.response);
+    // console.log(error.response);https://nejat.safine.co/api
     // const { logout } = useContext(authContext);
     // console.log(tryCount);
     // console.log(
@@ -30,27 +30,27 @@ instanceApi.interceptors.response.use(
       if (tryCount === 3) {
         // console.log(66);
         localStorage.clear();
-        window.location = '/login';
+        window.location = "/login";
         return Promise.reject(error);
       }
       // console.log(error.config);
       // console.log(error.response && error.response.status === 401);
       const config = {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       };
-      const form = { refresh: localStorage.getItem('tokenRefresh') };
+      const form = { refresh: localStorage.getItem("tokenRefresh") };
 
       tryCount++;
       return instanceApi
-        .post('/token/refresh/', form, config)
+        .post("/token/refresh/", form, config)
         .then((response) => {
           if (response.status === 200 || response.status === 201) {
             // console.log(response);
-            localStorage.setItem('tokenAccess', response.data.access);
+            localStorage.setItem("tokenAccess", response.data.access);
             error.config.headers.Authorization =
-              'Bearer ' + response.data.access;
+              "Bearer " + response.data.access;
             return instanceApi.request(error.config);
           }
         });
@@ -69,12 +69,12 @@ instanceApi.interceptors.response.use(
 );
 
 const downloader = axios.create({
-  baseURL: 'http://downloader.7negare.ir/download',
+  baseURL: "https://downloader.safine.co/",
 });
 // cancelTokenSource.cancel();
 
 // const auth = axios.create({
-//   baseURL: 'http://laial.7negare.ir/api/account',
+//   baseURL: 'https://nejat.safine.co/api/account',
 // });
 // eslint-disable-next-line
 export default {

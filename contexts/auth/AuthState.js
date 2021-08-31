@@ -1,5 +1,6 @@
-import { useReducer } from 'react';
-import authContext from './authContext';
+import { useContext, useReducer } from "react";
+import authContext from "./authContext";
+
 import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
@@ -7,8 +8,10 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   LOGOUT,
-} from './types';
-import authReducer from './authReducer';
+} from "./types";
+import authReducer from "./authReducer";
+import appContext from "../app/appContext";
+import { fetchapi } from "../../fetchapi/fetchApi";
 const AuthState = (props) => {
   const initialState = {
     // tokenAccess: localStorage.getItem('tokenAccess'),
@@ -16,8 +19,13 @@ const AuthState = (props) => {
     isAuth: false,
     loading: true,
     error: null,
-    user: process.browser && JSON.parse(localStorage.getItem('user')),
+    user:
+      process.browser && localStorage.getItem("user") === "undefined"
+        ? null
+        : process.browser && JSON.parse(localStorage.getItem("user")),
   };
+  const { getAllPlaylists } = useContext(appContext);
+
   const [state, dispatch] = useReducer(authReducer, initialState);
   const loadUser = () => {
     if (localStorage.tokenAccess) {
@@ -25,30 +33,36 @@ const AuthState = (props) => {
         type: USER_LOADED,
       });
     }
+    if (state.user) {
+      getAllPlaylists();
+    }
   };
 
   const login = async (form) => {
     let myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append("Content-Type", "application/json");
     let raw = JSON.stringify({ email: form.email, password: form.password });
 
     let requestOptions = {
-      method: 'POST',
+      method: "POST",
       headers: myHeaders,
       body: raw,
-      redirect: 'follow',
+      redirect: "follow",
     };
 
-    fetch('http://laial.7negare.ir/api/account/login/', requestOptions)
-      .then((response) => response.json())
+    fetchapi("https://nejat.safine.co/api/account/login/", requestOptions)
+      // .then((response) => console.log(response.body))
       .then((result) =>
         dispatch({
           type: LOGIN_SUCCESS,
-          payload: result,
+          payload: result.body,
         })
       )
+      // .then((res) => console.log(res))
       .then(() => loadUser())
+      .then(() => getAllPlaylists())
       .catch((error) =>
+        // console.log(error)
         dispatch({
           type: LOGIN_FAIL,
           payload: error,
@@ -60,7 +74,7 @@ const AuthState = (props) => {
 
   const register = (form) => {
     var myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
       username: form.username,
@@ -71,18 +85,18 @@ const AuthState = (props) => {
     });
 
     var requestOptions = {
-      method: 'POST',
+      method: "POST",
       headers: myHeaders,
       body: raw,
-      redirect: 'follow',
+      redirect: "follow",
     };
 
-    fetch('http://laial.7negare.ir/api/account/register/', requestOptions)
-      .then((response) => response.json())
+    fetchapi("https://nejat.safine.co/api/account/register/", requestOptions)
+      // .then((response) => response.json())
       .then((result) =>
         dispatch({
           type: REGISTER_SUCCESS,
-          payload: result,
+          payload: result.body,
         })
       )
       .then(() => loadUser())

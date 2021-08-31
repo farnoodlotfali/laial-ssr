@@ -184,6 +184,7 @@
 }
 .error__msg__login {
   color: darkred;
+  text-align: center;
 }
 @media (max-width: 768px) {
   .login {

@@ -1,11 +1,13 @@
-import axios from '../../axios/axios';
-import styles from '../../styles/MoreSong.module.css';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { useEffect, useState } from 'react';
-import RowItem from '../../components/relatedToRowItem/RowItem';
-import { useRouter } from 'next/router';
-import spinerrStyles from '../../styles/LoadingIcon.module.css';
-import LoadingIcon from '../../components/spinner/LoadingIcon';
+import axios from "../../axios/axios";
+import styles from "../../styles/MoreSong.module.css";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useContext, useEffect, useState } from "react";
+import RowItem from "../../components/relatedToRowItem/RowItem";
+import { useRouter } from "next/router";
+import spinerrStyles from "../../styles/LoadingIcon.module.css";
+import LoadingIcon from "../../components/spinner/LoadingIcon";
+import authContext from "../../contexts/auth/authContext";
+import fetch from "isomorphic-unfetch";
 
 const MoreSong = ({ data }) => {
   const router = useRouter();
@@ -17,7 +19,11 @@ const MoreSong = ({ data }) => {
     page: 2,
     loading: false,
   });
+  const { user, loadUser } = useContext(authContext);
 
+  useEffect(() => {
+    loadUser();
+  }, [user]);
   // console.log(next);
 
   const infiniteList = async () => {
@@ -37,7 +43,7 @@ const MoreSong = ({ data }) => {
           list: next.list.concat(res.data.results),
           loading: false,
           page: ++next.page,
-          loaderMsg: res.data.next ? 'Loading...' : 'Finish :)',
+          loaderMsg: res.data.next ? "Loading..." : "Finish :)",
         });
         //  next.list.concat(res.data.results);
       } catch (error) {
@@ -48,7 +54,7 @@ const MoreSong = ({ data }) => {
 
   return (
     <div className={`${styles.moreSong}  pb-5 pt-5`}>
-      <div className='moreSong__title text-light text-center mb-3'>
+      <div className="moreSong__title text-light text-center mb-3">
         <h3> {data.block.name}</h3>
       </div>
       <div className={` ${styles.moreSong__items} `}>
@@ -81,11 +87,11 @@ const MoreSong = ({ data }) => {
           className={spinerrStyles.loading_message}
           // ref={loadingRef}
           style={{
-            opacity: next.loading ? '1' : '0',
-            transform: next.loading && 'translate(-50%, 0px)',
+            opacity: next.loading ? "1" : "0",
+            transform: next.loading && "translate(-50%, 0px)",
           }}
         >
-          <LoadingIcon color='#fff' />
+          <LoadingIcon color="#fff" />
           <span>در حال دریافت</span>
         </div>
       </div>
@@ -94,13 +100,13 @@ const MoreSong = ({ data }) => {
   );
 };
 export async function getServerSideProps({ params }) {
-  const req = await axios.instanceApi.get(`/block/${params.id}/`);
-  if (req.status == 404) {
-    console.log(1);
-  }
+  // const req = await axios.instanceApi.get(`/block/${params.id}/`);
+  const req = await fetch(`https://nejat.safine.co/api/block/${params.id}/`);
+  const resData = await req.json();
+
   // console.log(params.id);
   return {
-    props: { data: req.data },
+    props: { data: resData },
   };
 }
 export default MoreSong;

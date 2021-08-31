@@ -162,8 +162,10 @@
 }
 .formMsg {
   color: rgb(18, 18, 18);
+  text-align: center;
 }
 .error__msg__register {
+  text-align: center;
   color: darkred;
 }
 

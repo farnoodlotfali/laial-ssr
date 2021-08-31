@@ -1,0 +1,38 @@
+.centerItem__info {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  color: lightgreen;
+  font-family: Vazir;
+}
+.list__icons svg {
+  color: rgb(255, 255, 255);
+}
+.list:hover input {
+  background-color: rgba(0, 0, 0, 0.658);
+}
+.list input {
+  background: rgb(18, 18, 18);
+  height: 30px;
+  align-self: center;
+  border: 0;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 18px;
+  margin-right: 2px;
+  color: white;
+  cursor: pointer;
+}
+
+.list input:focus {
+  background-color: whitesmoke;
+  color: black;
+}
+.list:hover {
+  background-color: rgba(0, 0, 0, 0.658);
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .centerItem__info {
+    font-size: 9px;
+  }
+}

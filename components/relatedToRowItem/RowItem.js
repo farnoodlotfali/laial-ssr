@@ -1,11 +1,11 @@
-import { Pause, PlayArrowRounded } from '@material-ui/icons';
-import Link from 'next/link';
-import { useContext } from 'react';
-import appContext from '../../contexts/app/appContext';
-import playerContext from '../../contexts/player/playerContext';
-import styles from '../../styles/RowItem.module.css';
-import SpinnerLoadingOnRowitem from '../spinner/SpinnerLoadingOnRowitem';
-import AbortController from 'abort-controller';
+import { Pause, PlayArrowRounded } from "@material-ui/icons";
+import Link from "next/link";
+import { useContext } from "react";
+import appContext from "../../contexts/app/appContext";
+import playerContext from "../../contexts/player/playerContext";
+import styles from "../../styles/RowItem.module.css";
+import SpinnerLoadingOnRowitem from "../spinner/SpinnerLoadingOnRowitem";
+import AbortController from "abort-controller";
 const controller = new AbortController();
 const RowItem = ({ media, person, slug, context }) => {
   const {
@@ -17,11 +17,10 @@ const RowItem = ({ media, person, slug, context }) => {
     setIds,
     playAndPauseMusic,
   } = useContext(playerContext);
-  const { ChangeShowMusic, ChangeshowCenter, showMusic } = useContext(
-    appContext
-  );
+  const { ChangeShowMusic, ChangeshowCenter, showMusic } =
+    useContext(appContext);
   const truncate = (str, no_words) => {
-    return str?.split(' ').splice(0, no_words).join(' ');
+    return str?.split(" ").splice(0, no_words).join(" ");
   };
   const playMusicAndShowMusicBar = async () => {
     // نشان دادن موزیک و پخش موزیک
@@ -40,8 +39,8 @@ const RowItem = ({ media, person, slug, context }) => {
         media?.image !== null ? media?.image : person?.[0]?.image.full_image_url
       );
 
-      fetch(`http://downloader.7negare.ir/download/${media?.telegram_id}`, {
-        method: 'get',
+      fetch(`https://downloader.safine.co/${media?.telegram_id}`, {
+        method: "get",
         signal: signal,
       })
         .then((respone) => respone.json())
@@ -80,7 +79,7 @@ const RowItem = ({ media, person, slug, context }) => {
         <img
           className={`${styles.rowItem__image__img}`}
           src={person?.[0]?.image.full_image_url}
-          alt='logo'
+          alt="logo"
         />
 
         {/* mobile ratio  */}
@@ -99,7 +98,7 @@ const RowItem = ({ media, person, slug, context }) => {
         )} */}
 
         {loading && media?.id === songId ? (
-          <div className=''>
+          <div className="">
             <SpinnerLoadingOnRowitem />
           </div>
         ) : playing && media?.id === songId ? (
@@ -118,7 +117,7 @@ const RowItem = ({ media, person, slug, context }) => {
           </div>
         )}
       </div>
-      <div className='rowItem__info '>
+      <div className="rowItem__info ">
         <Link href={`/song/${slug}`}>
           <h4 className={`${styles.rowItem__title} text-center`}>
             {truncate(media?.name, 4)}
@@ -130,7 +129,7 @@ const RowItem = ({ media, person, slug, context }) => {
             {/* حاج محمد شریفی */}
             {person?.[0]?.name}
           </h4>
-        </Link>{' '}
+        </Link>{" "}
       </div>
     </div>
   );

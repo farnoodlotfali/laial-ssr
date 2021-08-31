@@ -4,9 +4,29 @@ import styles from '../styles/Center.module.css';
 import { PostAddRounded } from '@material-ui/icons';
 import appContext from '../contexts/app/appContext';
 import { useContext } from 'react';
+import CenterItem from './CenterItem';
 
 const Center = () => {
-  const { showCenterList, centerList } = useContext(appContext);
+  const {
+    showCenterList,
+    centerList,
+    userPlaylists,
+    makeNewPlaylist,
+    isAddingSong,
+  } = useContext(appContext);
+
+  const addList = () => {
+    let i = 0;
+    let name = '';
+    do {
+      i++;
+      name = 'myList ' + i;
+      // eslint-disable-next-line
+    } while (userPlaylists.findIndex((list) => list.name === name) !== -1);
+
+    makeNewPlaylist(name);
+  };
+  // console.log(userPlaylists);
   return (
     <div>
       <Modal
@@ -27,19 +47,16 @@ const Center = () => {
           <div className={`${styles.playlist} py-3 pl-1  pr-4 text-white`}>
             <div className='playlist__title justify-content-center pl-3 d-flex '>
               <div className={`${styles.title} ml-4`}>
-                {/* {isAddingSong ? (
+                {isAddingSong ? (
                   <span>آهنگ به کدام لیست اضافه شود؟</span>
-                ) : ( */}
-                <span>لیست های من</span>
-                {/* )}{' '} */}
+                ) : (
+                  <span>لیست های من</span>
+                )}
               </div>
 
               <div className={styles.addBtn}>
                 <Tooltip placement='left' title='لیست جدید'>
-                  <IconButton
-                    aria-label='add'
-                    //    onClick={addList}
-                  >
+                  <IconButton aria-label='add' onClick={addList}>
                     <PostAddRounded fontSize='large' />
                   </IconButton>
                 </Tooltip>
@@ -47,7 +64,7 @@ const Center = () => {
             </div>
             <div className={`my-2 ml-4 ${styles.playlist__line}`} />
             <div className={styles.playlist__lists}>
-              {/* {userPlaylists !== null &&
+              {userPlaylists !== null &&
                 userPlaylists.map((list) => (
                   <CenterItem
                     key={list.id}
@@ -55,7 +72,7 @@ const Center = () => {
                     id={list.id}
                     items={list.items}
                   />
-                ))} */}
+                ))}
             </div>
           </div>
         </Slide>

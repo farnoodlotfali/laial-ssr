@@ -56,9 +56,11 @@ const RightList = () => {
                 <AccountCircleRounded />
               </div>
             ) : (
-              <Link className={styles.phoneList__loginBTn} href='/login'>
-                ورود/ثبت نام
-              </Link>
+              <div onClick={() => showRightList(false)}>
+                <Link className={styles.phoneList__loginBTn} href='/login'>
+                  ورود/ثبت نام
+                </Link>
+              </div>
             )}
           </h4>
 

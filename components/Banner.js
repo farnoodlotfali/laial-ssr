@@ -1,7 +1,7 @@
-import styles from '../styles/Banner.module.css';
+import styles from "../styles/Banner.module.css";
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Autoplay, EffectFade } from 'swiper';
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Autoplay, EffectFade } from "swiper";
 
 const Banner = ({ imgs }) => {
   SwiperCore.use([Autoplay, EffectFade]);
@@ -15,16 +15,16 @@ const Banner = ({ imgs }) => {
         delay: 3000,
         disableOnInteraction: false,
       }}
-      effect='fade'
+      effect="fade"
       //   onSlideChange={() => console.log('slide change')}
       //   onSwiper={(swiper) => console.log(swiper)}
     >
       {imgs.map((img, i) => (
         <SwiperSlide key={i}>
           <img
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: "100%", height: "100%" }}
             src={img.src}
-            alt='bannerImage'
+            alt="bannerImage"
           />
         </SwiperSlide>
       ))}

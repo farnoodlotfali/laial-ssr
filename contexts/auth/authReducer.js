@@ -11,16 +11,16 @@ const reducer = (state, action) => {
   switch (action.type) {
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
-      localStorage.setItem('tokenAccess', action.payload.token.access);
-      localStorage.setItem('tokenRefresh', action.payload.token.refresh);
-      localStorage.setItem('user', JSON.stringify(action.payload.user));
+      localStorage.setItem('tokenAccess', action.payload?.token?.access);
+      localStorage.setItem('tokenRefresh', action.payload?.token?.refresh);
+      localStorage.setItem('user', JSON.stringify(action.payload?.user));
       return {
         ...state,
         isAuth: true,
         loading: false,
         user: action.payload.user,
-        tokenAccess: action.payload.token.access,
-        tokenRefresh: action.payload.token.refresh,
+        tokenAccess: action.payload.token?.access,
+        tokenRefresh: action.payload.token?.refresh,
       };
 
     case REGISTER_FAIL:

@@ -1,16 +1,21 @@
-import styles from '../../styles/Person.module.css';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { useState } from 'react';
-import LoadingIcon from '../../components/spinner/LoadingIcon';
-import RowItem from '../../components/relatedToRowItem/RowItem';
-import spinerrStyles from '../../styles/LoadingIcon.module.css';
-import { useRouter } from 'next/router';
-
+import styles from "../../styles/Person.module.css";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useContext, useEffect, useState } from "react";
+import LoadingIcon from "../../components/spinner/LoadingIcon";
+import RowItem from "../../components/relatedToRowItem/RowItem";
+import spinerrStyles from "../../styles/LoadingIcon.module.css";
+import { useRouter } from "next/router";
+import authContext from "../../contexts/auth/authContext";
+import fetch from "isomorphic-unfetch";
 const Person = ({ data }) => {
   //   console.log(data);
   const router = useRouter();
   const id = router.query.id;
+  const { user, loadUser } = useContext(authContext);
 
+  useEffect(() => {
+    loadUser();
+  }, [user]);
   const [next, setNext] = useState({
     list: data.results,
     next: data.next,
@@ -26,7 +31,7 @@ const Person = ({ data }) => {
     setTimeout(async () => {
       try {
         const res = await fetch(
-          `http://laial.7negare.ir/api/persons/${id}/?page=${next.page}`
+          `https://nejat.safine.co/api/persons/${id}/?page=${next.page}`
         );
         const resData = await res.json();
         // console.log(resData);
@@ -37,7 +42,7 @@ const Person = ({ data }) => {
           list: next.list.concat(resData.results),
           loading: false,
           page: ++next.page,
-          loaderMsg: resData.next ? 'Loading...' : 'Finish :)',
+          loaderMsg: resData.next ? "Loading..." : "Finish :)",
         });
         //  next.list.concat(res.data.results);
       } catch (error) {
@@ -47,7 +52,7 @@ const Person = ({ data }) => {
   };
   return (
     <div className={`${styles.person} person`}>
-      <div className='person__infoAndImg py-4 d-flex justify-content-center align-items-center'>
+      <div className="person__infoAndImg py-4 d-flex justify-content-center align-items-center">
         <div className={`${styles.card__person}`}>
           <div className={`${styles.circle__person}`}>
             <div className={`${styles.content__person} text-center`}>
@@ -64,9 +69,9 @@ const Person = ({ data }) => {
                   ? data.results[0]?.media?.[0]?.image
                   : data.results[0]?.person?.[0]?.image.full_image_url !== null
                   ? data.results[0]?.person?.[0]?.image.full_image_url
-                  : '/defualtPhoto.jpeg'
+                  : "/defualtPhoto.jpeg"
               }
-              alt='image'
+              alt="image"
             />
           </div>
         </div>
@@ -98,11 +103,11 @@ const Person = ({ data }) => {
         className={spinerrStyles.loading_message}
         // ref={loadingRef}
         style={{
-          opacity: next.loading ? '1' : '0',
-          transform: next.loading && 'translate(-50%, 0px)',
+          opacity: next.loading ? "1" : "0",
+          transform: next.loading && "translate(-50%, 0px)",
         }}
       >
-        <LoadingIcon color='#fff' />
+        <LoadingIcon color="#fff" />
         <span>در حال دریافت</span>
       </div>
     </div>
@@ -112,7 +117,7 @@ const Person = ({ data }) => {
 export default Person;
 
 export const getServerSideProps = async ({ params }) => {
-  const res = await fetch(`http://laial.7negare.ir/api/persons/${params.id}`);
+  const res = await fetch(`https://nejat.safine.co/api/persons/${params.id}`);
   const resData = await res.json();
   console.log(resData);
 

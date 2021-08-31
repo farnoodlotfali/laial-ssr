@@ -3,7 +3,7 @@ import Link from 'next/link';
 import styles from '../styles/Login.module.css';
 import authContext from '../contexts/auth/authContext';
 import { useRouter } from 'next/router';
-const Login = () => {
+const ForgetPass = () => {
   const { login, user, error } = useContext(authContext);
   const [userInfo, setUserInfo] = useState({
     username: '',
@@ -41,7 +41,7 @@ const Login = () => {
         <div className={styles.square} style={{ i: '4' }}></div>
         <div className={styles.login__container}>
           <div className={styles.form}>
-            <h2 className='text-center'>ورود</h2>
+            <h2 className='text-center'>فراموشی رمز عبور</h2>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -60,36 +60,15 @@ const Login = () => {
                   placeholder='ایمیل'
                   required
                 />
-              </div>{' '}
-              <div className={styles.inputBox}>
-                <input
-                  required
-                  onChange={onchange}
-                  name='password'
-                  value={password}
-                  type='password'
-                  placeholder='رمز ورود'
-                  minLength='8'
-                />
-              </div>
-              <div className={`${styles.error__msg__login} pt-2 `}>
-                {error && '! کاربری با این مشخصات یافت نشد'}
               </div>
               <div className={`${styles.notRegister} pt-2`}>
                 <span>ثبت نام نکرده اید؟</span>
-
                 <Link href='/register'>
                   <span className={styles.register}> ثبت نام</span>
                 </Link>
               </div>
-              <div className={`${styles.notRegister} pt-2`}>
-                <Link href='/forgetpass'>
-                  <span className={styles.register}> فراموشی رمز عبور؟</span>
-                </Link>
-              </div>
-              {/* <div className={`${styles.formMsg }pt-2`}>{errorMsg}</div> */}
               <div className={`${styles.inputBox} text-center`}>
-                <input type='submit' value='ورود' />
+                <input type='submit' value='ثبت' />
               </div>
             </form>
           </div>
@@ -99,4 +78,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgetPass;

@@ -1,8 +1,8 @@
-import styles from '../../styles/songPage.module.css';
-import { Modal } from 'react-bootstrap';
-
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { IconButton, Tooltip } from '@material-ui/core';
+import styles from "../../styles/songPage.module.css";
+import { Modal } from "react-bootstrap";
+import fetch from "isomorphic-unfetch";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { IconButton, Tooltip } from "@material-ui/core";
 import {
   CloseRounded,
   Favorite,
@@ -10,13 +10,14 @@ import {
   PlayArrowRounded,
   PlaylistAdd,
   Visibility,
-} from '@material-ui/icons';
-import RowItem from '../../components/relatedToRowItem/RowItem';
-import Flickity from 'react-flickity-component';
-import { useContext, useEffect, useState } from 'react';
-import authContext from '../../contexts/auth/authContext';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+} from "@material-ui/icons";
+import RowItem from "../../components/relatedToRowItem/RowItem";
+import Flickity from "react-flickity-component";
+import { useContext, useEffect, useState } from "react";
+import authContext from "../../contexts/auth/authContext";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import appContext from "../../contexts/app/appContext";
 
 const songPage = ({ data, recommender, view, songUrlData }) => {
   const [show, setShow] = useState(false);
@@ -32,27 +33,27 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
     rightToLeft: true,
   };
   const [userInfo, setUserInfo] = useState({
-    username: '',
-    email: '',
-    password: '',
+    username: "",
+    email: "",
+    password: "",
   });
   const likeSong = async () => {
     let myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append("Content-Type", "application/json");
     myHeaders.append(
-      'Authorization',
-      'Bearer ' + localStorage.getItem('tokenAccess')
+      "Authorization",
+      "Bearer " + localStorage.getItem("tokenAccess")
     );
-    let raw = '';
+    let raw = "";
 
     let requestOptions = {
-      method: 'POST',
+      method: "POST",
       headers: myHeaders,
       body: raw,
-      redirect: 'follow',
+      redirect: "follow",
     };
 
-    fetch(`http://laial.7negare.ir/api/post/${id}/`, requestOptions)
+    fetch(`https://nejat.safine.co/api/post/${id}/`, requestOptions)
       .then((response) => response.json())
       .then((result) => setLike(result.data.likes))
 
@@ -82,7 +83,7 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
   };
   const { email, password } = userInfo;
   const { error, login, loadUser, user, isAuth } = useContext(authContext);
-
+  const { setWhichSongToSaveInPlaylist } = useContext(appContext);
   const onchange = (e) => {
     setUserInfo({
       ...userInfo,
@@ -94,7 +95,7 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
     setsongurl();
   }, [user, like, isAuth, songUrl]);
   const setsongurl = () => {
-    fetch(`http://downloader.7negare.ir/download/${data.media[0].telegram_id}`)
+    fetch(`https://downloader.safine.co/${data.media[0].telegram_id}`)
       .then((resp) => resp.json())
       .then((res) => setSongUrl(res.download_link));
     // const songUrlData = await songUrl.json();
@@ -110,9 +111,9 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
                 ? data?.media?.[0]?.image
                 : data?.person?.[0]?.image.full_image_url !== null
                 ? data?.person?.[0]?.image.full_image_url
-                : '/defualtPhoto'
+                : "/defualtPhoto"
             }
-            alt='logo'
+            alt="logo"
           />
         </div>
         <div
@@ -124,16 +125,16 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
           <div className={`${styles.musicInfo__singer} mb-3 d-flex`}>
             خواننده : {data?.person?.[0]?.name}
           </div>
-          <div className='musicInfo__mode mb-3 d-flex'>سبک : شور</div>
+          <div className="musicInfo__mode mb-3 d-flex">سبک : شور</div>
           <hr />
           <div className={`${styles.actions} d-flex justify-content-around`}>
             <div
             //   onClick={playMusicAndShowMusicBar}
             >
-              <Tooltip placement='bottom' title='پخش آهنگ'>
-                <IconButton aria-label='play'>
+              <Tooltip placement="bottom" title="پخش آهنگ">
+                <IconButton aria-label="play">
                   <PlayArrowRounded
-                    style={{ fontSize: '40px' }}
+                    style={{ fontSize: "40px" }}
                     className={`${styles.icon} `}
                   />
                 </IconButton>
@@ -142,10 +143,10 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
 
             <div className={`${styles.favoritePart} text-center`}>
               <IconButton
-                aria-label='Favorite'
+                aria-label="Favorite"
                 onClick={() => (isAuth ? likeSong() : setShow(true))}
               >
-                <Favorite className={`${styles.favorite}`} fontSize='large' />
+                <Favorite className={`${styles.favorite}`} fontSize="large" />
               </IconButton>
               {like}
 
@@ -182,34 +183,34 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
                         <input
                           required
                           onChange={onchange}
-                          name='password'
+                          name="password"
                           value={password}
-                          type='password'
-                          placeholder='رمز ورود'
-                          minLength='8'
+                          type="password"
+                          placeholder="رمز ورود"
+                          minLength="8"
                         />
                       </div>
                       <div className={styles.inputBox}>
                         <input
                           onChange={onchange}
-                          name='email'
-                          type='email'
+                          name="email"
+                          type="email"
                           value={email}
-                          placeholder='ایمیل'
+                          placeholder="ایمیل"
                           required
                         />
-                      </div>{' '}
+                      </div>{" "}
                     </div>
                     <div className={`error__msg__login pt-2 `}>
                       {error?.error} *
                     </div>
                     <div className={`${styles.notRegister} pt-2`}>
-                      {' '}
-                      <span> ثبت نام نکرده اید؟ </span>{' '}
-                      <Link href='/register'>
+                      {" "}
+                      <span> ثبت نام نکرده اید؟ </span>{" "}
+                      <Link href="/register">
                         <span className={styles.notRegisterLink}>
-                          {' '}
-                          ثبت نام{' '}
+                          {" "}
+                          ثبت نام{" "}
                         </span>
                       </Link>
                     </div>
@@ -218,7 +219,7 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
                       className={`${styles.formGp__btn} d-flex justify-content-around  `}
                     >
                       <div className={styles.inputBox__login}>
-                        <input type='submit' value='ورود' />
+                        <input type="submit" value="ورود" />
                       </div>
                       <div className={styles.inputBox__close}>
                         <button onClick={() => setShow(false)}>بستن</button>
@@ -226,25 +227,16 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
                     </div>
                   </form>
                 </Modal.Body>
-                {/* <Modal.Footer>
-                  <div className='inputBox'>
-                    <input type='submit' value='ورود' />
-                  </div>
-
-                  <Button variant='secondary' onClick={() => setShow(false)}>
-                    بستن
-                  </Button>
-                </Modal.Footer> */}
               </Modal>
             </div>
 
             <div>
               <a href={songUrl}>
-                <Tooltip placement='bottom' title='دانلود'>
-                  <IconButton aria-label='download'>
+                <Tooltip placement="bottom" title="دانلود">
+                  <IconButton aria-label="download">
                     <GetAppRounded
                       className={`${styles.download}`}
-                      fontSize='large'
+                      fontSize="large"
                     />
                   </IconButton>
                 </Tooltip>
@@ -252,19 +244,19 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
             </div>
 
             <div
-            //   onClick={() =>
-            //     setWhichSongToSaveInPlaylist(dataSongPage?.media?.[0]?.id)
-            //   }
+              onClick={() =>
+                setWhichSongToSaveInPlaylist(dataSongPage?.media?.[0]?.id)
+              }
             >
-              <Tooltip placement='bottom' title='اضافه به لیست'>
-                <IconButton aria-label='Add'>
-                  <PlaylistAdd className={`${styles.add}`} fontSize='large' />
+              <Tooltip placement="bottom" title="اضافه به لیست">
+                <IconButton aria-label="Add">
+                  <PlaylistAdd className={`${styles.add}`} fontSize="large" />
                 </IconButton>
               </Tooltip>
             </div>
             <div className={`${styles.viewPart} text-center`}>
-              <IconButton aria-label='View'>
-                <Visibility className={`${styles.view}`} fontSize='large' />
+              <IconButton aria-label="View">
+                <Visibility className={`${styles.view}`} fontSize="large" />
               </IconButton>
               {view}
             </div>
@@ -298,13 +290,13 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
 export const getServerSideProps = async ({ params }) => {
   // const req = await axios.instanceApi.get(`/post/${params.id}s/`);
 
-  const res = await fetch(`http://laial.7negare.ir/api/post/${params.id}/`);
+  const res = await fetch(`https://nejat.safine.co/api/post/${params.id}/`);
   const resData = await res.json();
   const view = await fetch(
-    `http://laial.7negare.ir/api/post/${params.id}/?state=views`
+    `https://nejat.safine.co/api/post/${params.id}/?state=views`
   );
   const viewData = await view.json();
-  const recommender = await fetch(`http://laial.7negare.ir/api/recommender/`);
+  const recommender = await fetch(`https://nejat.safine.co/api/recommender/`);
   const recommenderData = await recommender.json();
 
   if (!resData.data) {

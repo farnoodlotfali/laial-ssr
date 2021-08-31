@@ -5,8 +5,8 @@ import {
   useReducer,
   useRef,
   useState,
-} from 'react';
-import PlayerContext from './playerContext';
+} from "react";
+import PlayerContext from "./playerContext";
 import {
   ClickAwayListener,
   Drawer,
@@ -15,14 +15,14 @@ import {
   Slide,
   Slider,
   SwipeableDrawer,
-} from '@material-ui/core';
-import appContext from '../app/appContext';
-import authContext from '../auth/authContext';
-import styles from '../../styles/Player.module.css';
-import phonestyles from '../../styles/PlayerPhone.module.css';
-import playerReducer from './playerReducer';
-import { detect } from 'detect-browser';
-import SpinnerLoading from '../../components/spinner/SpinnerLoading';
+} from "@material-ui/core";
+import appContext from "../app/appContext";
+import authContext from "../auth/authContext";
+import styles from "../../styles/Player.module.css";
+import phonestyles from "../../styles/PlayerPhone.module.css";
+import playerReducer from "./playerReducer";
+import { detect } from "detect-browser";
+import SpinnerLoading from "../../components/spinner/SpinnerLoading";
 import {
   ExpandLessRounded,
   ExpandMoreRounded,
@@ -37,7 +37,7 @@ import {
   SkipPreviousRounded,
   VolumeOff,
   VolumeUp,
-} from '@material-ui/icons';
+} from "@material-ui/icons";
 import {
   MUTE_MUSIC,
   PLAY_MUSIC,
@@ -54,24 +54,24 @@ import {
   SET_PROGRESS,
   CHANGE_SHOW_MUSICBAR_ON_MOBILE_RATIO,
   CHANGE_SHUFFLE,
-} from './types';
-import { makeStyles } from '@material-ui/core/styles';
+} from "./types";
+import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles({
   rail: {
-    height: '4px',
-    color: 'white',
+    height: "4px",
+    color: "white",
   },
   thumb: {
-    color: 'white',
+    color: "white",
   },
   paper: {
-    backgroundColor: 'rgb(78, 83, 88)',
-    bottom: '109px',
+    backgroundColor: "rgb(78, 83, 88)",
+    bottom: "109px",
     /* max-width: 360px, */
-    overflow: 'hidden',
+    overflow: "hidden",
     /* top: 10%, */
     /* position: relative, */
-    zIndex: '999',
+    zIndex: "999",
   },
 });
 
@@ -94,15 +94,15 @@ const getTimeToday = () => {
   var today = new Date();
   let date =
     today.getFullYear() +
-    '-' +
+    "-" +
     (today.getMonth() + 1) +
-    '-' +
+    "-" +
     today.getDate() +
-    '/' +
+    "/" +
     today.getHours() +
-    '-' +
+    "-" +
     today.getMinutes() +
-    '-' +
+    "-" +
     today.getSeconds();
   return date;
 };
@@ -118,15 +118,11 @@ const browser = () => {
 };
 
 const PlayerState = (props) => {
-  const {
-    showRightList,
-    showMusic,
-    RightList,
-    leftList,
-    showLeftList,
-  } = useContext(appContext);
+  const { showRightList, showMusic, RightList, leftList, showLeftList } =
+    useContext(appContext);
   const classes = useStyles();
   const { isAuth } = useContext(authContext);
+  const { setWhichSongToSaveInPlaylist } = useContext(appContext);
 
   const initialState = {
     playList: [],
@@ -143,8 +139,8 @@ const PlayerState = (props) => {
     telegramId: null,
     songId: null,
     songPhoto: null,
-    songName: '',
-    songSinger: '',
+    songName: "",
+    songSinger: "",
     currentProgress: 0,
     showMusicBarOnMoblieRatio: false,
   };
@@ -216,7 +212,7 @@ const PlayerState = (props) => {
   const nextMusic = async (audioElement = audioRef.current) => {
     audioElement.pause();
 
-    putToMusicChangeList(audioElement.currentTime, 'next');
+    putToMusicChangeList(audioElement.currentTime, "next");
     let last = null;
     // console.log(playList);
     if (playList !== undefined) {
@@ -240,9 +236,7 @@ const PlayerState = (props) => {
               ? chosen?.media?.[0]?.image
               : chosen?.person?.[0]?.image.full_image_url
           );
-          fetch(
-            `http://downloader.7negare.ir/download/${chosen.media[0]?.telegram_id}`
-          )
+          fetch(`https://downloader.safine.co/${chosen.media[0]?.telegram_id}`)
             .then((respone) => respone.json())
             .then((res) => setUrl(res.download_link, playList))
             .then(() => playMusic())
@@ -278,7 +272,7 @@ const PlayerState = (props) => {
   const previousMusic = async (audioElement = audioRef.current) => {
     audioElement.pause();
 
-    putToMusicChangeList(audioElement.currentTime, 'previous');
+    putToMusicChangeList(audioElement.currentTime, "previous");
     let last = null;
     if (playList !== undefined) {
       for (let i = 0; i < playList.length; i++) {
@@ -305,9 +299,7 @@ const PlayerState = (props) => {
               : chosen?.person?.[0]?.image.full_image_url
           );
 
-          fetch(
-            `http://downloader.7negare.ir/download/${chosen.media[0]?.telegram_id}`
-          )
+          fetch(`https://downloader.safine.co/${chosen.media[0]?.telegram_id}`)
             .then((respone) => respone.json())
             .then((res) => setUrl(res.download_link, playList))
             .then(() => playMusic())
@@ -437,7 +429,7 @@ const PlayerState = (props) => {
 
   const [musicChangeList, setMusicChangeList] = useState([]);
 
-  const zeroPad = (num, places) => String(num).padStart(places, '0');
+  const zeroPad = (num, places) => String(num).padStart(places, "0");
   return (
     <PlayerContext.Provider
       value={{
@@ -477,17 +469,17 @@ const PlayerState = (props) => {
     >
       {props.children}
       <Fragment>
-        <div id='audio'>
+        <div id="audio">
           <audio
             ref={audioRef}
-            className='player'
+            className="player"
             // autoPlay={state.playing}
             src={state.currentUrl}
             // src={
             //   'https://files.musico.ir/Song/Ehsan%20Daryadel%20-%20Koochamoon%20(320).mp3'
             // }
-            type='audio/mpeg'
-            preload='metadata'
+            type="audio/mpeg"
+            preload="metadata"
           ></audio>
         </div>
 
@@ -500,9 +492,9 @@ const PlayerState = (props) => {
               classes={{
                 paper: classes.paper,
               }}
-              variant='persistent'
+              variant="persistent"
               className={phonestyles.phoneMusicBar__slide}
-              anchor={'bottom'}
+              anchor={"bottom"}
               open={state.showMusicBarOnMoblieRatio}
               onClose={() => setShowMusicBarOnMoblieRatio()}
               onOpen={() => setShowMusicBarOnMoblieRatio()}
@@ -512,7 +504,7 @@ const PlayerState = (props) => {
                   className={`${phonestyles.current_time} align-self-center `}
                 >
                   {Math.floor(audioRef.current?.currentTime / 60) +
-                    ':' +
+                    ":" +
                     zeroPad(Math.floor(audioRef.current?.currentTime % 60), 2)}
                 </div>
 
@@ -523,16 +515,16 @@ const PlayerState = (props) => {
                       track: classes.rail,
                       thumb: classes.thumb,
                     }}
-                    variant='determinate'
+                    variant="determinate"
                     value={state.currentProgress}
                     onChange={(e, newDuration) => handleChange(newDuration)}
                   />
                 </div>
 
                 <div className={`${phonestyles.last_time} align-self-center`}>
-                  {' '}
+                  {" "}
                   {Math.floor(state.totalDuration / 60) +
-                    ':' +
+                    ":" +
                     zeroPad(Math.floor(state.totalDuration % 60), 2)}
                 </div>
               </div>
@@ -540,7 +532,7 @@ const PlayerState = (props) => {
               <div
                 className={`${phonestyles.showSongInfo} d-flex text-light pb-2 px-2 justify-content-between`}
               >
-                <div className='player__actions d-flex justify-content-center '>
+                <div className="player__actions d-flex justify-content-center ">
                   <div
                     className={`${phonestyles.icon} playlist_sound_playlist d-flex justify-content-between align-self-end  align-self-center`}
                     onClick={() => showLeftList(leftList ? false : true)}
@@ -551,9 +543,9 @@ const PlayerState = (props) => {
                     {isAuth && (
                       <PlaylistAddRounded
                         style={{ fontSize: 22 }}
-                        // onClick={() =>
-                        //   setWhichSongToSaveInPlaylist(state.songId)
-                        // }
+                        onClick={() =>
+                          setWhichSongToSaveInPlaylist(state.songId)
+                        }
                       />
                     )}
                   </div>
@@ -589,12 +581,12 @@ const PlayerState = (props) => {
                       track: classes.rail,
                       thumb: classes.thumb,
                     }}
-                    className='mobileSound '
+                    className="mobileSound "
                     value={state.volume * 100}
                     onChange={(e, newVolume) =>
                       changeVolume(audioRef.current, newVolume)
                     }
-                    aria-labelledby='continuous-slider'
+                    aria-labelledby="continuous-slider"
                   />
                 </div>
               </div>
@@ -602,7 +594,7 @@ const PlayerState = (props) => {
           </div>
 
           {state.currentUrl && (
-            <Slide direction='up' timeout={500} in={showMusic}>
+            <Slide direction="up" timeout={500} in={showMusic}>
               <div
                 className={`${phonestyles.phoneMusicBar}  d-flex text-light`}
               >
@@ -615,9 +607,9 @@ const PlayerState = (props) => {
                     src={
                       state.songPhoto !== null
                         ? state.songPhoto
-                        : '/defualtPhoto.jpeg'
+                        : "/defualtPhoto.jpeg"
                     }
-                    alt='logo'
+                    alt="logo"
                   />
                   <div
                     className={`${phonestyles.phoneMusicBar__info} align-self-center `}
@@ -636,40 +628,40 @@ const PlayerState = (props) => {
                   className={`${phonestyles.phoneMusicBar__right} d-flex align-self-center 
                   justify-content-around`}
                 >
-                  <div className='icon ' onClick={handleNext}>
-                    <SkipNextRounded style={{ fontSize: '25px' }} />
+                  <div className="icon " onClick={handleNext}>
+                    <SkipNextRounded style={{ fontSize: "25px" }} />
                   </div>
-                  <div className='icon '>
+                  <div className="icon ">
                     {/* SpinnerLoading */}
                     {state.loading ? (
                       <SpinnerLoading />
                     ) : state.playing ? (
                       <div
-                        className=''
+                        className=""
                         onClick={() => playAndPauseMusic(audioRef.current)}
                       >
-                        <Pause style={{ fontSize: '25px' }} />
+                        <Pause style={{ fontSize: "25px" }} />
                       </div>
                     ) : (
                       <div
-                        className=''
+                        className=""
                         onClick={() => playAndPauseMusic(audioRef.current)}
                       >
-                        <PlayCircleFilledRounded style={{ fontSize: '25px' }} />
+                        <PlayCircleFilledRounded style={{ fontSize: "25px" }} />
                       </div>
                     )}
                   </div>
-                  <div className='icon' onClick={handlePrevious}>
-                    <SkipPreviousRounded style={{ fontSize: '25px' }} />
+                  <div className="icon" onClick={handlePrevious}>
+                    <SkipPreviousRounded style={{ fontSize: "25px" }} />
                   </div>
                   <div
-                    className='icon'
+                    className="icon"
                     onClick={() => setShowMusicBarOnMoblieRatio()}
                   >
                     {state.showMusicBarOnMoblieRatio ? (
-                      <ExpandMoreRounded style={{ fontSize: '25px' }} />
+                      <ExpandMoreRounded style={{ fontSize: "25px" }} />
                     ) : (
-                      <ExpandLessRounded style={{ fontSize: '25px' }} />
+                      <ExpandLessRounded style={{ fontSize: "25px" }} />
                     )}
                   </div>
                 </div>
@@ -681,10 +673,10 @@ const PlayerState = (props) => {
        /////////////////////////////////////////////
        //////////////////////////////////////////// */}
         <Fragment>
-          <Slide direction='up' timeout={500} in={showMusic}>
+          <Slide direction="up" timeout={500} in={showMusic}>
             <div
               className={`${styles.musicBar} text-light`}
-              style={{ display: showMusic ? 'block' : 'none' }}
+              style={{ display: showMusic ? "block" : "none" }}
             >
               <div
                 className={`${styles.position} d-flex justify-content-around`}
@@ -692,7 +684,7 @@ const PlayerState = (props) => {
                 <div className={styles.musicBar__right}>
                   <div className={styles.musicBar__info}>
                     <div className={styles.musicBar__infoImage}>
-                      <img src={state.songPhoto} alt='logo' />
+                      <img src={state.songPhoto} alt="logo" />
                     </div>
                     <div className={styles.musicBar__infoDesc}>
                       <div className={styles.infoDesc__title}>
@@ -709,11 +701,11 @@ const PlayerState = (props) => {
                 <div
                   className={`${styles.musicBar__center} ${styles.player} mt-3`}
                 >
-                  <div className='player__actions d-flex justify-content-center '>
+                  <div className="player__actions d-flex justify-content-center ">
                     <div
                       // onClick={() => changeShuffle()}
                       className={`${styles.icon}  ${
-                        state.shuffle ? `${styles.icon_press}` : ''
+                        state.shuffle ? `${styles.icon_press}` : ""
                       } align-self-center`}
                     >
                       <ShuffleRounded style={{ fontSize: 25 }} />
@@ -730,14 +722,14 @@ const PlayerState = (props) => {
                       ) : // 'spinerr'
                       state.playing ? (
                         <div
-                          className=''
+                          className=""
                           onClick={() => playAndPauseMusic(audioRef.current)}
                         >
                           <Pause style={{ fontSize: 35 }} />
                         </div>
                       ) : (
                         <div
-                          className=''
+                          className=""
                           onClick={() => playAndPauseMusic(audioRef.current)}
                         >
                           <PlayArrowRounded style={{ fontSize: 35 }} />
@@ -750,7 +742,7 @@ const PlayerState = (props) => {
                     <div
                       // onClick={changeLoop}
                       className={`${styles.icon}  ${
-                        state.shuffle ? `${styles.icon_press}` : ''
+                        state.shuffle ? `${styles.icon_press}` : ""
                       } align-self-center`}
                     >
                       <RepeatRounded style={{ fontSize: 25 }} />
@@ -761,7 +753,7 @@ const PlayerState = (props) => {
                       className={`${styles.current_time} align-self-center text-right`}
                     >
                       {Math.floor(audioRef.current?.currentTime / 60) +
-                        ':' +
+                        ":" +
                         zeroPad(
                           Math.floor(audioRef.current?.currentTime % 60),
                           2
@@ -779,7 +771,7 @@ const PlayerState = (props) => {
                             track: classes.rail,
                             thumb: classes.thumb,
                           }}
-                          variant='determinate'
+                          variant="determinate"
                           value={state.currentProgress}
                           onChange={(e, newDuration) =>
                             handleChange(newDuration)
@@ -791,7 +783,7 @@ const PlayerState = (props) => {
                       className={`${styles.last_time} align-self-center text-left `}
                     >
                       {Math.floor(state.totalDuration / 60) +
-                        ':' +
+                        ":" +
                         zeroPad(Math.floor(state.totalDuration % 60), 2)}
                     </div>
                   </div>
@@ -799,14 +791,14 @@ const PlayerState = (props) => {
                 <div
                   className={`${styles.playlist_sound}   ${styles.musicBar__left} mt-3 mb-2`}
                 >
-                  <div className='d-flex justify-content-around  '>
+                  <div className="d-flex justify-content-around  ">
                     <div className={styles.icon}>
                       {/* {isAuth && ( */}
                       <PlaylistAddRounded
-                        fontSize='large'
-                        // onClick={() =>
-                        //   setWhichSongToSaveInPlaylist(state.songId)
-                        // }
+                        fontSize="large"
+                        onClick={() =>
+                          setWhichSongToSaveInPlaylist(state.songId)
+                        }
                       />
                       {/* )} */}
                     </div>
@@ -814,7 +806,7 @@ const PlayerState = (props) => {
                       className={`${styles.icon} ${styles.playlist_sound_playlist}  d-flex justify-content-end align-self-end mb-2 `}
                       onClick={() => showLeftList(true)}
                     >
-                      <QueueMusic fontSize='large' />
+                      <QueueMusic fontSize="large" />
                     </div>
                   </div>
 
@@ -831,7 +823,7 @@ const PlayerState = (props) => {
                         onChange={(e, newVolume) =>
                           changeVolume(audioRef.current, newVolume)
                         }
-                        aria-labelledby='continuous-slider'
+                        aria-labelledby="continuous-slider"
                       />
                     </div>
                     <div

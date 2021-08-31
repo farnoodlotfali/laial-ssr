@@ -4,7 +4,9 @@ import styles from '../styles/Register.module.css';
 import authContext from '../contexts/auth/authContext';
 import { useRouter } from 'next/router';
 const Register = () => {
-  const { register, user } = useContext(authContext);
+  const { register, user, loadUser, error } = useContext(authContext);
+  const [errorMsg, setErrorMsg] = useState('');
+
   const [userInfo, setUserInfo] = useState({
     username: '',
     email: '',
@@ -13,13 +15,16 @@ const Register = () => {
     first_name: '',
     last_name: '',
   });
+
   const router = useRouter();
   useEffect(() => {
-    console.log(user);
+    // console.log(user);
     if (user) {
       // props.history.back();
       router.back();
     }
+    loadUser();
+
     // eslint-disable-next-line
   }, [user, router]);
   const {
@@ -136,9 +141,9 @@ const Register = () => {
                   required
                 />
               </div>
-              {/* <div className={`${styles.formMsg} pt-2`}>{errorMsg}</div> */}
+              <div className={`${styles.formMsg} pt-2`}>{errorMsg}</div>
               <div className={styles.error__msg__register}>
-                {/* {error && '  نام کاربری ویا ایمیل در سیستم موجود است'} */}
+                {error && '  نام کاربری ویا ایمیل در سیستم موجود است'}
               </div>
               <div className={`${styles.inputBox} text-center`}>
                 <input type='submit' value='ثبت نام' />

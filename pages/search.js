@@ -1,41 +1,48 @@
-import { useState } from 'react';
-import styles from '../styles/Search.module.css';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import spinerrStyles from '../styles/LoadingIcon.module.css';
-import LoadingIcon from '../components/spinner/LoadingIcon';
-import PersonItem from '../components/PersonItem';
-import RowItem from '../components/relatedToRowItem/RowItem';
+import { useContext, useEffect, useState } from "react";
+import styles from "../styles/Search.module.css";
+import InfiniteScroll from "react-infinite-scroll-component";
+import spinerrStyles from "../styles/LoadingIcon.module.css";
+import LoadingIcon from "../components/spinner/LoadingIcon";
+import PersonItem from "../components/PersonItem";
+import RowItem from "../components/relatedToRowItem/RowItem";
+import authContext from "../contexts/auth/authContext";
 const Search = () => {
+  const { user, loadUser } = useContext(authContext);
+
   const [next, setNext] = useState({
-    next: '',
+    next: "",
     listResults: null,
     listPersons: null,
     hasMore: false,
     page: 2,
-    loaderMsg: '',
+    loaderMsg: "",
     loading: false,
   });
+  useEffect(() => {
+    loadUser();
+  }, [user]);
+
   const onchange = (e) => {
     setSearchValue(([e.target.name] = e.target.value));
   };
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
 
   const onSubmitHandle = (e) => {
     setNext({
       ...next,
-      next: '',
+      next: "",
       listResults: null,
       listPersons: null,
       hasMore: false,
       loading: true,
       page: 2,
-      loaderMsg: '',
+      loaderMsg: "",
     });
     e.preventDefault();
     setTimeout(async () => {
       try {
         const res = await fetch(
-          `http://laial.7negare.ir/api/search/?q=${searchValue}`
+          `https://nejat.safine.co/api/search/?q=${searchValue}`
         );
         const resData = await res.json();
         // console.log(resData);
@@ -46,7 +53,7 @@ const Search = () => {
           listResults: resData.results,
           listPersons: resData.persons,
           page: 2,
-          loaderMsg: resData.next ? 'Loading...' : 'Finish :)',
+          loaderMsg: resData.next ? "Loading..." : "Finish :)",
           loading: false,
         });
         //  next.list.concat(res.data.results);
@@ -65,7 +72,7 @@ const Search = () => {
     setTimeout(async () => {
       try {
         const res = await fetch(
-          `http://laial.7negare.ir/api/search/?page=${next.page}&q=${searchValue}`
+          `https://nejat.safine.co/api/search/?page=${next.page}&q=${searchValue}`
         );
         const resData = await res.json();
         // console.log(res.data);
@@ -76,7 +83,7 @@ const Search = () => {
           listResults: next.listResults.concat(resData.results),
           listPersons: next.listPersons,
           page: ++next.page,
-          loaderMsg: resData.next ? 'Loading...' : 'Finish :)',
+          loaderMsg: resData.next ? "Loading..." : "Finish :)",
           loading: false,
         });
         // console.log(next.page);
@@ -94,25 +101,25 @@ const Search = () => {
       <div className={`${styles.searchFields__option}  my-3 py-3`}>
         <form onSubmit={(e) => onSubmitHandle(e)}>
           <input
-            className='ml-2'
+            className="ml-2"
             onChange={onchange}
-            name='searchValue'
-            type='text'
+            name="searchValue"
+            type="text"
             value={searchValue}
-            placeholder='متن جستجو ....'
+            placeholder="متن جستجو ...."
             required
           />
 
           <input
-            type='submit'
-            value='جستجو'
+            type="submit"
+            value="جستجو"
             // value='Register'
           />
         </form>
       </div>
-      <div className='listPersons'>
+      <div className="listPersons">
         {next?.listPersons && (
-          <h2 className='text-white text-center my-5'>نتایج براساس افراد</h2>
+          <h2 className="text-white text-center my-5">نتایج براساس افراد</h2>
         )}
         {next?.listPersons && (
           <InfiniteScroll
@@ -136,9 +143,9 @@ const Search = () => {
           </InfiniteScroll>
         )}
       </div>
-      <div className='listResults'>
+      <div className="listResults">
         {next?.listResults && (
-          <h2 className='text-white text-center my-5'>نتایج براساس آهنگ</h2>
+          <h2 className="text-white text-center my-5">نتایج براساس آهنگ</h2>
         )}
         {next?.listResults && (
           <InfiniteScroll
@@ -166,11 +173,11 @@ const Search = () => {
         className={spinerrStyles.loading_message}
         // ref={loadingRef}
         style={{
-          opacity: next.loading ? '1' : '0',
-          transform: next.loading && 'translate(-50%, 0px)',
+          opacity: next.loading ? "1" : "0",
+          transform: next.loading && "translate(-50%, 0px)",
         }}
       >
-        <LoadingIcon color='#fff' />
+        <LoadingIcon color="#fff" />
         <span>در حال دریافت</span>
       </div>
     </div>

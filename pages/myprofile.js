@@ -1,13 +1,28 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { DeleteRounded } from '@material-ui/icons';
 import styles from '../styles/MyProfile.module.css';
+import authContext from '../contexts/auth/authContext';
+import appContext from '../contexts/app/appContext';
+import { useRouter } from 'next/router';
 const MyProfile = () => {
   const [listShow, setlistShow] = useState(null);
+  const { user, loadUser } = useContext(authContext);
+  const { changeCurrentPassword } = useContext(appContext);
+  const [errorMsg, setErrorMsg] = useState('');
+  const router = useRouter();
+
   const [changePassword, setchangePassword] = useState({
     currentPassword: '',
     changePassword1: '',
     changePassword2: '',
   });
+  const { currentPassword, changePassword1, changePassword2 } = changePassword;
+  useEffect(() => {
+    loadUser();
+    if (user === null) {
+      router.push('/');
+    }
+  }, [user, router]);
   const onchange = (e) => {
     setchangePassword({
       ...changePassword,
@@ -17,6 +32,14 @@ const MyProfile = () => {
   const changeListShow = (newlist) => {
     setlistShow(newlist);
   };
+
+  const passNotSame = () => {
+    setErrorMsg('رمز اول با رمز دوم تطابق ندارد');
+    setTimeout(() => {
+      setErrorMsg('');
+    }, 5000);
+  };
+
   return (
     <div className={`${styles.myProfile}  text-light`}>
       <div className={styles.myProfile__content}>
@@ -109,7 +132,7 @@ const MyProfile = () => {
                 <label>نام</label>
                 <input
                   name='firstname'
-                  //   value={user.first_name}
+                  value={user?.first_name}
                   type='text'
                   disabled
                 />
@@ -120,7 +143,7 @@ const MyProfile = () => {
                 <input
                   name='username'
                   type='text'
-                  //   value={user.last_name}
+                  value={user?.last_name}
                   disabled
                 />
               </div>
@@ -132,7 +155,7 @@ const MyProfile = () => {
                 <input
                   name='username'
                   type='email'
-                  //   value={user.email}
+                  value={user?.email}
                   disabled
                 />
               </div>
@@ -141,7 +164,7 @@ const MyProfile = () => {
 
                 <input
                   name='username'
-                  //   value={user.username}
+                  value={user?.username}
                   type='text'
                   disabled
                 />
@@ -153,7 +176,21 @@ const MyProfile = () => {
               <h4>تغییر رمز عبور</h4>
             </div>
 
-            <form>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (changePassword1 !== changePassword2) {
+                  passNotSame();
+                } else {
+                  changeCurrentPassword(changePassword1, currentPassword);
+                  setchangePassword({
+                    currentPassword: '',
+                    changePassword1: '',
+                    changePassword2: '',
+                  });
+                }
+              }}
+            >
               <div className={styles.inputBoxPass}>
                 <input
                   onChange={onchange}
@@ -186,6 +223,7 @@ const MyProfile = () => {
                 <input type='submit' value='تغییر رمز ' />
               </div>
             </form>
+            <div className={styles.formMsg}>{errorMsg}</div>
           </div>
         </div>
       </div>
