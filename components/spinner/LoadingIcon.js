@@ -1,4 +1,4 @@
-import '../../styles/LoadingIcon.module.css';
+import './LoadingIcon.css';
 const LoadingIcon = ({ color = '#000' }) => {
   return (
     <svg

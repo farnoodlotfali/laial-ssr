@@ -4,10 +4,26 @@ import { useContext } from "react";
 import appContext from "../../contexts/app/appContext";
 import playerContext from "../../contexts/player/playerContext";
 import styles from "../../styles/RowItem.module.css";
-import SpinnerLoadingOnRowitem from "../spinner/SpinnerLoadingOnRowitem";
 import AbortController from "abort-controller";
+import defualtPhoto from "../../assets/defualtPhoto.jpeg";
+import PlaySvg from "../svgs/PlaySvg";
+import SpinnerLoading from "../spinner/SpinnerLoading";
+
 const controller = new AbortController();
-const RowItem = ({ media, person, slug, context }) => {
+
+const RowItem = ({
+  media,
+  person,
+  slug,
+  context,
+  isRow,
+  postId,
+  meta_description,
+  meta_title,
+  description,
+  title,
+  logo,
+}) => {
   const {
     playMusic,
     playing,
@@ -25,11 +41,13 @@ const RowItem = ({ media, person, slug, context }) => {
   const playMusicAndShowMusicBar = async () => {
     // نشان دادن موزیک و پخش موزیک
     const signal = controller.signal;
-    // controller.abort();
 
     if (media?.id === songId) {
       playAndPauseMusic();
     } else {
+      if (!showMusic) {
+        ChangeShowMusic(true);
+      }
       setIds(
         media?.telegram_id,
         media?.id,
@@ -39,67 +57,54 @@ const RowItem = ({ media, person, slug, context }) => {
         media?.image !== null ? media?.image : person?.[0]?.image.full_image_url
       );
 
-      fetch(`https://downloader.safine.co/${media?.telegram_id}`, {
-        method: "get",
-        signal: signal,
-      })
-        .then((respone) => respone.json())
-        .then((res) => setUrl(res.download_link, context))
-        .then(() => playMusic())
-        .then(() => ChangeShowMusic(true))
-        .catch((err) => console.log(err));
-      // if (cancel !== undefined) {
-      //   cancel();
-      // }
-      // console.log(media?.name, person?.[0]?.name);
-      // try {
-      //   const res = await axios.downloader.get(`/${media?.telegram_id}`, {
-      //     cancelToken: new CancelToken(function executor(c) {
-      //       cancel = c;
-      //     }),
-      //   });
-      //   setUrl(res.data.download_link, context);
-      //   if (!showMusic) {
-      //     ChangeShowMusic();
-      //   }
-      //   playMusic();
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      if (media.path) {
+        // console.log(postId);
+
+        setUrl(media.path, context);
+        playMusic();
+      } else {
+        fetch(`https://downloader.safine.co/${media?.telegram_id}`, {
+          method: "get",
+          signal: signal,
+        })
+          .then((respone) => respone.json())
+          .then((res) => setUrl(res.download_link, context))
+          .then(() => playMusic())
+
+          .catch((err) => console.log(err));
+      }
     }
   };
+  console.log(postId);
   return (
     <div className={styles.rowItem}>
-      {/* <div className={styles.liner1}></div>
-      <div className={styles.liner2}></div>
-      <div className={styles.liner3}></div>
-      <div className={styles.liner4}></div> */}
-
       <div className={`${styles.rowItem__image}`}>
+        {postId === 854 && (
+          <>
+            <div className={styles.liner1}></div>
+            <div className={styles.liner2}></div>
+            <div className={styles.liner3}></div>
+            <div className={styles.liner4}></div>
+          </>
+        )}
         <img
           className={`${styles.rowItem__image__img}`}
-          src={person?.[0]?.image.full_image_url}
+          src={
+            logo?.full_image_url
+              ? logo?.full_image_url
+              : media?.[0]?.image !== null && media?.[0]?.image !== undefined
+              ? media?.[0]?.image
+              : person?.[0]?.image?.full_image_url !== null
+              ? person?.[0]?.image?.full_image_url
+              : defualtPhoto
+          }
           alt="logo"
         />
 
-        {/* mobile ratio  */}
-        {/* {loading && media?.id === songId ? (
-          <div className='rowItem__playing'>
-            <SpinnerLoadingOnRowitem />
-          </div>
-        ) : playing && media?.id === songId ? (
-          <div className=' moblie_play' onClick={() => playAndPauseMusic()}>
-            <Pause style={{ fontSize: '100px' }} />
-          </div>
-        ) : (
-          <div className=' moblie_play' onClick={playMusicAndShowMusicBar}>
-            <PlayArrowRounded style={{ fontSize: '100px' }} />
-          </div>
-        )} */}
-
         {loading && media?.id === songId ? (
           <div className="">
-            <SpinnerLoadingOnRowitem />
+            <SpinnerLoading />
+            <div className="text-light">در حال آماده سازی</div>
           </div>
         ) : playing && media?.id === songId ? (
           <div
@@ -109,18 +114,17 @@ const RowItem = ({ media, person, slug, context }) => {
             <Pause />
           </div>
         ) : (
-          <div
-            className={styles.play__music}
-            onClick={playMusicAndShowMusicBar}
-          >
-            <PlayArrowRounded />
+          <div className={styles.play__music}>
+            <PlaySvg playMusicAndShowMusicBar={playMusicAndShowMusicBar} />
           </div>
         )}
       </div>
       <div className="rowItem__info ">
         <Link href={`/song/${slug}`}>
           <h4 className={`${styles.rowItem__title} text-center`}>
-            {truncate(media?.name, 4)}
+            <div className={styles.steady__rowItem__title}>
+              {truncate(title ? title : media?.name, 4)}
+            </div>
             {/* {media?.name} */}
           </h4>
         </Link>
@@ -129,7 +133,7 @@ const RowItem = ({ media, person, slug, context }) => {
             {/* حاج محمد شریفی */}
             {person?.[0]?.name}
           </h4>
-        </Link>{" "}
+        </Link>
       </div>
     </div>
   );

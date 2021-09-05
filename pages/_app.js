@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps }) {
           options={{ easing: "ease", speed: 500 }}
           startPosition={0.3}
           stopDelayMs={200}
-          height="6"
+          height={6}
         />
         <CssBaseline />
         <AppState>

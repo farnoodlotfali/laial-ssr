@@ -3,26 +3,26 @@ import {
   ListItem,
   ListItemText,
   SwipeableDrawer,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   AccountCircleRounded,
   CloseRounded,
   ExitToAppRounded,
   PersonRounded,
-} from '@material-ui/icons';
-import Link from 'next/link';
-import { Fragment, useContext, useState } from 'react';
-import appContext from '../contexts/app/appContext';
-import styles from '../styles/RightList.module.css';
+} from "@material-ui/icons";
+import Link from "next/link";
+import { Fragment, useContext, useState } from "react";
+import appContext from "../contexts/app/appContext";
+import styles from "../styles/RightList.module.css";
 // const [x, showx] = useState(true);
-import CssBaseline from '@material-ui/core/CssBaseline';
-import authContext from '../contexts/auth/authContext';
+import CssBaseline from "@material-ui/core/CssBaseline";
+import authContext from "../contexts/auth/authContext";
 const useStyles = makeStyles({
   paper: {
     backgroundImage:
-      'linear-gradient(to bottom right , rgb(18, 18, 18), rgb(72, 76, 87)) ',
-    boxShadow: ' 5px 18px 18px 0 rgba(168, 179, 211, 0.38)',
+      "linear-gradient(to bottom right , rgb(18, 18, 18), rgb(72, 76, 87)) ",
+    boxShadow: " 5px 18px 18px 0 rgba(168, 179, 211, 0.38)",
   },
 });
 const RightList = () => {
@@ -33,10 +33,10 @@ const RightList = () => {
   return (
     <div className={`${styles.phoneList} phoneList`}>
       <CssBaseline />
-      <Fragment key={'right'}>
+      <Fragment key={"right"}>
         <Drawer
           classes={{ paper: classes.paper }}
-          anchor={'right'}
+          anchor={"right"}
           open={RightList}
           onClose={() => showRightList(false)}
           // onOpen={() => showRightList(true)}
@@ -51,20 +51,37 @@ const RightList = () => {
               <CloseRounded />
             </div>
             {user ? (
-              <div className='phoneList__user'>
-                <span className='ml-2'>{user.first_name}</span>
+              <div className={styles.phoneList__userBTn}>
+                <span className={styles.phoneList__userNameSpan}>
+                  {user?.first_name}
+                </span>
                 <AccountCircleRounded />
               </div>
             ) : (
               <div onClick={() => showRightList(false)}>
-                <Link className={styles.phoneList__loginBTn} href='/login'>
-                  ورود/ثبت نام
+                <Link href="/login">
+                  <span className={styles.phoneList__loginBTn}>
+                    ورود/ثبت نام
+                  </span>
                 </Link>
               </div>
             )}
           </h4>
 
           <div className={styles.phoneList__list}>
+            {user && (
+              <div
+                className={styles.phoneList__item}
+                onClick={() => showRightList(false)}
+              >
+                <Link href="/myprofile">
+                  <ListItem className={styles.item} button key={"پروفایل"}>
+                    <PersonRounded className="" />
+                    <ListItemText primary={"پروفایل"} />
+                  </ListItem>
+                </Link>
+              </div>
+            )}
             {menu &&
               menu.map((item) =>
                 item.absolute === true ? (
@@ -91,7 +108,7 @@ const RightList = () => {
                 ) : (
                   <Link
                     key={item.id}
-                    href={`${item.url === '/' ? item.url : '/' + item.url}`}
+                    href={`${item.url === "/" ? item.url : "/" + item.url}`}
                   >
                     <div
                       onClick={() => showRightList(false)}
@@ -107,27 +124,15 @@ const RightList = () => {
                   </Link>
                 )
               )}
-            {user && (
-              <div
-                className={styles.phoneList__item}
-                onClick={() => showRightList(false)}
-              >
-                <Link href='/myprofile'>
-                  <ListItem className={styles.item} button key={'پروفایل'}>
-                    <PersonRounded className='' />
-                    <ListItemText primary={'پروفایل'} />
-                  </ListItem>
-                </Link>
-              </div>
-            )}
+
             {user && (
               <div
                 className={styles.phoneList__item}
                 onClick={() => logout() & showRightList(false)}
               >
-                <ListItem className={styles.item} button key={'خروج از حساب'}>
-                  <ExitToAppRounded className='' />
-                  <ListItemText primary={'خروج از حساب'} />
+                <ListItem className={styles.item} button key={"خروج از حساب"}>
+                  <ExitToAppRounded className="" />
+                  <ListItemText primary={"خروج از حساب"} />
                 </ListItem>
               </div>
             )}

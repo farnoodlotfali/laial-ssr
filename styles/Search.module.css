@@ -15,9 +15,9 @@
 }
 .searchFields__option form {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
 }
-.searchFields__option input[type='text'] {
+.searchFields__option input[type="text"] {
   border-radius: 30px;
   padding: 10px;
   direction: rtl;
@@ -27,13 +27,13 @@
   background: rgba(255, 255, 255, 0.3);
   border: 1px solid whitesmoke;
   color: white;
-  width: 50%;
+  width: 70%;
 }
 .searchFields__option input::placeholder {
   color: rgba(255, 255, 255, 0.438);
   text-align: right;
 }
-.searchFields__option input[type='submit'] {
+.searchFields__option input[type="submit"] {
   border-radius: 7px;
   padding: 7px;
   width: 20%;
@@ -49,6 +49,20 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
+.searchFields__option__form__goBack {
+  color: white;
+  background-color: rgb(18, 18, 18);
+  border: 1px solid gray;
+  border-radius: 7px;
+  padding: 10px;
+  cursor: pointer;
+  align-self: center;
+}
+.searchFields__option__form__goBack:hover {
+  color: rgba(231, 64, 64, 0.73);
+}
+
 @media (max-width: 768px) {
   /* .searchFields__top {
       display: grid;

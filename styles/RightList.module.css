@@ -27,8 +27,31 @@
 .phoneList__title__close {
   cursor: pointer;
 }
+.phoneList__userBTn {
+  color: white;
+  background-color: #6c757d;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 24px;
+  cursor: pointer;
+  width: 185px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.phoneList__userNameSpan {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  direction: ltr;
+}
 .phoneList__loginBTn {
   color: white;
+  background-color: #6c757d;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
 }
 .phoneList__loginBTn a {
   text-decoration: none;

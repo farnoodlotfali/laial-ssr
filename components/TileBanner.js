@@ -1,24 +1,26 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
-import styles from '../styles/TileBanner.module.css';
+import { Swiper, SwiperSlide } from "swiper/react";
+import styles from "../styles/TileBanner.module.css";
 
 const TileBanner = ({ imgs }) => {
   return (
     <Swiper
       className={styles.tileBannerSlider}
-      dir='rtl'
+      dir="rtl"
       freeMode={true}
       // slidesPerView={3}
       slidesPerView={3}
       breakpoints={{
         270: {
-          slidesPerView: 1.5,
+          height: 125,
+          slidesPerView: 2.2,
         },
         768: {
-          slidesPerView: 2,
+          slidesPerView: 3,
+          height: 170,
         },
 
         1024: {
-          slidesPerView: 3,
+          slidesPerView: 4.5,
           // spaceBetween: 50,
         },
       }}
@@ -29,7 +31,7 @@ const TileBanner = ({ imgs }) => {
           <img
             className={styles.itemImg}
             src={img?.full_image_url}
-            alt='logo'
+            alt="logo"
           />
         </SwiperSlide>
       ))}

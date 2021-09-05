@@ -1,14 +1,12 @@
 .rowItem {
-  width: 16.1%;
-  height: 378px;
+  width: 10%;
+  height: 224px;
   margin-right: 5px;
   border-radius: 5px;
   margin-left: 5px;
-  min-width: 240px;
-  transition: transform 450ms;
-  margin-top: 10px;
-  margin-bottom: 10px;
   overflow: hidden;
+  transition: transform 450ms;
+  transform: scale(1);
 }
 .rowItem:hover {
   cursor: context-menu;
@@ -16,23 +14,23 @@
   opacity: 0.8;
 }
 .rowItem__image {
-  height: 251px;
+  height: 152px;
 }
 .rowItem__image__img {
   width: 100%;
-  height: 250px;
-  border-radius: 7px;
+  height: 100%;
+  border-radius: 5px;
 }
 .play__music {
-  position: relative;
-  bottom: 85%;
-  background: none;
-  display: flex;
+  position: absolute;
+  bottom: 40%;
   justify-content: center;
+  display: flex;
+  width: 100%;
 }
 .play__music svg {
   color: white;
-  font-size: 165px;
+  font-size: 110px;
   opacity: 0.7;
   cursor: pointer;
   background: none;
@@ -41,11 +39,9 @@
 }
 .rowItem__title {
   cursor: pointer;
-  font-size: 20px;
   font-weight: 900;
-  line-height: 28px;
   color: white;
-  margin-top: 10px;
+  margin: 0;
   padding: 10px;
   display: flex;
   transition: transform 450ms ease-in-out;
@@ -54,18 +50,25 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.rowItem__title:hover {
-  /* color: rgb(161, 161, 161); */
-  /* transform: rotate(-15deg) scale(1.03); */
-  transform: scale(1.1);
+.steady__rowItem__title {
+  display: block;
+  padding: 2px 5px;
+  overflow: hidden;
+  direction: rtl;
+  font-size: 13px;
+  margin-bottom: 10px;
 }
+/* .rowItem__title:hover {
+  color: rgb(161, 161, 161); */
+/* transform: rotate(-15deg) scale(1.03);
+  transform: scale(1.1);
+} */
 .rowItem__person {
   cursor: pointer;
-  font-size: 13px;
+  font-size: 9px;
   font-weight: 900;
-  line-height: 28px;
-  color: #757575;
-  margin-top: 10px;
+  color: #a19f9f;
+  margin: 0;
   display: flex;
   transition: transform 450ms ease-in-out;
   justify-content: center;
@@ -73,8 +76,7 @@
 
 .rowItem__person:hover {
   transform: scale(1.1);
-  /* color: rgba(243, 243, 243, 0.726); */
-  /* font-size: 20px; */
+  color: #fcfcfc;
 }
 
 .liner1,
@@ -162,7 +164,7 @@
 
 @media (max-width: 768px) {
   .rowItem {
-    height: 180px;
+    height: 166px;
     width: 31.5%;
     min-width: 106px;
   }

@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import RowItem from "../../components/relatedToRowItem/RowItem";
 import { useRouter } from "next/router";
 import spinerrStyles from "../../styles/LoadingIcon.module.css";
-import LoadingIcon from "../../components/spinner/LoadingIcon";
+// import LoadingIcon from "../../components/spinner/LoadingIcon";
 import authContext from "../../contexts/auth/authContext";
 import fetch from "isomorphic-unfetch";
 
@@ -57,7 +57,7 @@ const MoreSong = ({ data }) => {
       <div className="moreSong__title text-light text-center mb-3">
         <h3> {data.block.name}</h3>
       </div>
-      <div className={` ${styles.moreSong__items} `}>
+      <div className={` ${styles.moreSong__items} pt-3`}>
         <InfiniteScroll
           dataLength={next?.list?.length}
           next={infiniteList}
@@ -74,10 +74,16 @@ const MoreSong = ({ data }) => {
           {next.list.map((item) => (
             <RowItem
               key={item.id}
+              postId={item.id}
+              isRow={true}
               logo={item.image}
               media={item.media[0]}
               person={item.person}
               slug={item.slug}
+              meta_description={item.meta_description}
+              meta_title={item.meta_title}
+              description={item.description}
+              title={item.title}
             />
             // </div>
           ))}
@@ -91,8 +97,8 @@ const MoreSong = ({ data }) => {
             transform: next.loading && "translate(-50%, 0px)",
           }}
         >
-          <LoadingIcon color="#fff" />
-          <span>در حال دریافت</span>
+          {/* <LoadingIcon color="#fff" />
+          <span>در حال دریافت</span> */}
         </div>
       </div>
       {/* <hr /> */}

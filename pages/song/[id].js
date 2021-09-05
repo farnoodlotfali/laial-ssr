@@ -23,6 +23,8 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
   const [show, setShow] = useState(false);
   const [like, setLike] = useState(data.likes);
   const [songUrl, setSongUrl] = useState(data.likes);
+  // console.log(data.media?.[0]?.name);
+  // console.log(data.meta_description);
   const router = useRouter();
   const id = router.query.id;
   const flickityOptions = {
@@ -91,8 +93,8 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
     });
   };
   useEffect(() => {
-    loadUser();
-    setsongurl();
+    // loadUser();
+    // setsongurl();
   }, [user, like, isAuth, songUrl]);
   const setsongurl = () => {
     fetch(`https://downloader.safine.co/${data.media[0].telegram_id}`)
@@ -104,49 +106,44 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
     <div className={`${styles.songPage} py-4  `}>
       <div className={`${styles.musicInfo}  d-flex justify-content-around`}>
         <div className={`${styles.musicInfo__right}`}>
-          <img
-            className={styles.musicInfo__image}
-            src={
-              data?.media?.[0]?.image !== null
-                ? data?.media?.[0]?.image
-                : data?.person?.[0]?.image.full_image_url !== null
-                ? data?.person?.[0]?.image.full_image_url
-                : "/defualtPhoto"
-            }
-            alt="logo"
-          />
-        </div>
-        <div
-          className={`${styles.musicInfo__left} text-light   justify-content-start align-items-center`}
-        >
-          <div className={`${styles.musicInfo__name} mt-5 mb-3 d-flex`}>
-            نام آهنگ : {data?.media?.[0]?.name}
+          <div className="d-flex justify-content-center">
+            <img
+              className={styles.musicInfo__image}
+              src={
+                data?.media?.[0]?.image !== null
+                  ? data?.media?.[0]?.image
+                  : data?.person?.[0]?.image.full_image_url !== null
+                  ? data?.person?.[0]?.image.full_image_url
+                  : "/defualtPhoto"
+              }
+              alt="logo"
+            />
           </div>
-          <div className={`${styles.musicInfo__singer} mb-3 d-flex`}>
-            خواننده : {data?.person?.[0]?.name}
-          </div>
-          <div className="musicInfo__mode mb-3 d-flex">سبک : شور</div>
-          <hr />
-          <div className={`${styles.actions} d-flex justify-content-around`}>
-            <div
+          <div
+            className={`${styles.actions} d-flex justify-content-around mt-2`}
+          >
+            {/* <div
             //   onClick={playMusicAndShowMusicBar}
             >
               <Tooltip placement="bottom" title="پخش آهنگ">
                 <IconButton aria-label="play">
                   <PlayArrowRounded
-                    style={{ fontSize: "40px" }}
+                    fontSize="small"
                     className={`${styles.icon} `}
                   />
                 </IconButton>
               </Tooltip>
-            </div>
+            </div> */}
 
             <div className={`${styles.favoritePart} text-center`}>
               <IconButton
                 aria-label="Favorite"
                 onClick={() => (isAuth ? likeSong() : setShow(true))}
               >
-                <Favorite className={`${styles.favorite}`} fontSize="large" />
+                <Favorite
+                  className={`${styles.favorite}`}
+                  style={{ fontSize: "30px" }}
+                />
               </IconButton>
               {like}
 
@@ -199,19 +196,15 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
                           placeholder="ایمیل"
                           required
                         />
-                      </div>{" "}
+                      </div>
                     </div>
                     <div className={`error__msg__login pt-2 `}>
                       {error?.error} *
                     </div>
                     <div className={`${styles.notRegister} pt-2`}>
-                      {" "}
-                      <span> ثبت نام نکرده اید؟ </span>{" "}
+                      <span> ثبت نام نکرده اید؟ </span>
                       <Link href="/register">
-                        <span className={styles.notRegisterLink}>
-                          {" "}
-                          ثبت نام{" "}
-                        </span>
+                        <span className={styles.notRegisterLink}>ثبت نام</span>
                       </Link>
                     </div>
                     {/* <div className='formMsg pt-2'>{errorMsg}</div> */}
@@ -236,7 +229,7 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
                   <IconButton aria-label="download">
                     <GetAppRounded
                       className={`${styles.download}`}
-                      fontSize="large"
+                      style={{ fontSize: "30px" }}
                     />
                   </IconButton>
                 </Tooltip>
@@ -250,21 +243,45 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
             >
               <Tooltip placement="bottom" title="اضافه به لیست">
                 <IconButton aria-label="Add">
-                  <PlaylistAdd className={`${styles.add}`} fontSize="large" />
+                  <PlaylistAdd
+                    className={`${styles.add}`}
+                    style={{ fontSize: "30px" }}
+                  />
                 </IconButton>
               </Tooltip>
             </div>
             <div className={`${styles.viewPart} text-center`}>
               <IconButton aria-label="View">
-                <Visibility className={`${styles.view}`} fontSize="large" />
+                <Visibility
+                  className={`${styles.view}`}
+                  style={{ fontSize: "30px" }}
+                />
               </IconButton>
               {view}
             </div>
           </div>
         </div>
-      </div>
 
-      <div className={`${styles.rowList}  mt-5  pt-5 `}>
+        <div
+          className={`${styles.musicInfo__left} text-light   justify-content-start align-items-center`}
+        >
+          <div className={`${styles.musicInfo__name} mt-5 mb-3 d-flex`}>
+            نام اثر : {data?.title ? data?.title : data?.media?.[0]?.name}
+          </div>
+          <div className="d-flex">
+            <div className={`${styles.musicInfo__singer} mb-3 d-flex`}>
+              خواننده : {data?.person?.[0]?.name}
+            </div>
+            <div className={styles.musicInfo__mode}>سبک : شور</div>
+          </div>
+          <div className="">
+            توضیحات :
+            {data?.description ? data.description : data.meta_description}
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div className={`${styles.rowList} mt-3 `}>
         <h3 className={`${styles.listTitle} text-light  pb-3 mr-4`}>
           <span>پیشنهاداتی برای شما</span>
         </h3>

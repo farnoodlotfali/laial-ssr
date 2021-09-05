@@ -1,5 +1,5 @@
 .header {
-  padding: 20px 0;
+  padding: 8px 0;
   z-index: 12;
   background-color: rgb(34, 35, 39);
   direction: rtl;
@@ -19,6 +19,7 @@
 .headerItemsRight ul {
   display: flex;
   padding: 0 !important;
+  margin: 0 !important;
   list-style: none;
 }
 .headerItemsRight li {
@@ -28,7 +29,8 @@
   float: right;
   font-weight: 900;
   cursor: pointer;
-  font-size: 22px;
+  font-size: 16px;
+
   transition: transform 450ms ease-out;
 }
 .headerItemsRight li:hover {
@@ -37,19 +39,22 @@
   transform: scale(1.08);
   opacity: 0.8;
 }
-.headerItemsRight a {
+.headerItemsRight a,
+.headerItemsRight span {
   display: flex;
   margin-right: 15px;
   margin-left: 15px;
   color: white;
   float: right;
   font-weight: 900;
-  font-size: 22px;
+  font-size: 16px;
   transition: transform 450ms ease-out;
   text-decoration: none;
+  cursor: pointer;
 }
 
-.headerItemsRight a:hover {
+.headerItemsRight a:hover,
+.headerItemsRight span:hover {
   text-decoration: none;
   color: rgb(185, 184, 184);
   text-decoration: none;
@@ -64,6 +69,12 @@
   background-color: rgb(18, 18, 18) !important;
   border: 1px solid whitesmoke !important;
   padding-right: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .dropdownBtn::after {
   display: none;
@@ -95,11 +106,20 @@
   font-size: 15px;
   margin-left: 15px;
   color: white;
+  border: 1px solid white;
+  padding: 5px;
+  border-radius: 10px;
 }
-
+.dropdownUserName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: ltr;
+}
 .registerBtn:hover {
   color: #cbd3da !important;
   cursor: pointer;
+  background-color: #181818;
 }
 @media (max-width: 768px) {
   .header {

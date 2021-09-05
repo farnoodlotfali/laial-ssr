@@ -1,6 +1,7 @@
 .tileBannerSlider {
   background-color: rgb(18, 18, 18);
-  height: 300px;
+  /* margin-top: 20px; */
+  height: 200px;
   margin-right: 10px;
 }
 .itemImg {
@@ -12,6 +13,6 @@
 @media (max-width: 768px) {
   .tileBannerSlider {
     height: 150px;
-    margin-top: -3rem;
+    /* margin-top: -3rem; */
   }
 }

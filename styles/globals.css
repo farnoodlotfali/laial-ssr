@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'vazir';
-  src: url(../fonts/Vazir-Medium-FD-WOL.ttf) format('truetype');
+  font-family: "vazir";
+  src: url(../fonts/Vazir-Medium-FD-WOL.ttf) format("truetype");
 }
 html,
 body {
@@ -10,7 +10,7 @@ body {
   font-family: vazir;
 }
 body::-webkit-scrollbar {
-  display: none;
+  /* display: none; */
 }
 a {
   font-family: vazir !important;
@@ -39,6 +39,9 @@ https://flickity.metafizzy.co
   overflow: hidden;
   position: relative;
   height: 100%;
+  height: 240px !important;
+
+  padding-top: 7px;
 }
 
 .flickity-slider {
@@ -171,9 +174,9 @@ https://flickity.metafizzy.co
 
 @media (max-width: 768px) {
   .carousel {
-    height: 210px;
+    height: 170px;
   }
   .flickity-viewport {
-    height: 190.8px !important;
+    height: 168px !important;
   }
 }

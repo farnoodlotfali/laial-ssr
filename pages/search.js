@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import styles from "../styles/Search.module.css";
 import InfiniteScroll from "react-infinite-scroll-component";
 import spinerrStyles from "../styles/LoadingIcon.module.css";
@@ -6,7 +6,11 @@ import LoadingIcon from "../components/spinner/LoadingIcon";
 import PersonItem from "../components/PersonItem";
 import RowItem from "../components/relatedToRowItem/RowItem";
 import authContext from "../contexts/auth/authContext";
+import { CloseRounded } from "@material-ui/icons";
+import { useRouter } from "next/router";
 const Search = () => {
+  const router = useRouter();
+  const inputRef = useRef();
   const { user, loadUser } = useContext(authContext);
 
   const [next, setNext] = useState({
@@ -92,12 +96,11 @@ const Search = () => {
       }
     }, 1200);
   };
-
+  useEffect(() => {
+    inputRef.current.focus();
+  });
   return (
     <div className={styles.search}>
-      <div className={`${styles.search__title}  pt-2`}>
-        <h1>جستجو</h1>
-      </div>
       <div className={`${styles.searchFields__option}  my-3 py-3`}>
         <form onSubmit={(e) => onSubmitHandle(e)}>
           <input
@@ -108,13 +111,15 @@ const Search = () => {
             value={searchValue}
             placeholder="متن جستجو ...."
             required
+            autoFocus={true}
+            ref={inputRef}
           />
-
-          <input
-            type="submit"
-            value="جستجو"
-            // value='Register'
-          />
+          <div
+            className={styles.searchFields__option__form__goBack}
+            onClick={() => router.back()}
+          >
+            <CloseRounded />
+          </div>
         </form>
       </div>
       <div className="listPersons">
