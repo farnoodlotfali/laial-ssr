@@ -1,12 +1,13 @@
 import styles from "../../styles/Person.module.css";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useContext, useEffect, useState } from "react";
-import LoadingIcon from "../../components/spinner/LoadingIcon";
+import LoadingIcon from "../../components/spinner/LoadIcon";
 import RowItem from "../../components/relatedToRowItem/RowItem";
 import spinerrStyles from "../../styles/LoadingIcon.module.css";
 import { useRouter } from "next/router";
 import authContext from "../../contexts/auth/authContext";
-import fetch from "isomorphic-unfetch";
+import axios from "../../axios/axios";
+
 const Person = ({ data }) => {
   //   console.log(data);
   const router = useRouter();
@@ -14,7 +15,7 @@ const Person = ({ data }) => {
   const { user, loadUser } = useContext(authContext);
 
   useEffect(() => {
-    loadUser();
+    // loadUser();
   }, [user]);
   const [next, setNext] = useState({
     list: data.results,
@@ -30,19 +31,17 @@ const Person = ({ data }) => {
     });
     setTimeout(async () => {
       try {
-        const res = await fetch(
-          `https://nejat.safine.co/api/persons/${id}/?page=${next.page}`
+        const resData = await axios.instanceApi.get(
+          `/persons/${id}/?page=${next.page}`
         );
-        const resData = await res.json();
-        // console.log(resData);
-        // console.log(resData.data.results);
+
         setNext({
-          next: resData.next,
-          hasMore: resData.next ? true : false,
-          list: next.list.concat(resData.results),
+          next: resData.data.next,
+          hasMore: resData.data.next ? true : false,
+          list: next.list.concat(resData.data.results),
           loading: false,
           page: ++next.page,
-          loaderMsg: resData.next ? "Loading..." : "Finish :)",
+          loaderMsg: resData.data.next ? "Loading..." : "Finish :)",
         });
         //  next.list.concat(res.data.results);
       } catch (error) {
@@ -76,28 +75,29 @@ const Person = ({ data }) => {
           </div>
         </div>
       </div>
-
-      {next?.list && (
-        <InfiniteScroll
-          dataLength={next?.list?.length}
-          next={() => infiniteList()}
-          className={styles.infiniteScroll}
-          hasMore={next.hasMore}
-        >
-          {next.list &&
-            next.list?.map((item, i) => {
-              return (
-                <RowItem
-                  key={item.id}
-                  logo={item.image}
-                  media={item.media[0]}
-                  person={item.person}
-                  slug={item.slug}
-                />
-              );
-            })}
-        </InfiniteScroll>
-      )}
+      <div className="person__infiniteScroll__section">
+        {next?.list && (
+          <InfiniteScroll
+            dataLength={next?.list?.length}
+            next={() => infiniteList()}
+            className={styles.infiniteScroll}
+            hasMore={next.hasMore}
+          >
+            {next.list &&
+              next.list?.map((item, i) => {
+                return (
+                  <RowItem
+                    key={item.id}
+                    logo={item.image}
+                    media={item.media[0]}
+                    person={item.person}
+                    slug={item.slug}
+                  />
+                );
+              })}
+          </InfiniteScroll>
+        )}
+      </div>
 
       <div
         className={spinerrStyles.loading_message}
@@ -105,6 +105,7 @@ const Person = ({ data }) => {
         style={{
           opacity: next.loading ? "1" : "0",
           transform: next.loading && "translate(-50%, 0px)",
+          border: "2px solid white",
         }}
       >
         <LoadingIcon color="#fff" />
@@ -117,19 +118,29 @@ const Person = ({ data }) => {
 export default Person;
 
 export const getServerSideProps = async ({ params }) => {
-  const res = await fetch(`https://nejat.safine.co/api/persons/${params.id}`);
-  const resData = await res.json();
-  console.log(resData);
+  // console.log(params);
+  // const res = await fetch(`https://nejat.safine.co/api/persons/${params.id}`);
+  // const resData = await res.json();
+  // // console.log(resData);
 
-  //   if (!resData.data) {
-  //     return {
-  //       notFound: true,
-  //     };
-  //   }
+  // if (!resData.results) {
+  //   return {
+  //     notFound: true,
+  //   };
+  // }
+
+  let resData;
+  try {
+    resData = await axios.instanceApi.get(`/persons/${params.id}`);
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {
-      data: resData,
+      data: resData.data,
     },
   };
 };

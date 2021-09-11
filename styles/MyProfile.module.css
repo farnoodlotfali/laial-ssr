@@ -1,190 +1,94 @@
-.myProfile {
-  min-height: 100vh;
-  padding-top: 50px;
-  background-color: rgb(18, 18, 18);
+.myprofile {
+  padding-top: 40px;
+  justify-content: center;
+}
+.myprofile__top {
+  display: flex;
+  direction: rtl;
+  border: 1px solid whitesmoke;
+  justify-content: space-between;
+  margin-right: 20px;
+  margin-left: 20px;
+  padding: 7px 10px;
+  box-shadow: 0 5px 15px rgba(216, 216, 216, 0.644);
+  border-radius: 10px;
 }
 
-.myProfile__content {
-  display: flex;
-  border: 1px solid rgb(180, 178, 190);
-  margin: 20px;
-  border-radius: 10px;
-  background: rgb(34, 35, 39);
-  padding: 50px 20px;
-  box-shadow: 0 5px 15px rgb(173 173 173 / 73%);
-}
-.photo__onMobile {
-  display: flex;
-  display: none;
-  justify-content: center;
-  margin-top: -70px;
-  margin-bottom: 10px;
-}
-.photo__lines {
-  width: 120px;
-  height: 120px;
-}
-.photo__lines img {
-  width: 100%;
-  border: 1px solid rgba(245, 245, 245, 0.651);
-  box-shadow: 0 5px 15px rgba(173, 173, 173, 0.733);
-  height: 100%;
-  padding: 10px;
-}
-.myProfile__content__left {
-  flex: 0.4;
-  justify-content: center;
-  align-self: center;
-  display: flex;
-  flex-wrap: wrap;
-}
-.myProfile__content__left__title {
-  width: 100%;
-  text-align: center;
-}
-.myProfile__allAndShow {
-  display: flex;
-  width: 100%;
-  direction: rtl;
-}
-.myProfile__list__all {
-  flex: 0.4;
-}
-.myProfile__list {
-  background-color: rgb(0, 0, 0);
-  border: 1px solid rgb(157, 159, 165);
-  border-radius: 10px;
-  padding: 10px;
-  margin: 5px;
-}
-.myProfile__list span {
-  font-size: 14px;
-}
-.myProfile__list:hover {
-  cursor: pointer;
-  background: linear-gradient(135deg, #000000 10%, #334275 100%);
-}
-.myProfile__list__show {
-  flex: 0.7;
-  overflow-y: scroll;
-  border: 1px solid rgb(233, 233, 233);
-  padding: 7px;
-  height: 250px;
-  border-radius: 10px;
-  box-shadow: 0 15px 15px rgb(9 14 31 / 88%);
-}
-.myProfile__list__show::-webkit-scrollbar {
-  width: 10px;
+.myprofile__mobile__show,
+.myprofile__mobile__songs {
   display: none;
 }
-.myProfile__song__info {
-  display: flex;
-  direction: rtl;
-  margin-bottom: 5px;
-  margin-top: 5px;
+.userImg {
+  height: 90px;
+  width: 90px;
+  border-radius: 10px;
 }
-.myProfile__song__info__names {
-  width: 100%;
-  justify-content: space-evenly;
-  display: flex;
-  overflow: hidden;
-  align-self: center;
-  margin-right: 15px;
-  margin-left: 15px;
-}
-.myProfile__song__info__name {
-  width: 100px;
-  font-size: 14px;
-  white-space: nowrap;
-}
-.myProfile__song__info__singer {
-  font-size: 12px;
-  color: gray;
-}
-.song__img {
-  width: 45px;
-  margin-left: 10px;
-  margin-right: 10px;
-  height: 45px;
-  cursor: pointer;
-}
-.song__img img {
-  width: 100%;
+.userImg img {
   height: 100%;
+  width: 100%;
   border-radius: 10px;
 }
-.myProfile__song__info__time {
-  align-self: center;
-  font-size: 12px;
-}
-.myProfile__imgAndPass {
-  flex: 0.2;
-}
-.myProfile__imgAndPass input[type='file'] {
-  box-shadow: 0 5px 15px rgb(173 173 173 / 73%);
-  border: 1px solid rgb(184, 184, 184);
-  border-radius: 10px;
-}
-.myProfile__img {
-  margin: 0px 30px;
-  border-radius: 10rem;
-  /* height: 270px; */
-  border: 1px solid rgb(190, 255, 10);
-  /* background: grey; */
-  padding: 10px;
-}
-.myProfile__img img {
-  box-shadow: 0 5px 15px rgb(173 173 173 / 73%);
-}
-.choose__photo {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  text-align: center;
-  display: grid;
-}
-.myProfile__content__right {
-  flex: 0.4;
-  align-self: center;
-}
-.inputBox {
-  width: 48%;
-  margin-top: 10px;
-  margin-left: 5px;
+
+.userinfo__inputbox {
+  margin-right: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   text-align: center;
 }
-.inputBox input {
-  margin-left: 5px;
+.userinfo__inputbox label {
+  color: whitesmoke;
+  font-size: 18px;
+  font-weight: 600;
+}
+.userinfo__inputbox span {
+  color: white;
+}
+
+.userinfo__inputbox input {
   text-align: right;
   width: 100%;
-  background: rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, #353434 10%, #000000 100%);
+
   outline: none;
   padding: 10px 20px;
   border-radius: 35px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-right: 1px solid rgba(255, 255, 255, 0.3);
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  /* font-size: 16px; */
+  font-size: 16px;
   letter-spacing: 1px;
   color: white;
-  box-shadow: 0 15px 15px rgba(9, 14, 31, 0.877);
-  color: lawngreen;
-  /* font-weight: 600; */
-  font-size: 20px;
+  box-shadow: 0 5px 15px rgba(173, 173, 173, 0.05);
+  margin-bottom: 20px;
 }
-.myProfile__reset__password form {
-  display: flex;
-  direction: rtl;
+
+.userinfo__inputbox input:focus {
+  box-shadow: 0 5px 15px rgba(173, 173, 173, 0.733);
+}
+.changeCurrentPass {
+  align-self: center;
+}
+
+.myprofileModal {
+  background: linear-gradient(135deg, #000000 10%, #12204e 100%);
+  box-shadow: 0 5px 15px rgb(173 173 173 / 73%);
+  border: 1px solid rgba(245, 245, 245, 0.295);
+}
+
+.modalHeaderPass {
   text-align: center;
-  flex-wrap: wrap;
+  display: block !important;
+  font-family: vazir;
+  color: whitesmoke;
 }
-.inputBoxPass {
-  margin: 0 0 5px 0;
-  width: 50%;
+.modalBodyPass {
+  display: grid;
 }
-.inputBoxPass input {
-  margin-top: 5px 0 0 0;
+
+.modalBodyPass input {
   text-align: right;
-  width: 80%;
+  width: 100%;
   background: rgba(255, 255, 255, 0.3);
   outline: none;
   padding: 10px 20px;
@@ -195,83 +99,492 @@
   font-size: 16px;
   letter-spacing: 1px;
   color: white;
-  box-shadow: 0 15px 15px rgba(9, 14, 31, 0.877);
+  box-shadow: 0 5px 15px rgba(173, 173, 173, 0.05);
+  margin-bottom: 20px;
 }
-.inputBoxPass input::placeholder {
-  color: rgba(255, 255, 255, 0.438);
+.modalBodyPass input:focus {
+  box-shadow: 0 5px 15px rgba(173, 173, 173, 0.733);
+}
+
+.modalBodyPass input::placeholder {
+  color: rgba(255, 255, 255, 0.808);
+  font-family: vazir;
   text-align: right;
 }
-.inputBoxPass input[type='submit'] {
-  background-color: white;
-  color: #666;
+.changePass_error {
+  text-align: center;
+  color: rgb(221, 224, 10);
+  font-weight: 700;
+  font-family: vazir;
+}
+.modalCloseBtn {
+  font-family: vazir;
+  background-color: whitesmoke;
+  color: black;
+  border: none;
+}
+.modalCloseBtn:hover {
+  background-color: darkred;
+  color: whitesmoke;
+}
+.modalSaveBtn {
+  color: whitesmoke;
+  border: none;
+  background-color: black;
+  font-family: vazir;
+}
+.changeCurrentPass {
+  align-self: center;
+}
+.modalSaveBtn:hover {
+  background-color: lawngreen;
+
+  color: whitesmoke;
+}
+
+.myprofile__bottom {
+  height: 530px;
+  display: flex;
+  direction: rtl;
+  margin-top: 30px;
+  border: 1px solid whitesmoke;
+  justify-content: space-between;
+  margin-right: 20px;
+  margin-left: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgb(45, 67, 73);
+  padding: 15px;
+}
+.myMadeListShow__title__span {
+  overflow: hidden;
+  max-width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+.list__name_HasBeenChosen__mobile {
+  background: rgba(156, 156, 156, 0.486);
+}
+
+.listItemsShow__delete {
   cursor: pointer;
-  text-align: center;
-  /* max-width: 100px; */
-  margin-bottom: 20px;
-  font-weight: 600;
 }
-.myProfile__reset__password__title {
-  text-align: center;
-  margin: 10px 0px;
+.list__name__innerText {
+  flex: 1;
+  padding: 12px;
+  background-color: rgb(56, 56, 58);
+  color: white;
+  cursor: pointer;
+  /* transition: 0.35s; */
+  border: 0;
+}
+.list__name__btn {
+  color: white;
 }
 
-.formMsg {
-  text-align: center;
-  color: darkred;
+.list__name {
+  cursor: pointer;
+  /* border-radius: 10px; */
+  /* border: 1px solid white; */
+  border-bottom: 1px solid lightgrey;
+  margin-bottom: 10px;
+  background: rgb(56, 56, 58);
+  color: rgb(255, 255, 255);
+  padding: 5px 0px;
+  /* transition: 0.5s; */
+  display: flex;
+  justify-content: space-between;
+}
+.list__name:hover {
+  background: rgba(20, 20, 20, 0.486);
+}
+.bgwhite {
+  background: white !important;
+  margin-right: 8px;
+  color: black !important;
+}
+.list__name:hover .list__name__innerText {
+  background: rgba(20, 20, 20, 0.486);
+}
+.list__name_HasBeenChosen {
+  background: rgba(20, 20, 20, 0.486);
+  box-shadow: 0 25px 45px rgba(57, 25, 218, 0.2);
+}
+.list__name_HasBeenChosen .list__name__innerText {
+  background: rgba(20, 20, 20, 0.486);
+}
+.list__name_HasBeenChosen__mobile {
+  background: rgba(156, 156, 156, 0.486);
+}
+.list__icons_btn {
+  color: white;
+}
+.song {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 7px;
+  padding-top: 5px;
+  border-bottom: 1px solid rgba(224, 224, 224, 0.192);
+}
+.songImg {
+  height: 60px;
+  border-radius: 10px;
+  width: 60px;
+  cursor: pointer;
 }
 
-@media (max-width: 992px) {
-  .myProfile {
+.songImg img {
+  border-radius: 10px;
+  height: 100%;
+  width: 100%;
+}
+
+.songInfo {
+  display: grid;
+}
+.songTime {
+  align-self: center;
+  font-size: 10px;
+  margin-left: 5px;
+}
+.songTime svg {
+  color: whitesmoke;
+}
+.songName {
+  align-self: flex-end;
+  text-align: center;
+  font-size: 14px;
+}
+.songName a {
+  text-decoration: none;
+  color: white;
+}
+.songName a:hover {
+  text-decoration: none;
+}
+.songSinger {
+  font-size: 12px;
+  text-align: center;
+}
+.myProfileSong_playbtn svg {
+  position: relative;
+  bottom: 56px;
+  font-size: 55px;
+  color: white;
+  opacity: 0.7;
+}
+
+.myListsBtn {
+  border: 1px solid rgba(245, 245, 245, 0.411);
+  border-radius: 10px;
+  padding: 15px;
+  flex: 0.2;
+  box-shadow: 0 5px 15px rgb(102, 102, 104);
+}
+
+.myListsOption {
+  background: linear-gradient(135deg, #00000075 10%, #70707086 100%);
+  color: rgb(255, 255, 255);
+  border: 1px solid rgb(212, 212, 212);
+  padding: 8px;
+  border-radius: 10px;
+  margin-bottom: 7px;
+  transition: 0.5s;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.myListsOption:hover {
+  background: linear-gradient(135deg, #000000 10%, #707070 100%);
+
+  cursor: pointer;
+  color: whitesmoke;
+}
+.listShow {
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.555);
+  border-radius: 10px;
+  padding: 15px;
+  flex: 0.79;
+  justify-content: space-around;
+}
+
+.listItemsShow {
+  border: 1px solid rgba(255, 255, 255, 0.514);
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 5px 15px rgb(106, 105, 117);
+  flex: 0.6;
+  overflow-y: hidden;
+  height: 468px;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+.listItemsShow__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.listItemsShow::-webkit-scrollbar {
+  width: 10px;
+}
+.listItemsShow::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+.listItemsShow::-webkit-scrollbar-thumb {
+  background: rgba(105, 104, 109, 0.685);
+  border-radius: 10px;
+}
+.listItemsShow::-webkit-scrollbar-thumb:hover {
+  background: rgb(63, 63, 63);
+}
+.myMadeListsShow {
+  flex: 0.3;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgb(106, 105, 117);
+  border: 1px solid rgba(255, 255, 255, 0.452);
+}
+.myMadeListsShow__lists {
+  height: 400px;
+  overflow-y: scroll;
+}
+
+.myMadeListsShow__lists::-webkit-scrollbar {
+  width: 8px;
+}
+.myMadeListsShow__lists::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+.myMadeListsShow__lists::-webkit-scrollbar-thumb {
+  background: rgba(196, 196, 196, 0.685);
+  border-radius: 10px;
+}
+.myMadeListsShow__lists::-webkit-scrollbar-thumb:hover {
+  background: rgb(63, 63, 63);
+}
+.myMadeListShow__title {
+  display: flex;
+  padding-bottom: 5px;
+  color: whitesmoke;
+  border-bottom: 1px solid white;
+  display: flex;
+  justify-content: space-between;
+}
+.myMadeListShow__title__span {
+  overflow: hidden;
+  max-width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+.showListBtn,
+.playListBtn {
+  background: white;
+  padding: 5px 15px;
+  border-radius: 10px;
+  color: black;
+  cursor: pointer;
+  transition: background 2s;
+  margin-right: 7px;
+}
+.showListBtn:hover,
+.playListBtn:hover {
+  background: gray;
+  color: white;
+}
+.list__name__innerText {
+  flex: 1;
+  padding: 12px;
+  background-color: rgb(56, 56, 58);
+  color: white;
+  cursor: pointer;
+  /* transition: 0.35s; */
+  border: 0;
+}
+.list__name:hover .list__name__innerText {
+  background: rgba(20, 20, 20, 0.486);
+}
+.list__name_HasBeenChosen .list__name__innerText {
+  background: rgba(20, 20, 20, 0.486);
+}
+
+.myProfileSongInfiniteScroll::-webkit-scrollbar {
+  width: 8px;
+}
+.myProfileSongInfiniteScroll::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+.myProfileSongInfiniteScroll::-webkit-scrollbar-thumb {
+  background: rgba(196, 196, 196, 0.685);
+  border-radius: 10px;
+}
+.myProfileSongInfiniteScroll::-webkit-scrollbar-thumb:hover {
+  background: rgb(63, 63, 63);
+}
+/* 
+display: flex;
+height: 55px;
+opacity: 0.7;
+justify-content: center;
+position: relative; */
+@media (max-width: 768px) {
+  .myprofile {
+    padding-bottom: 75px;
+    padding-top: 15px;
+  }
+  .myprofile__top {
+    height: 170px;
+  }
+  .myprofile__mobile__show__right {
+    display: grid;
+    width: 90px;
+  }
+  .myprofile__mobile__show__left {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .myprofile__mobile__show {
+    display: flex;
+    width: 100%;
+  }
+  .myprofile__mobile__show__userImg {
+    border-radius: 10px;
+  }
+  .myprofile__mobile__show__userImg img {
+    width: 80px;
+    border-radius: 10px;
+    height: 80px;
+  }
+  .myprofile__mobile__show__changeCurrentPass {
+    margin-top: 10px;
+  }
+  .myprofile__mobile__show__changeCurrentPass button {
+    font-size: 14px;
+  }
+  .myprofile__mobile__show__userinfo {
+    margin-right: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  .myprofile__mobile__show__userinfo__inputbox {
+    display: flex;
+    color: white;
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 0 5px;
+    margin-bottom: 5px;
+    height: 100%;
+    align-items: center;
+  }
+  .myprofile__mobile__show__userinfo__inputbox span {
+    margin-right: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .userImg,
+  .changeCurrentPass,
+  .userinfo,
+  .myListsBtn,
+  .listShow,
+  .myMadeListsShow {
+    display: none !important;
+  }
+  .myprofile__bottom {
     height: auto;
   }
-  .myProfile__content {
-    display: grid;
-    justify-content: center;
-    padding: 20px;
+  .myprofile__mobile__songs {
+    display: block;
+    width: 100%;
   }
-  .photo__onMobile {
+  .myprofile__mobile__songs__myListsOption {
+    width: 100%;
+    color: white;
+    border: 1px solid gray;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background: linear-gradient(to right, transparent, gray);
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-left: 10px;
   }
-  .myProfile__content__left {
-    display: grid;
-    justify-content: initial;
+  .myprofile__mobile__songs__myListsOption .dropdown {
+    width: 100%;
+    border: none;
   }
-  .myProfile__imgAndPass {
+  .myprofile__mobile__songs__myListsOptionBtn {
+    border: none;
+    background: none;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .myprofile__mobile__songs__myListsOptionBtn:hover,
+  .myprofile__mobile__songs__myListsOptionBtn:focus {
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+  .myprofile__mobile__songs__myListsOptionBtn::after {
     display: none;
   }
-  .myProfile__allAndShow {
-    display: grid;
+  .myprofile__mobile__songs__myListsOption__addNewList {
+    border-right: 1px solid;
+    padding: 0px 5px 0 15px;
   }
-  .myProfile__list__show {
+  .myprofile__mobile__songs__mySongs {
+    transform: translate3d(0px, 38px, 0px) !important;
+    background: linear-gradient(to bottom, rgb(34, 35, 39), black);
+    border: 1px solid whitesmoke;
+    height: 117px;
+    overflow-y: scroll;
+    /* left: -141% !important; */
     width: 100%;
+    text-align: center;
   }
-  .song__img {
-    width: 35px;
-    height: 35px;
+  .myprofile__mobile__songs__mySongs::-webkit-scrollbar {
+    width: 10px;
   }
-  .number {
-    font-size: 8px;
+  .myprofile__mobile__songs__mySongs::-webkit-scrollbar-track {
+    border-radius: 10px;
   }
-  .myProfile__song__info__name {
+  .myprofile__mobile__songs__mySongs::-webkit-scrollbar-thumb {
+    background: rgba(185, 185, 185, 0.685);
+    border-radius: 10px;
+  }
+  .myprofile__mobile__songs__mySongs::-webkit-scrollbar-thumb:hover {
+    background: rgb(63, 63, 63);
+  }
+  .myprofile__mobile__songs__mySongs a {
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.205);
+  }
+  .songImg {
+    width: 45px;
+    height: 45px;
+  }
+  .songName {
     font-size: 12px;
+    color: white;
   }
-  .myProfile__song__info__singer {
+  .songSinger {
     font-size: 9px;
+    color: gray;
   }
-  .myProfile__song__info__time {
-    font-size: 9px;
+  .songTime {
+    color: gray;
   }
-  .myProfile__content__right {
-    margin-top: 20px;
-  }
-  .inputBox {
-    width: 100%;
-    margin: 0px 0px 0px -5px;
-  }
-  .form__names {
-    display: grid !important;
-  }
-  .inputBoxPass {
-    margin-top: 10px;
+  .myProfileSong_playbtn svg {
+    left: -4px;
+    bottom: 39px;
+    font-size: 35px;
   }
 }

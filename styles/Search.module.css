@@ -27,7 +27,7 @@
   background: rgba(255, 255, 255, 0.3);
   border: 1px solid whitesmoke;
   color: white;
-  width: 70%;
+  width: 45%;
 }
 .searchFields__option input::placeholder {
   color: rgba(255, 255, 255, 0.438);
@@ -48,6 +48,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  padding-top: 10px;
 }
 
 .searchFields__option__form__goBack {
@@ -62,7 +63,12 @@
 .searchFields__option__form__goBack:hover {
   color: rgba(231, 64, 64, 0.73);
 }
-
+.searchFields__option__searching__icon {
+  cursor: pointer;
+}
+.searchFields__option__searching__icon:hover {
+  color: gray;
+}
 @media (max-width: 768px) {
   /* .searchFields__top {
       display: grid;

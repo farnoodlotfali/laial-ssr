@@ -14,6 +14,6 @@ const ScrollToTop = () => {
     // eslint-disable-next-line
   }, [pathanme]);
 
-  return null;
+  return <div style={{ display: "none" }}></div>;
 };
 export default ScrollToTop;

@@ -1,13 +1,11 @@
 import styles from "../../styles/songPage.module.css";
 import { Modal } from "react-bootstrap";
-import fetch from "isomorphic-unfetch";
-import { Swiper, SwiperSlide } from "swiper/react";
 import { IconButton, Tooltip } from "@material-ui/core";
 import {
   CloseRounded,
   Favorite,
   GetAppRounded,
-  PlayArrowRounded,
+  Pause,
   PlaylistAdd,
   Visibility,
 } from "@material-ui/icons";
@@ -18,13 +16,16 @@ import authContext from "../../contexts/auth/authContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import appContext from "../../contexts/app/appContext";
+import axios from "../../axios/axios";
+import playerContext from "../../contexts/player/playerContext";
+import SpinnerLoadingOnRowItem from "../../components/spinner/SpinnerLoadingOnRowItem";
+import PlaySvg from "../../components/svgs/PlaySvg";
 
-const songPage = ({ data, recommender, view, songUrlData }) => {
+export default function songPage({ data, recommender, view, songUrlData }) {
   const [show, setShow] = useState(false);
   const [like, setLike] = useState(data.likes);
   const [songUrl, setSongUrl] = useState(data.likes);
-  // console.log(data.media?.[0]?.name);
-  // console.log(data.meta_description);
+
   const router = useRouter();
   const id = router.query.id;
   const flickityOptions = {
@@ -40,52 +41,40 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
     password: "",
   });
   const likeSong = async () => {
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append(
-      "Authorization",
-      "Bearer " + localStorage.getItem("tokenAccess")
-    );
-    let raw = "";
-
-    let requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("tokenAccess"),
+      },
     };
-
-    fetch(`https://nejat.safine.co/api/post/${id}/`, requestOptions)
-      .then((response) => response.json())
-      .then((result) => setLike(result.data.likes))
-
-      .catch((error) => console.log(error));
-
-    // const config = {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: 'Bearer ' + localStorage.getItem('tokenAccess'),
-    //   },
-    // };
-    // try {
-    //   // eslint-disable-next-line
-    //   const like = await axios.instanceApi.post(`/post/${slug}/`, null, config);
-    //   // console.log(like.data);
-    //   dispatch({
-    //     type: LIKE_SONG,
-    //     payload: like.data.data.likes,
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    //   dispatch({
-    //     type: ERROR,
-    //     payload: error,
-    //   });
-    // }
+    // console.log(config);
+    try {
+      // eslint-disable-next-line
+      const like = await axios.instanceApi.post(`/post/${id}/`, null, config);
+      // console.log(like.data.data.likes);
+      setLike(like.data.data.likes);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const { email, password } = userInfo;
   const { error, login, loadUser, user, isAuth } = useContext(authContext);
-  const { setWhichSongToSaveInPlaylist } = useContext(appContext);
+  const {
+    setUrl,
+    playMusic,
+    setIds,
+    playing,
+    loading,
+    songId,
+    playAndPauseMusic,
+  } = useContext(playerContext);
+  const {
+    setWhichSongToSaveInPlaylist,
+    addToLikedSongPlaylist,
+    showMusic,
+    ChangeShowMusic,
+    addMusicToRecentlyViewed,
+  } = useContext(appContext);
   const onchange = (e) => {
     setUserInfo({
       ...userInfo,
@@ -96,11 +85,49 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
     // loadUser();
     // setsongurl();
   }, [user, like, isAuth, songUrl]);
-  const setsongurl = () => {
-    fetch(`https://downloader.safine.co/${data.media[0].telegram_id}`)
-      .then((resp) => resp.json())
-      .then((res) => setSongUrl(res.download_link));
-    // const songUrlData = await songUrl.json();
+  const playMusicAndShowMusicBar = async () => {
+    if (data?.media?.[0]?.id === songId) {
+      playAndPauseMusic();
+    } else {
+      setIds(
+        data?.media?.[0]?.telegram_id,
+        data?.media?.[0]?.id,
+        data?.media?.[0]?.duration,
+        data?.title ? data?.title : data?.media?.[0]?.name,
+        data?.person?.[0]?.name,
+        data?.image?.full_image_url
+          ? data?.image?.full_image_url
+          : data?.media?.[0]?.image !== null
+          ? data?.media?.[0]?.image
+          : data?.person?.[0]?.image.full_image_url,
+        data?.id,
+        data?.slug,
+        data?.meta_title ? data?.meta_title : data?.title,
+        data?.meta_description ? data?.meta_description : data?.description
+      );
+      if (data?.media?.[0]?.path) {
+        setUrl(data?.media?.[0]?.path, recommender);
+        if (!showMusic) {
+          ChangeShowMusic(true);
+        }
+        playMusic();
+      } else {
+        try {
+          const res = await axios.downloader.get(
+            `/${data?.media?.[0]?.telegram_id}`
+          );
+          // console.log(res.data.download_link);recommender
+          setUrl(res.data.download_link, recommender);
+          if (!showMusic) {
+            ChangeShowMusic(true);
+          }
+          playMusic();
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      user !== null && addMusicToRecentlyViewed(1, data?.id);
+    }
   };
   return (
     <div className={`${styles.songPage} py-4  `}>
@@ -118,6 +145,24 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
               }
               alt="logo"
             />
+
+            {loading && songId === data?.media?.[0]?.id ? (
+              <div className={styles.rowItemSpinnerLoading}>
+                <SpinnerLoadingOnRowItem />
+                <div className="text-light text-center">در حال آماده سازی</div>
+              </div>
+            ) : playing && songId === data?.media?.[0]?.id ? (
+              <div
+                className={styles.rowItemPage_play__music}
+                onClick={() => playAndPauseMusic()}
+              >
+                <Pause />
+              </div>
+            ) : (
+              <div className={styles.rowItemPage_play__music}>
+                <PlaySvg playMusicAndShowMusicBar={playMusicAndShowMusicBar} />
+              </div>
+            )}
           </div>
           <div
             className={`${styles.actions} d-flex justify-content-around mt-2`}
@@ -138,7 +183,11 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
             <div className={`${styles.favoritePart} text-center`}>
               <IconButton
                 aria-label="Favorite"
-                onClick={() => (isAuth ? likeSong() : setShow(true))}
+                onClick={() =>
+                  isAuth
+                    ? likeSong() & addToLikedSongPlaylist(data?.id)
+                    : setShow(true)
+                }
               >
                 <Favorite
                   className={`${styles.favorite}`}
@@ -224,7 +273,7 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
             </div>
 
             <div>
-              <a href={songUrl}>
+              <a href={songUrl} dideo-checked="true">
                 <Tooltip placement="bottom" title="دانلود">
                   <IconButton aria-label="download">
                     <GetAppRounded
@@ -236,11 +285,7 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
               </a>
             </div>
 
-            <div
-              onClick={() =>
-                setWhichSongToSaveInPlaylist(dataSongPage?.media?.[0]?.id)
-              }
-            >
+            <div onClick={() => setWhichSongToSaveInPlaylist(data?.id)}>
               <Tooltip placement="bottom" title="اضافه به لیست">
                 <IconButton aria-label="Add">
                   <PlaylistAdd
@@ -302,21 +347,27 @@ const songPage = ({ data, recommender, view, songUrlData }) => {
       </div>
     </div>
   );
-};
+}
 
 export const getServerSideProps = async ({ params }) => {
   // const req = await axios.instanceApi.get(`/post/${params.id}s/`);
 
-  const res = await fetch(`https://nejat.safine.co/api/post/${params.id}/`);
-  const resData = await res.json();
-  const view = await fetch(
-    `https://nejat.safine.co/api/post/${params.id}/?state=views`
-  );
-  const viewData = await view.json();
-  const recommender = await fetch(`https://nejat.safine.co/api/recommender/`);
-  const recommenderData = await recommender.json();
-
-  if (!resData.data) {
+  // const res = await fetch(`https://nejat.safine.co/api/post/${params.id}/`);
+  // const resData = await res.json();
+  // const view = await fetch(
+  //   `https://nejat.safine.co/api/post/${params.id}/?state=views`
+  // );
+  // const viewData = await view.json();
+  // const recommender = await fetch(`https://nejat.safine.co/api/recommender/`);
+  // const recommenderData = await recommender.json();
+  let resData;
+  let viewData;
+  let recommenderData;
+  try {
+    resData = await axios.instanceApi.get(`/post/${params.id}/`);
+    viewData = await axios.instanceApi.get(`/post/${params.id}/?state=views`);
+    recommenderData = await axios.instanceApi.get(`/recommender/`);
+  } catch (error) {
     return {
       notFound: true,
     };
@@ -324,10 +375,9 @@ export const getServerSideProps = async ({ params }) => {
 
   return {
     props: {
-      data: resData.data,
-      recommender: recommenderData.data,
-      view: viewData.data.views,
+      data: resData.data.data,
+      recommender: recommenderData.data.data,
+      view: viewData.data.data.views,
     },
   };
 };
-export default songPage;

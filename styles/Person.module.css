@@ -1,10 +1,14 @@
 .person {
-  background-color: rgb(18, 18, 18);
 }
-.infiniteScroll {
+.person__infiniteScroll__section {
+  min-height: 100vh;
+}
+.person .infiniteScroll {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  height: 100%;
+  padding-top: 10px;
 }
 
 .card__person {
@@ -28,7 +32,7 @@
   overflow: hidden;
 }
 .circle__person::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;

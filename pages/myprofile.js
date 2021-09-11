@@ -1,240 +1,581 @@
-import { useContext, useEffect, useState } from 'react';
-import { DeleteRounded } from '@material-ui/icons';
-import styles from '../styles/MyProfile.module.css';
-import authContext from '../contexts/auth/authContext';
-import appContext from '../contexts/app/appContext';
-import { useRouter } from 'next/router';
-const MyProfile = () => {
-  const [listShow, setlistShow] = useState(null);
-  const { user, loadUser } = useContext(authContext);
-  const { changeCurrentPassword } = useContext(appContext);
-  const [errorMsg, setErrorMsg] = useState('');
-  const router = useRouter();
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
+import authContext from "../contexts/auth/authContext";
+import appContext from "../contexts/app/appContext";
+import { Button, Modal } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
+import styles from "../styles/MyProfile.module.css";
+import defualtPhoto from "../public/defualtPhoto.jpeg";
+import Image from "next/image";
+import InfiniteScroll from "react-infinite-scroll-component";
+import {
+  AccessTime,
+  AddRounded,
+  ExpandMoreRounded,
+  ExposurePlus1Outlined,
+  Favorite,
+  PlayArrow,
+} from "@material-ui/icons";
+import SpinnerOnUserPlaylist from "../components/spinner/SpinnerOnUserPlaylist";
+import { CircularProgress, Tooltip } from "@material-ui/core";
+import MyProfilemySonglist from "../components/MyProfilemySonglist";
+import MyProfileSong from "../components/MyProfileSong";
+import LoadingIcon from "../components/spinner/LoadingIcon";
+import playerContext from "../contexts/player/playerContext";
+import MyProfileSongOnMobile from "../components/MyProfileSongOnMobile";
+import axios from "../axios/axios";
 
+const myprofile = () => {
+  const { user } = useContext(authContext);
+  const {
+    userPlaylists,
+    getLikedSongsPlaylist,
+    mainPlaylistId,
+    getOnePlayList,
+    changeCurrentPassword,
+    loadingOnUserPlaylist,
+    getRecentlyViewedSongsPlaylist,
+    changeMyProfilemySonglistId,
+    myProfilemySonglistId,
+    showLeftList,
+    ChangeShowCreateList,
+  } = useContext(appContext);
+  const { playThisListFromMyProflie } = useContext(playerContext);
+
+  const router = useRouter();
+  const [isUserExist, setIsUserExist] = useState(false);
+  const [listShow, setListShow] = useState(null);
+  const [deleteBtn, setDeleteBtn] = useState(false);
+  const [passwordModal, setPasswordModal] = useState(false);
+  const [listname, setListName] = useState("");
+  const [passwordMsg, setPasswordMsg] = useState("");
   const [changePassword, setchangePassword] = useState({
-    currentPassword: '',
-    changePassword1: '',
-    changePassword2: '',
+    currentPassword: "",
+    changePassword1: "",
+    changePassword2: "",
+  });
+  const [next, setNext] = useState({
+    next: "",
+    list: [],
+    hasMore: false,
+    page: 2,
+    loading: false,
   });
   const { currentPassword, changePassword1, changePassword2 } = changePassword;
+
   useEffect(() => {
-    loadUser();
     if (user === null) {
-      router.push('/');
+      router.push("/");
+    } else {
+      setIsUserExist(true);
     }
-  }, [user, router]);
+  }, [user]);
+  useEffect(() => {
+    changeMyProfilemySonglistId(null);
+    // eslint-disable-next-line
+  }, []);
+  const zeroPad = (num, places) => String(num).padStart(places, "0");
+
+  const truncate = (str, no_words) => {
+    return str?.split(" ").splice(0, no_words).join(" ");
+  };
+  const changePasswordMsg = (msg) => {
+    setPasswordMsg(msg);
+    setTimeout(() => {
+      setPasswordMsg("");
+      setPasswordModal(false);
+      setchangePassword({
+        currentPassword: "",
+        changePassword1: "",
+        changePassword2: "",
+      });
+    }, 3000);
+  };
   const onchange = (e) => {
     setchangePassword({
       ...changePassword,
       [e.target.name]: e.target.value,
     });
   };
-  const changeListShow = (newlist) => {
-    setlistShow(newlist);
+  const recentlyViewedc = async () => {
+    const newList = await getRecentlyViewedSongsPlaylist();
+    // console.log(newList);
+    setNext({
+      ...next,
+      list: newList.results,
+      next: newList.next,
+      hasMore: newList.next ? true : false,
+    });
+    setListShow(newList.results);
+    setDeleteBtn(false);
   };
 
-  const passNotSame = () => {
-    setErrorMsg('رمز اول با رمز دوم تطابق ندارد');
-    setTimeout(() => {
-      setErrorMsg('');
-    }, 5000);
+  const likedSongsHandle = async () => {
+    const newList = await getLikedSongsPlaylist();
+    // console.log(2121, newList);
+    setNext({
+      ...next,
+      list: newList.results,
+      next: newList.next,
+      hasMore: newList.next ? true : false,
+    });
+    setListShow(newList.results);
+    setDeleteBtn(false);
   };
-
+  const infiniteList = async () => {
+    setTimeout(async () => {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("tokenAccess"),
+        },
+      };
+      try {
+        const res = await axios.simpleApi.get(
+          `/account/recently-view/?page=${next.page}`,
+          config
+        );
+        // console.log(res.data);
+        setNext({
+          next: res.data.next,
+          hasMore: res.data.next ? true : false,
+          list: next.list.concat(res.data.results),
+          loading: false,
+          page: ++next.page,
+        });
+        setListShow(listShow.concat(res.data.results));
+        //  next.list.concat(res.data.results);
+      } catch (error) {
+        console.log(error);
+      }
+    }, 1200);
+  };
   return (
-    <div className={`${styles.myProfile}  text-light`}>
-      <div className={styles.myProfile__content}>
-        <div className={styles.photo__onMobile}>
-          <div className={styles.photo__lines}>
-            <img src={'/defualtPhoto.jpeg'} alt='' className='rounded-circle' />
-          </div>
-        </div>
-        <div className={styles.myProfile__content__left}>
-          <div className={styles.myProfile__content__left__title}>
-            <h3>لیست های من</h3>
-          </div>
-          <div className={styles.myProfile__allAndShow}>
-            <div className={styles.myProfile__list__all}>
-              <div className='dropdown'></div>
-              <div className={styles.myProfile__list}>
-                <span>اخیرا شنیده شده</span>
+    isUserExist && (
+      <div className={styles.myprofile}>
+        <div className={styles.myprofile__top}>
+          {/* mobile ratio */}
+          <div className={styles.myprofile__mobile__show}>
+            <div className={styles.myprofile__mobile__show__right}>
+              <div className={styles.myprofile__mobile__show__userImg}>
+                <Image src={defualtPhoto} alt="userImg" />
               </div>
-              <div className={styles.myProfile__list}>
-                <span>آهنگ های لایک شده</span>
-              </div>
-              <div className={styles.myProfile__list}>
-                <span>آهنگ های انتخاب شده سایت</span>
+              <div
+                className={styles.myprofile__mobile__show__changeCurrentPass}
+              >
+                <Button
+                  variant="primary"
+                  onClick={() => setPasswordModal(true)}
+                >
+                  تغییر رمز
+                </Button>
               </div>
             </div>
-            <div className={styles.myProfile__list__show}>
-              {listShow && listShow.length === 0 ? (
-                <div className='none text-light'>لیست خالی است</div>
-              ) : (
-                listShow?.map((item, i) => {
-                  return (
-                    <div
-                      key={item.id}
-                      className={`${styles.myProfile__song__info} justify-content-between`}
-                    >
-                      <div className='d-flex'>
-                        <div
-                          className={`${styles.number}     align-self-center`}
-                        >
-                          {i + 1}
-                        </div>
-                        <div className={styles.song__img}>
-                          <img src={logo} alt='' />
-                        </div>
-                        <span
-                          className={`${styles.myProfile__song__info__singer} align-self-center`}
-                        >
-                          mammd
-                        </span>
-                      </div>
-                      <div className={styles.myProfile__song__info__names}>
-                        <span
-                          className={`${styles.myProfile__song__info__name} align-self-end`}
-                        >
-                          {item.fileItem?.name}
-                        </span>
-                      </div>
-                      <div className='d-flex align-self-center'>
-                        <div className={styles.myProfile__song__info__time}>
-                          3:26
-                        </div>
-                        <div className=''>
-                          <DeleteRounded />
-                        </div>
-                      </div>
-                    </div>
-                  );
+            <div className={styles.myprofile__mobile__show__left}>
+              <div className={styles.myprofile__mobile__show__userinfo}>
+                <div
+                  className={styles.myprofile__mobile__show__userinfo__inputbox}
+                >
+                  <label> نام : </label>
+                  <span> {user.first_name} </span>
+                </div>
+                <div
+                  className={styles.myprofile__mobile__show__userinfo__inputbox}
+                >
+                  <label> نام خانوادگی :</label>
+                  <span>{user.last_name}</span>
+                </div>
+                <div
+                  className={styles.myprofile__mobile__show__userinfo__inputbox}
+                >
+                  <label> ایمیل :</label>
+                  <span>{user.email} </span>
+                </div>
+                <div
+                  className={styles.myprofile__mobile__show__userinfo__inputbox}
+                >
+                  <label> نام کاربری :</label>
+                  <span>{user.username} </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* web ratio */}
+          <div className={styles.userImg}>
+            <Image src={defualtPhoto} alt="userImg" />
+          </div>
+          <div className={`${styles.userinfo}  d-flex`}>
+            <div className={styles.userinfo__inputbox}>
+              <label> نام </label>
+              <span>{user.first_name} </span>
+            </div>
+            <div className={styles.userinfo__inputbox}>
+              <label> نام خانوادگی</label>
+              <span>{user.last_name}</span>
+            </div>
+            <div className={styles.userinfo__inputbox}>
+              <label> ایمیل</label>
+              <span>{user.email} </span>
+            </div>
+            <div className={styles.userinfo__inputbox}>
+              <label> نام کاربری</label>
+              <span>{user.username} </span>
+            </div>
+          </div>
+          <div className={styles.changeCurrentPass}>
+            <div className="changeCurrentPassBtn">
+              <Button variant="primary" onClick={() => setPasswordModal(true)}>
+                تغییر رمز
+              </Button>
+            </div>
+
+            <Modal
+              contentClassName={styles.myprofileModal}
+              show={passwordModal}
+              onHide={() =>
+                setPasswordModal(false) &
+                setchangePassword({
+                  currentPassword: "",
+                  changePassword1: "",
+                  changePassword2: "",
                 })
+              }
+              className="passModal"
+            >
+              <Modal.Header className={styles.modalHeaderPass}>
+                <Modal.Title className="modalTitlePass">
+                  تغییر رمز عبور
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body className={styles.modalBodyPass}>
+                <input
+                  onChange={onchange}
+                  name="currentPassword"
+                  type="password"
+                  value={currentPassword}
+                  placeholder="رمز فعلی"
+                />
+                <input
+                  name="changePassword1"
+                  onChange={onchange}
+                  value={changePassword1}
+                  type="text"
+                  minLength="8"
+                  placeholder="رمز جدید"
+                />
+                <input
+                  name="changePassword2"
+                  onChange={onchange}
+                  value={changePassword2}
+                  type="text"
+                  minLength="8"
+                  placeholder="تکرار رمز جدید "
+                />
+                {/* </form> */}
+                <div className={styles.changePass_error}>{passwordMsg}</div>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  className={styles.modalCloseBtn}
+                  onClick={() => setPasswordModal(false)}
+                >
+                  بستن
+                </Button>
+                <Button
+                  className={styles.modalSaveBtn}
+                  type="submit"
+                  onClick={async () => {
+                    if (changePassword1 !== changePassword2) {
+                      changePasswordMsg("رمز اول با رمز دوم تطابق ندارد");
+                    } else {
+                      const status = await changeCurrentPassword(
+                        currentPassword,
+                        changePassword1
+                      );
+                      if (status === 200) {
+                        changePasswordMsg("!با موفقیت رمز تغییر یافت");
+                      } else {
+                        changePasswordMsg("!خطا");
+                      }
+                    }
+                  }}
+                >
+                  ذخیره رمز
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </div>
+        </div>
+        <div className={styles.myprofile__bottom}>
+          {/* mobile ratio */}
+          <div className={styles.myprofile__mobile__songs}>
+            {userPlaylists && (
+              <div className="myprofile__mobile__songs__options">
+                <div className="d-flex justify-content-center">
+                  <div
+                    className={`${styles.myprofile__mobile__songs__myListsOption} ml-2 p-1`}
+                    onClick={() => likedSongsHandle()}
+                  >
+                    <Favorite />
+                    <span className='className="d-flex justify-content-center w-100 align-items-center text-center'>
+                      لایک
+                    </span>
+                  </div>
+                  <div
+                    className={`${styles.myprofile__mobile__songs__myListsOption} ml-2 p-1`}
+                    onClick={() => recentlyViewedc()}
+                  >
+                    <AccessTime />
+                    <span className='className="d-flex justify-content-center w-100 align-items-center text-center'>
+                      اخیرا
+                    </span>
+                  </div>
+                  <div
+                    className={`${styles.myprofile__mobile__songs__myListsOption} ml-2 p-1`}
+                    onClick={async () =>
+                      setListShow(await getOnePlayList(mainPlaylistId)) &
+                      setDeleteBtn(false)
+                    }
+                  >
+                    <ExposurePlus1Outlined />
+
+                    <span className='className="d-flex justify-content-center w-100 align-items-center text-center'>
+                      منتخب
+                    </span>
+                  </div>
+                </div>
+                <div
+                  className={`${styles.myprofile__mobile__songs__myListsOption} ml-2 p-1`}
+                >
+                  <Dropdown className="w-100">
+                    <Dropdown.Toggle
+                      className={
+                        styles.myprofile__mobile__songs__myListsOptionBtn
+                      }
+                    >
+                      <div className={styles.myMadeListShow__title__span}>
+                        نام لیست : {listname}
+                      </div>
+                      <ExpandMoreRounded />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu
+                      className={styles.myprofile__mobile__songs__mySongs}
+                    >
+                      {userPlaylists?.map(
+                        (item, i) =>
+                          mainPlaylistId !== item.id && (
+                            <Dropdown.Item
+                              key={i}
+                              className={`${
+                                myProfilemySonglistId === item.id &&
+                                styles.list__name_HasBeenChosen__mobile
+                              }`}
+                              onClick={async () =>
+                                setListShow(await getOnePlayList(item.id)) &
+                                setListName(item.name) &
+                                setDeleteBtn(true) &
+                                changeMyProfilemySonglistId(item.id)
+                              }
+                            >
+                              {item.name}
+                            </Dropdown.Item>
+                          )
+                      )}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  <div
+                    className={
+                      styles.myprofile__mobile__songs__myListsOption__addNewList
+                    }
+                    onClick={() => ChangeShowCreateList(true)}
+                  >
+                    <AddRounded />
+                  </div>
+                </div>
+              </div>
+            )}
+            <div
+              className={` ${styles.listItemsShow}  ${
+                loadingOnUserPlaylist ? styles.listItemsShow : ""
+              }`}
+            >
+              {loadingOnUserPlaylist ? (
+                <div className="h-100 d-flex justify-content-center align-items-center">
+                  <SpinnerOnUserPlaylist />
+                </div>
+              ) : listShow === null || listShow.length === 0 ? (
+                <div className="none  text-light text-center">
+                  لیست خالی است
+                </div>
+              ) : (
+                <InfiniteScroll
+                  dataLength={listShow.length}
+                  next={() => infiniteList()}
+                  hasMore={next.hasMore}
+                  loader={
+                    <div
+                      style={{
+                        display: "flex",
+                        height: "55px",
+                        opacity: 0.7,
+                        justifyContent: "center",
+                        position: "relative",
+                      }}
+                    >
+                      <LoadingIcon color={"white"} />
+                    </div>
+                  }
+                  height={445}
+                  className={styles.myProfileSongInfiniteScroll}
+                >
+                  {listShow.map((item, i) => (
+                    <MyProfileSongOnMobile
+                      deleteBtn={deleteBtn}
+                      item={item}
+                      key={i}
+                      playlist={listShow}
+                    />
+                  ))}
+                </InfiniteScroll>
               )}
             </div>
           </div>
-        </div>
-        <div className={styles.myProfile__imgAndPass}>
-          <div className={styles.myProfile__img}>
-            <img src={'/defualtPhoto.jpeg'} alt='' className='rounded-circle' />
-          </div>
 
-          <div className={styles.choose__photo}>
-            <label htmlFor='myfile'>انتخاب عکس</label>
-            <input type='file' id='myfile' name='myfile' />
-          </div>
-        </div>
-        <div className={styles.myProfile__content__right}>
-          <div className={styles.myProfile__content__left__title}>
-            <h3> اطلاعات من</h3>
-          </div>
-          <form>
-            <div className={`d-flex ${styles.form__names}`}>
-              <div className={styles.inputBox}>
-                <label>نام</label>
-                <input
-                  name='firstname'
-                  value={user?.first_name}
-                  type='text'
-                  disabled
-                />
+          {/* web ratio */}
+          {userPlaylists && (
+            <div className={styles.myListsBtn}>
+              <div
+                className={styles.myListsOption}
+                onClick={() => likedSongsHandle()}
+              >
+                <Favorite />
+                <span className="mr-3">لایک</span>
               </div>
-              <div className={styles.inputBox}>
-                <label> نام خانوادگی</label>
-
-                <input
-                  name='username'
-                  type='text'
-                  value={user?.last_name}
-                  disabled
-                />
+              <div
+                className={styles.myListsOption}
+                onClick={() => recentlyViewedc()}
+              >
+                <AccessTime />
+                <span className="mr-3"> اخیرا</span>
               </div>
-            </div>
-            <div className={`d-flex ${styles.form__names}`}>
-              <div className={styles.inputBox}>
-                <label>ایمیل</label>
-
-                <input
-                  name='username'
-                  type='email'
-                  value={user?.email}
-                  disabled
-                />
-              </div>
-              <div className={styles.inputBox}>
-                <label>نام کاربری</label>
-
-                <input
-                  name='username'
-                  value={user?.username}
-                  type='text'
-                  disabled
-                />
-              </div>
-            </div>
-          </form>
-          <div className={styles.myProfile__reset__password}>
-            <div className={styles.myProfile__reset__password__title}>
-              <h4>تغییر رمز عبور</h4>
-            </div>
-
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (changePassword1 !== changePassword2) {
-                  passNotSame();
-                } else {
-                  changeCurrentPassword(changePassword1, currentPassword);
-                  setchangePassword({
-                    currentPassword: '',
-                    changePassword1: '',
-                    changePassword2: '',
-                  });
+              <div
+                className={styles.myListsOption}
+                onClick={async () =>
+                  setListShow(await getOnePlayList(mainPlaylistId)) &
+                  setDeleteBtn(false)
                 }
-              }}
+              >
+                <ExposurePlus1Outlined />
+                <span> منتخب </span>
+              </div>
+            </div>
+          )}
+          <div className={`${styles.listShow} d-flex`}>
+            <div
+              className={`${styles.listItemsShow} ${
+                loadingOnUserPlaylist ? styles.listItemsShow__loading : ""
+              }`}
             >
-              <div className={styles.inputBoxPass}>
-                <input
-                  onChange={onchange}
-                  name='currentPassword'
-                  type='password'
-                  placeholder='رمز فعلی'
-                />
+              {loadingOnUserPlaylist ? (
+                <SpinnerOnUserPlaylist />
+              ) : listShow === null || listShow.length === 0 ? (
+                <div className="none  text-light text-center">
+                  لیست خالی است
+                </div>
+              ) : (
+                <InfiniteScroll
+                  dataLength={listShow.length}
+                  next={() => infiniteList()}
+                  hasMore={next.hasMore}
+                  loader={
+                    <div
+                      style={{
+                        display: "flex",
+                        height: "55px",
+                        opacity: 0.7,
+                        justifyContent: "center",
+                        position: "relative",
+                      }}
+                    >
+                      <LoadingIcon color={"white"} />
+                    </div>
+                  }
+                  height={435}
+                  className={styles.myProfileSongInfiniteScroll}
+                >
+                  {listShow.map((item, i) => (
+                    <MyProfileSong
+                      item={item}
+                      key={i}
+                      zeroPad={zeroPad}
+                      truncate={truncate}
+                      deleteBtn={deleteBtn}
+                      playlist={listShow}
+                    />
+                  ))}
+                </InfiniteScroll>
+              )}
+            </div>
+
+            <div className={styles.myMadeListsShow}>
+              <div className={styles.myMadeListShow__title}>
+                <span
+                  className={`align-self-center ${styles.myMadeListShow__title__span}`}
+                >
+                  نام لیست : {listname}
+                </span>
+                <div className="d-flex">
+                  <span
+                    className={styles.playListBtn}
+                    onClick={() => {
+                      if (listShow) {
+                        showLeftList(true);
+                        playThisListFromMyProflie(listShow);
+                      }
+                    }}
+                  >
+                    <Tooltip placement="top" title="پخش">
+                      <PlayArrow />
+                    </Tooltip>
+                  </span>
+                  <span
+                    className={`${styles.playListBtn} mr-1`}
+                    onClick={() => ChangeShowCreateList(true)}
+                  >
+                    <Tooltip placement="top" title="لیست جدید">
+                      <AddRounded />
+                    </Tooltip>
+                  </span>
+                </div>
               </div>
-              <div className={styles.inputBoxPass}>
-                <input
-                  name='changePassword1'
-                  onChange={onchange}
-                  type='text'
-                  minLength='8'
-                  required
-                  placeholder='رمز جدید'
-                />
-              </div>{' '}
-              <div className={styles.inputBoxPass}>
-                <input
-                  onChange={onchange}
-                  name='changePassword2'
-                  type='text'
-                  minLength='8'
-                  required
-                  placeholder='تکرار رمز جدید '
-                />
+              <div className={`${styles.myMadeListsShow__lists} py-3`}>
+                {userPlaylists ? (
+                  userPlaylists?.map(
+                    (item, i) =>
+                      mainPlaylistId !== item.id && (
+                        <MyProfilemySonglist
+                          key={i}
+                          id={item.id}
+                          name={item.name}
+                          setListName={setListName}
+                          setDeleteBtn={setDeleteBtn}
+                          setListShow={setListShow}
+                        />
+                      )
+                  )
+                ) : (
+                  <div className="h-100 d-flex align-items-center justify-content-center">
+                    <CircularProgress color="inherit" />
+                  </div>
+                )}
               </div>
-              <div className={styles.inputBoxPass}>
-                <input type='submit' value='تغییر رمز ' />
-              </div>
-            </form>
-            <div className={styles.formMsg}>{errorMsg}</div>
+            </div>
           </div>
         </div>
       </div>
-      Nobis fugiat eos quod qui consequatur impedit maiores, obcaecati,
-      voluptatem quasi aliquid cupiditate iste in itaque necessitatibus sapiente
-      possimus ipsum enim. Amet porro quos quis qui neque eius exercitationem
-      aut quam. Odit natus iusto veritatis minus, perspiciatis unde laborum modi
-      quae quo ab, officia blanditiis necessitatibus libero atque. Facere, odit
-      officiis?
-    </div>
+    )
   );
 };
 
-export default MyProfile;
+export default myprofile;

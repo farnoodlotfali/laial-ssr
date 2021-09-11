@@ -55,6 +55,9 @@
   font-size: 22px;
   max-height: 47px;
   overflow: hidden;
+  white-space: nowrap;
+  margin-left: 15px;
+  text-overflow: ellipsis;
 }
 .info__person {
   font-weight: 600;

@@ -1,13 +1,14 @@
 .personItem {
   display: grid;
-  margin-right: 10px;
+  margin: 20px;
   justify-content: center;
   align-self: center;
   /* height: 200px; */
 }
 .personItem img {
-  height: 200px;
-  width: 200px;
+  height: 100px;
+  width: 100px;
+  cursor: pointer;
 
   /* border-radius: 100px;   */
 }
@@ -17,6 +18,7 @@
   color: #757575;
   font-weight: 900;
   transition: transform 450ms ease-in-out;
+  font-size: 11px;
 }
 .personItem__person:hover {
   cursor: pointer;

@@ -6,15 +6,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background: url("../public/login.jpg");
+  background-position: center;
+  background-size: cover;
+  object-fit: contain;
+  background-repeat: no-repeat;
   min-height: 100vh;
-  background: linear-gradient(to bottom, rgb(34, 35, 39), black);
 }
-
+/* 
 .color {
   position: absolute;
   filter: blur(150px);
-}
-.color:nth-child(1) {
+} */
+/* .color:nth-child(1) {
   top: -350px;
   width: 600px;
   height: 600px;
@@ -34,11 +38,11 @@
   width: 300px;
   height: 300px;
   background: rgb(184, 177, 212);
-}
-.box {
+} */
+/* .box {
   position: relative;
-}
-.square {
+} */
+/* .square {
   position: absolute;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(5px);
@@ -94,7 +98,7 @@
   width: 60px;
   height: 60px;
   animation-delay: -5s;
-}
+} */
 .login__container {
   position: relative;
   width: 400px;
@@ -102,7 +106,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(5px);
+  background-color: rgba(2, 2, 2, 0.788);
   box-shadow: 0 25px 45px rgba(5, 4, 10, 0.2);
   border: 1px solid gray;
   border-right: 1px solid rgba(255, 255, 255, 0.3);
@@ -154,7 +158,7 @@
   color: rgba(255, 255, 255, 0.438);
   text-align: right;
 }
-.inputBox input[type='submit'] {
+.inputBox input[type="submit"] {
   background-color: white;
   color: #666;
   cursor: pointer;
@@ -176,11 +180,11 @@
   text-decoration: none;
 }
 .register {
-  color: rgb(17, 17, 75);
+  color: rgb(14, 14, 255);
   cursor: pointer;
 }
 .register:hover {
-  color: rgba(17, 17, 75, 0.596);
+  color: rgba(75, 75, 170, 0.596);
 }
 .error__msg__login {
   color: darkred;

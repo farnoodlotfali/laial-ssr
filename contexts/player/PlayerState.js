@@ -56,6 +56,7 @@ import {
   CHANGE_SHUFFLE,
 } from "./types";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "../../axios/axios";
 const useStyles = makeStyles({
   rail: {
     height: "4px",
@@ -118,78 +119,93 @@ const browser = () => {
 };
 
 const PlayerState = (props) => {
-  const { showRightList, showMusic, RightList, leftList, showLeftList } =
-    useContext(appContext);
+  const {
+    showRightList,
+    showMusic,
+    RightList,
+    leftList,
+    showLeftList,
+    setWhichSongToSaveInPlaylist,
+    LimitListPlayNonLogin,
+    addMusicToMAINPlaylist,
+  } = useContext(appContext);
   const classes = useStyles();
-  const { isAuth } = useContext(authContext);
-  const { setWhichSongToSaveInPlaylist } = useContext(appContext);
+  const { isAuth, forceLogin } = useContext(authContext);
 
   const initialState = {
     playList: [],
     playing: false,
     loading: false,
     mute: false,
+    forceStop: false,
     seek: false,
     shuffle: false,
+    loop: false,
+    repeatOne: false,
+    noneOrLoopOrRepeat: 0,
     duration: 0,
-    totalDuration: 0,
+    totalDuration: 10,
     currentUrl: null,
     audioElement: null,
     volume: 1,
     telegramId: null,
+    postId: 1221,
     songId: null,
+    songSlug: null,
     songPhoto: null,
     songName: "",
     songSinger: "",
     currentProgress: 0,
+    progressToZero: false,
     showMusicBarOnMoblieRatio: false,
+    canDeleteSong: false,
+    isThisSongAddedToRecentlyViewdPlaylist: false,
+    song_meta_description: null,
+    song_meta_title: null,
   };
   const [state, dispatch] = useReducer(playerReducer, initialState);
+
+  const [musicChangeList, setMusicChangeList] = useState([]);
   const { playList } = state;
   const audioRef = useRef();
-  useEffect(() => {
-    //   حرکت خواهد کردprogress اگر در حال پخش بود
+  // useEffect(() => {
+  //   //   حرکت خواهد کردprogress اگر در حال پخش بود
 
-    if (state.playing && !state.loading) {
-      //progress سرعت جلو رفتن
-      const timer = setInterval(() => {
-        if (audioRef?.current && audioRef?.current?.ended && !state.seek) {
-          nextMusic();
-        } else if (
-          audioRef?.current?.paused &&
-          state.currentUrl !== null &&
-          !state.loading
-        ) {
-          audioRef?.current?.play();
-        }
+  //   if (state.playing && !state.loading) {
+  //     //progress سرعت جلو رفتن
+  //     const timer = setInterval(() => {
+  //       if (audioRef?.current && audioRef?.current?.ended && !state.seek) {
+  //         nextMusic();
+  //       } else if (
+  //         audioRef?.current?.paused &&
+  //         state.currentUrl !== null &&
+  //         !state.loading
+  //       ) {
+  //         audioRef?.current?.play();
+  //       }
 
-        let progress = parseFloat(
-          (audioRef?.current?.currentTime * 100) / audioRef?.current?.duration
-        ).toFixed(2);
-        setNewProgress(progress);
-        dispatch({
-          type: CHANGE_DURATION,
-          payload: {
-            currentTime: audioRef.current.currentTime,
-          },
-        });
-      }, 1000);
-      return () => {
-        clearInterval(timer);
-      };
-    }
-  }, [state.playing, state.loading, state.seek]);
+  //       let progress = parseFloat(
+  //         (audioRef?.current?.currentTime * 100) / audioRef?.current?.duration
+  //       ).toFixed(2);
+  //       setNewProgress(progress);
+  //       dispatch({
+  //         type: CHANGE_DURATION,
+  //         payload: {
+  //           currentTime: audioRef.current.currentTime,
+  //         },
+  //       });
+  //     }, 1000);
+  //     return () => {
+  //       clearInterval(timer);
+  //     };
+  //   }
+  // }, [state.playing, state.loading, state.seek]);
 
   const playMusic = (audioElement = audioRef.current) => {
     if (audioElement) {
-      audioElement.pause();
       audioElement.load();
-
-      // audioElement.play();
+      // await audioElement.play();
     }
-    dispatch({
-      type: PLAY_MUSIC,
-    });
   };
 
   const playAndPauseMusic = (audioElement = audioRef.current) => {
@@ -236,21 +252,17 @@ const PlayerState = (props) => {
               ? chosen?.media?.[0]?.image
               : chosen?.person?.[0]?.image.full_image_url
           );
-          fetch(`https://downloader.safine.co/${chosen.media[0]?.telegram_id}`)
-            .then((respone) => respone.json())
-            .then((res) => setUrl(res.download_link, playList))
-            .then(() => playMusic())
-            .catch((err) => console.log(err));
-          // try {
-          //   const res = await axios.downloader.get(
-          //     `/${chosen.media[0]?.telegram_id}`
-          //   );
-          //   setUrl(res.data.download_link, playList);
 
-          //   playMusic();
-          // } catch (error) {
-          //   console.log(error);
-          // }
+          try {
+            const res = await axios.downloader.get(
+              `${chosen.media[0]?.telegram_id}`
+            );
+            setUrl(res.data.download_link, playList);
+
+            playMusic();
+          } catch (error) {
+            console.log(error);
+          }
         }
       }
     }
@@ -299,31 +311,33 @@ const PlayerState = (props) => {
               : chosen?.person?.[0]?.image.full_image_url
           );
 
-          fetch(`https://downloader.safine.co/${chosen.media[0]?.telegram_id}`)
-            .then((respone) => respone.json())
-            .then((res) => setUrl(res.download_link, playList))
-            .then(() => playMusic())
-            .catch((err) => console.log(err));
+          try {
+            const res = await axios.downloader.get(
+              `/${chosen.media[0]?.telegram_id}`
+            );
+            setUrl(res.data.download_link, playList);
 
-          // try {
-          //   const res = await axios.downloader.get(
-          //     `/${chosen.media[0]?.telegram_id}`
-          //   );
-          //   setUrl(res.data.download_link, playList);
-
-          //   playMusic();
-          // } catch (error) {
-          //   console.log(error);
-          // }
+            playMusic();
+          } catch (error) {
+            console.log(error);
+          }
         }
       }
     }
     setNewProgress(0);
   };
-  const setIds = (tId, id, duration, name, singer, photo) => {
-    if (audioRef.current.played) {
-      audioRef.current.pause();
-    }
+  const setIds = (
+    tId,
+    id,
+    duration,
+    name,
+    singer,
+    photo,
+    postId,
+    songSlug,
+    newTitle,
+    newDesc
+  ) => {
     dispatch({
       type: SET_IDS,
       payload: {
@@ -333,10 +347,67 @@ const PlayerState = (props) => {
         songName: name,
         songSinger: singer,
         songPhoto: photo,
+        postId: postId,
+        songSlug: songSlug,
+        newTitle: newTitle,
+        newDesc: newDesc,
       },
     });
+
+    if (isAuth) {
+      if (JSON.parse(localStorage.getItem("mainPlaylist")) === null) {
+        let mainPlaylist = [];
+        const item = { postId: postId, count: 1 };
+        mainPlaylist.push(item);
+
+        localStorage.setItem("mainPlaylist", JSON.stringify(mainPlaylist));
+      } else {
+        let mainPlaylist = JSON.parse(localStorage.getItem("mainPlaylist"));
+        let item = mainPlaylist.find((x) => x.postId === postId);
+
+        if (item === undefined) {
+          const newItem = { postId: postId, count: 1 };
+          mainPlaylist.push(newItem);
+          localStorage.setItem("mainPlaylist", JSON.stringify(mainPlaylist));
+        } else {
+          let newMainPlaylist = mainPlaylist.filter((file) => {
+            return file.postId !== postId;
+          });
+          let newItem = { postId: postId, count: item.count + 1 };
+          newMainPlaylist.push(newItem);
+
+          localStorage.setItem("mainPlaylist", JSON.stringify(newMainPlaylist));
+          addMusicToMAINPlaylist(postId);
+        }
+      }
+    } else {
+      if (JSON.parse(localStorage.getItem("limitListTo10")) === null) {
+        const limitListTo10 = [];
+        const item = { postId: postId };
+        limitListTo10.push(item);
+        localStorage.setItem("limitListTo10", JSON.stringify(limitListTo10));
+      } else {
+        // if there is no user in the site, and if he had listen 10 music, force him to login or sign up
+
+        let limitListTo10 = JSON.parse(localStorage.getItem("limitListTo10"));
+
+        if (limitListTo10.length >= LimitListPlayNonLogin) {
+          forceLogin();
+        } else {
+          let hasThisItem = limitListTo10.some((x) => x.postId === postId);
+          if (!hasThisItem) {
+            const item = { postId: postId };
+            limitListTo10.push(item);
+            localStorage.setItem(
+              "limitListTo10",
+              JSON.stringify(limitListTo10)
+            );
+          }
+        }
+      }
+    }
   };
-  const setUrl = (url, playlist) => {
+  const setUrl = (url, playlist = []) => {
     if (playlist !== state.playList) {
       setPlayList(playlist);
     }
@@ -348,11 +419,14 @@ const PlayerState = (props) => {
     setNewProgress(0);
   };
 
-  const setPlayList = (playlist) => {
+  const setPlayList = (playlist, canDeleteSong = false) => {
     if (playlist !== state.playList) {
       dispatch({
         type: SET_PALYLIST,
-        payload: playlist,
+        payload: {
+          playList: playlist,
+          canDeleteSong: canDeleteSong,
+        },
       });
     }
   };
@@ -427,9 +501,52 @@ const PlayerState = (props) => {
     setMusicChangeList(musicChangeList);
   };
 
-  const [musicChangeList, setMusicChangeList] = useState([]);
-
   const zeroPad = (num, places) => String(num).padStart(places, "0");
+
+  const playThisListFromMyProflie = async (listShow) => {
+    setIds(
+      listShow?.[0]?.post.media[0]?.telegram_id,
+      listShow?.[0]?.post.media[0]?.id,
+      listShow?.[0]?.post.media[0]?.duration,
+      listShow?.[0]?.post?.title
+        ? listShow?.[0]?.post?.title
+        : listShow?.[0]?.post.media[0]?.name,
+      listShow?.[0]?.post.person?.[0]?.name,
+      listShow?.[0]?.post?.media?.[0]?.image !== null
+        ? listShow?.[0]?.post?.media?.[0]?.image
+        : listShow?.[0]?.post?.person?.[0]?.image.full_image_url,
+      listShow?.[0]?.post.id,
+      listShow?.[0]?.post?.slug,
+      listShow?.[0]?.post?.meta_title
+        ? listShow?.[0]?.post?.meta_title
+        : listShow?.[0]?.post?.title,
+      listShow?.[0]?.post?.meta_description
+        ? listShow?.[0]?.post?.meta_description
+        : listShow?.[0]?.post?.description
+    );
+    if (listShow?.[0]?.post.media[0]?.path) {
+      setUrl(listShow?.[0]?.post.media[0]?.path, listShow);
+      playMusic();
+    } else {
+      try {
+        const res = await axios.downloader.get(
+          `${item?.post?.media[0]?.telegram_id}`
+        );
+        setUrl(res.data.download_link, playList);
+        playMusic();
+        ChangeShowMusic(true);
+      } catch (error) {
+        console.log(error);
+      }
+      // fetch(`https://downloader.safine.co/${item?.post?.media[0]?.telegram_id}`)
+      //   .then((respone) => respone.json())
+      //   .then((res) => setUrl(res.download_link, playList))
+      //   .then(() => playMusic())
+      //   .then(() => ChangeShowMusic(true))
+      //   .catch((err) => console.log(err));
+    }
+  };
+
   return (
     <PlayerContext.Provider
       value={{
@@ -447,6 +564,7 @@ const PlayerState = (props) => {
         playAndPauseMusic,
         muteAndUnmuteMusic,
         setPlayList,
+        playThisListFromMyProflie,
         mute: state.mute,
         playing: state.playing,
         volume: state.volume,
@@ -476,8 +594,22 @@ const PlayerState = (props) => {
             // autoPlay={state.playing}
             src={state.currentUrl}
             // src={
-            //   'https://files.musico.ir/Song/Ehsan%20Daryadel%20-%20Koochamoon%20(320).mp3'
+            //   "https://files.musico.ir/Song/Ehsan%20Daryadel%20-%20Koochamoon%20(320).mp3"
             // }
+            onLoadedMetadata={async () => {
+              // if (checkIfForce()) {
+              //   changeShowLoginModal(true);
+              //   dispatch({
+              //     type: FORCE_STOP,
+              //   });
+              // } else {
+              // audioRef.current.load();
+              await audioRef.current.play();
+              dispatch({
+                type: PLAY_MUSIC,
+              });
+              // }
+            }}
             type="audio/mpeg"
             preload="metadata"
           ></audio>

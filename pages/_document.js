@@ -14,11 +14,18 @@ export default class MyDocument extends Document {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
-          <link
+          {/* <link
             rel="apple-touch-icon"
             id="musicPhoto"
             type="image/jpg"
             sizes="16x16"
+            href="https://nejat.safine.co/media/images/Pooyanfar-2.jpg"
+          />{" "} */}
+          <link
+            rel="apple-touch-icon"
+            id="musicPhoto"
+            type="image/jpg"
+            sizes="any"
             href="https://nejat.safine.co/media/images/Pooyanfar-2.jpg"
           />
         </Head>

@@ -12,6 +12,7 @@ body {
 body::-webkit-scrollbar {
   /* display: none; */
 }
+
 a {
   font-family: vazir !important;
   color: inherit;
@@ -173,10 +174,10 @@ https://flickity.metafizzy.co
 }
 
 @media (max-width: 768px) {
-  .carousel {
+  /* .carousel {
     height: 170px;
-  }
+  } */
   .flickity-viewport {
-    height: 168px !important;
+    height: 185px !important;
   }
 }

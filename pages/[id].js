@@ -11,16 +11,22 @@ import authContext from "../contexts/auth/authContext";
 
 export default function Home({ data }) {
   const { user, loadUser } = useContext(authContext);
-  // useEffect(() => {
-  //   loadUser();
-  // }, [user]);
-  // console.log(data);
+  useEffect(() => {
+    // loadUser();
+  }, [user]);
+  console.log(data[0]?.description);
   return (
     <div className={styles.home}>
       <Head>
         <title>Laial App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {data[0]?.description && (
+        <div
+          className="text-white mx-4"
+          dangerouslySetInnerHTML={{ __html: `${data[0]?.description}` }}
+        />
+      )}
       {data ? (
         data.map((item, i) =>
           item.banner !== null ? (
@@ -47,11 +53,31 @@ export default function Home({ data }) {
 }
 
 export const getServerSideProps = async ({ params }) => {
-  // const req = await fetch(`https://nejat.safine.co/api/page/home/`);
+  // const req = await axios.instanceApi.get(`/page/home/`);
+
+  // const req = await fetch(`https://nejat.safine.co/api/page/${params?.id}/`);
   // const data = await req.json();
-  // console.log(data.data[0].block);
-  const req = await axios.instanceApi.get(`/page/home/`);
+  // if (!data.data[0]) {
+  //   return {
+  //     notFound: true,
+  //   };
+  // }
+
+  let data;
+
+  try {
+    data = await axios.instanceApi.get(`/page/${params?.id}/`);
+    if (!data.data[0]) {
+      return {
+        notFound: true,
+      };
+    }
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
   return {
-    props: { data: req.data.data[0].block },
+    props: { data: data.data.data[0].block },
   };
 };

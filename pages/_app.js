@@ -19,6 +19,7 @@ import { useEffect } from "react";
 import theme from "../src/theme";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
+import ForceLogin from "../components/ForceLogin";
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -43,6 +44,7 @@ function MyApp({ Component, pageProps }) {
           <AuthState>
             <PlayerState>
               <ScrollToTop />
+              <ForceLogin />
               <Header />
               <RightList />
               <LeftList />

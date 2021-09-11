@@ -1,36 +1,35 @@
-import loadspin from "./loadspin.gif";
-
 const SpinnerLoading = () => {
   return (
     <div
-      // className="mr-auto"
+      // className='mr-auto'
       className="spinner"
       style={{
-        // opacity: 0.7,
-        // position: "absolute",
-        // top: "50%",
-        // left: "50%",
-        // transform: "translate(-50%, -50%)",
+        display: "flex",
+        height: "100%",
         opacity: 0.7,
         position: "absolute",
-        bottom: "45%",
-        width: "50%",
-        height: "50%",
-        left: "25%",
+        // top: '1%',
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: "30px",
+        height: "30px",
+        position: "inherit",
+        transform: "none",
       }}
     >
       <img
-        className="mr-auto"
-        src={loadspin}
+        // className='mr-auto'
+        src={"/SpinnerLoad.gif"}
         alt="..loading"
         style={{
           widows: "200px",
           display: "block",
-          height: "100%",
-          width: "100%",
+          display: "block",
+          width: "100% ",
+          height: "100% ",
         }}
       />
-      {/* <span>در حال آماده سازی</span> */}
     </div>
   );
 };

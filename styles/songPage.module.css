@@ -156,6 +156,23 @@
 .musicInfo__mode {
   margin-right: 30px;
 }
+
+.rowItemPage_play__music {
+  position: absolute;
+
+  top: 14%;
+}
+
+.rowItemPage_play__music svg {
+  color: white;
+  font-size: 140px;
+  opacity: 0.65;
+}
+
+.rowItemSpinnerLoading {
+  position: absolute;
+  top: 15%;
+}
 @media (max-width: 768px) {
   /* .carousel {
     height: 210px;
@@ -171,10 +188,19 @@
   }
   .musicInfo__right {
     justify-content: center;
-    display: flex;
+    /* display: flex; */
+  }
+  .musicInfo__left {
+    margin: 0 12px;
   }
   .musicInfo__image {
     width: 200px;
     height: 200px;
+  }
+  .rowItemPage_play__music {
+    top: 6%;
+  }
+  .rowItemSpinnerLoading {
+    top: 10%;
   }
 }

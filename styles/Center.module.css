@@ -58,8 +58,48 @@
 .playlist__lists::-webkit-scrollbar-thumb:hover {
   background: rgb(63, 63, 63);
 }
+.addBtn {
+  cursor: pointer;
+  border: 1px solid whitesmoke;
+  padding: 5px;
+  background-color: rgb(34, 34, 34);
+  border-radius: 10px;
+  color: white;
+  transition: 0.25s ease-in-out;
+}
 .addBtn svg {
   color: white;
+  font-size: 17px;
+}
+.addBtn:hover {
+  background-color: rgb(77, 77, 77);
+}
+
+.center__input_dialog__div {
+  display: grid;
+  /* direction: rtl; */
+}
+.center__input_dialog__div__warn {
+  color: red;
+  text-align: end;
+  font-size: 10px;
+  margin-top: 5px;
+}
+.center__input_dialog__input {
+  outline-width: 0;
+  border: 0;
+  border-radius: 10px;
+  padding: 5px 15px;
+}
+.center__input_dialog__btn {
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 5px 10px;
+  color: whitesmoke;
+  cursor: pointer;
+}
+.center__input_dialog__btn:hover {
+  background: rgb(97, 97, 99);
 }
 @media (max-width: 768px) {
   .playlist {

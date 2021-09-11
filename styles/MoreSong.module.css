@@ -1,28 +1,22 @@
 .moreSong {
-  background-color: rgb(18, 18, 18);
-  display: flex;
-  flex-wrap: wrap;
-  min-height: 100vh;
-  justify-content: center;
 }
-/* .moreSong__items {
+.moreSong__infiniteScroll__section {
+  min-height: 100vh;
+}
+.moreSong__items {
   padding: 0 10px 0 0;
   display: flex;
-  overflow: hidden;
   flex-wrap: wrap;
   justify-content: center;
-} */
-/* .rowItemPart {
-  width: 16.1%;
-  height: 378px;
-  margin-right: 5px;
-  border-radius: 5px;
-  margin-left: 5px;
-  min-width: 240px;
-  transition: transform 450ms;
-} */
-.infiniteScroll {
+}
+.moreSong .infiniteScroll {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  padding-top: 10px;
+}
+@media (max-width: 768px) {
+  .moreSong {
+    padding-bottom: 110px;
+  }
 }

@@ -40,6 +40,9 @@
     margin-top: 5px;
     margin-bottom: 10px;
   }
+  .carousel {
+    height: 185px;
+  }
   .rowList__title__title {
     font-size: 19px;
   }

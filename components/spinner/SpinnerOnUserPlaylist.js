@@ -1,10 +1,10 @@
-import spinner2 from "./Spinner2.gif";
+import Image from "next/image";
 
 const SpinnerOnUserPlaylist = () => {
   return (
     <div className="spinner" style={{ width: "120px", height: "120px" }}>
-      <img
-        src={spinner2}
+      <Image
+        src={"/Spinner2.gif"}
         alt="..loading"
         style={{
           width: "100%",
@@ -12,6 +12,8 @@ const SpinnerOnUserPlaylist = () => {
           margin: "auto",
           display: "block",
         }}
+        width={"100%"}
+        height={"100%"}
       />
     </div>
   );

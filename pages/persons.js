@@ -2,17 +2,17 @@ import spinerrStyles from "../styles/LoadingIcon.module.css";
 import styles from "../styles/AllPerson.module.css";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useContext, useEffect, useState } from "react";
-import LoadingIcon from "../components/spinner/LoadingIcon";
+import LoadingIcon from "../components/spinner/LoadIcon";
 import PersonItem from "../components/PersonItem";
 import authContext from "../contexts/auth/authContext";
-import fetch from "isomorphic-unfetch";
+import axios from "../axios/axios";
 
 const AllPerson = ({ data }) => {
   // console.log(data);
   const { user, loadUser } = useContext(authContext);
 
   useEffect(() => {
-    loadUser();
+    // loadUser();
   }, [user]);
   const [next, setNext] = useState({
     list: data.results,
@@ -29,21 +29,20 @@ const AllPerson = ({ data }) => {
     });
     setTimeout(async () => {
       try {
-        const res = await fetch(
-          `https://nejat.safine.co/api/persons/?page=${next.page}`
+        const res = await axios.simpleApi.get(
+          `/persons/${params.slug}/?page=${next.page}`
         );
-        const resData = await res.json();
-        // console.log(resData);
-        // console.log(resData.data.results);
+        // console.log(res.data);
+
         setNext({
-          next: resData.next,
-          hasMore: resData.next ? true : false,
-          list: next.list.concat(resData.results),
-          loading: false,
+          next: res.data.next,
+          hasMore: res.data.next ? true : false,
+          list: next.list.concat(res.data.results),
           page: ++next.page,
-          loaderMsg: resData.next ? "Loading..." : "Finish :)",
+          loading: false,
+          loaderMsg: res.data.next ? "Loading..." : "Finish :)",
         });
-        //  next.list.concat(res.data.results);
+        // console.log(next.page);
       } catch (error) {
         console.log(error);
       }
@@ -52,7 +51,6 @@ const AllPerson = ({ data }) => {
 
   return (
     <div className={styles.allPerson}>
-      {" "}
       {next?.list && (
         <InfiniteScroll
           dataLength={next?.list?.length}
@@ -80,6 +78,7 @@ const AllPerson = ({ data }) => {
         style={{
           opacity: next.loading ? "1" : "0",
           transform: next.loading && "translate(-50%, 0px)",
+          border: "2px solid white",
         }}
       >
         <LoadingIcon color="#fff" />
@@ -89,8 +88,8 @@ const AllPerson = ({ data }) => {
   );
 };
 export const getServerSideProps = async ({ params }) => {
-  const res = await fetch(`https://nejat.safine.co/api/persons/`);
-  const resData = await res.json();
+  // const res = await fetch(`https://nejat.safine.co/api/persons/`);
+  // const resData = await res.json();
   // console.log(resData);
 
   //   if (!resData.data) {
@@ -98,10 +97,17 @@ export const getServerSideProps = async ({ params }) => {
   //       notFound: true,
   //     };
   //   }
-
+  let resData;
+  try {
+    resData = await axios.instanceApi.get(`/persons/`);
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
   return {
     props: {
-      data: resData,
+      data: resData.data,
     },
   };
 };

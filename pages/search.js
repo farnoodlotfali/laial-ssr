@@ -8,6 +8,7 @@ import RowItem from "../components/relatedToRowItem/RowItem";
 import authContext from "../contexts/auth/authContext";
 import { CloseRounded } from "@material-ui/icons";
 import { useRouter } from "next/router";
+import axios from "../axios/axios";
 const Search = () => {
   const router = useRouter();
   const inputRef = useRef();
@@ -23,7 +24,7 @@ const Search = () => {
     loading: false,
   });
   useEffect(() => {
-    loadUser();
+    // loadUser();
   }, [user]);
 
   const onchange = (e) => {
@@ -45,22 +46,19 @@ const Search = () => {
     e.preventDefault();
     setTimeout(async () => {
       try {
-        const res = await fetch(
-          `https://nejat.safine.co/api/search/?q=${searchValue}`
+        const resData = await axios.instanceApi.get(
+          `/search/?q=${searchValue}`
         );
-        const resData = await res.json();
-        // console.log(resData);
-        // console.log(resData.data.results);
+
         setNext({
-          next: resData.next,
-          hasMore: resData.next ? true : false,
-          listResults: resData.results,
-          listPersons: resData.persons,
+          next: resData.data.next,
+          hasMore: resData.data.next ? true : false,
+          listResults: resData.data.results,
+          listPersons: resData.data.persons,
           page: 2,
-          loaderMsg: resData.next ? "Loading..." : "Finish :)",
+          loaderMsg: resData.data.next ? "Loading..." : "Finish :)",
           loading: false,
         });
-        //  next.list.concat(res.data.results);
       } catch (error) {
         console.log(error);
       }
@@ -75,19 +73,19 @@ const Search = () => {
     });
     setTimeout(async () => {
       try {
-        const res = await fetch(
-          `https://nejat.safine.co/api/search/?page=${next.page}&q=${searchValue}`
+        const resData = await axios.instanceApi.get(
+          `/search/?page=${next.page}&q=${searchValue}`
         );
-        const resData = await res.json();
+
         // console.log(res.data);
         // next.listResults.concat(res.data.results);
         setNext({
-          next: resData.next,
-          hasMore: resData.next ? true : false,
-          listResults: next.listResults.concat(resData.results),
+          next: resData.data.next,
+          hasMore: resData.data.next ? true : false,
+          listResults: next.listResults.concat(resData.data.results),
           listPersons: next.listPersons,
           page: ++next.page,
-          loaderMsg: resData.next ? "Loading..." : "Finish :)",
+          loaderMsg: resData.data.next ? "Loading..." : "Finish :)",
           loading: false,
         });
         // console.log(next.page);
@@ -114,6 +112,7 @@ const Search = () => {
             autoFocus={true}
             ref={inputRef}
           />
+
           <div
             className={styles.searchFields__option__form__goBack}
             onClick={() => router.back()}
@@ -180,6 +179,7 @@ const Search = () => {
         style={{
           opacity: next.loading ? "1" : "0",
           transform: next.loading && "translate(-50%, 0px)",
+          border: "2px solid white",
         }}
       >
         <LoadingIcon color="#fff" />

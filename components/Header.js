@@ -1,4 +1,3 @@
-import zIndex from "@material-ui/core/styles/zIndex";
 import {
   AccountCircleRounded,
   ExitToAppRounded,
@@ -84,9 +83,11 @@ const Header = () => {
                 <Dropdown.Menu className={styles.dropdownMenu}>
                   <Dropdown.Item className={styles.dropdownItem}>
                     <Link href="/myprofile">
-                      <span>پروفایل</span>
+                      <span className="d-flex w-100 justify-content-between">
+                        پروفایل
+                        <PersonRounded />
+                      </span>
                     </Link>
-                    <PersonRounded className="" />
                   </Dropdown.Item>
                   <Dropdown.Item
                     className={styles.dropdownItem}
