@@ -1,14 +1,17 @@
-import { useContext, useEffect, useState } from 'react';
-import Link from 'next/link';
-import styles from '../styles/Login.module.css';
-import authContext from '../contexts/auth/authContext';
-import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from "react";
+import Link from "next/link";
+import styles from "../styles/Login.module.css";
+import authContext from "../contexts/auth/authContext";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import playerContext from "../contexts/player/playerContext";
 const ForgetPass = () => {
   const { login, user, error } = useContext(authContext);
+  const { playing } = useContext(playerContext);
   const [userInfo, setUserInfo] = useState({
-    username: '',
-    email: '',
-    password: '',
+    username: "",
+    email: "",
+    password: "",
   });
   const router = useRouter();
 
@@ -30,18 +33,19 @@ const ForgetPass = () => {
   };
   return (
     <div className={styles.login}>
+      <Head>{!playing && <title> فراموشی رمز عبور</title>}</Head>
       <div className={styles.color}></div>
       <div className={styles.color}></div>
       <div className={styles.color}></div>
       <div className={styles.box}>
-        <div className={styles.square} style={{ i: '0' }}></div>
-        <div className={styles.square} style={{ i: '1' }}></div>
-        <div className={styles.square} style={{ i: '2' }}></div>
-        <div className={styles.square} style={{ i: '3' }}></div>
-        <div className={styles.square} style={{ i: '4' }}></div>
+        <div className={styles.square} style={{ i: "0" }}></div>
+        <div className={styles.square} style={{ i: "1" }}></div>
+        <div className={styles.square} style={{ i: "2" }}></div>
+        <div className={styles.square} style={{ i: "3" }}></div>
+        <div className={styles.square} style={{ i: "4" }}></div>
         <div className={styles.login__container}>
           <div className={styles.form}>
-            <h2 className='text-center'>فراموشی رمز عبور</h2>
+            <h2 className="text-center">فراموشی رمز عبور</h2>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -54,21 +58,21 @@ const ForgetPass = () => {
               <div className={styles.inputBox}>
                 <input
                   onChange={onchange}
-                  name='email'
-                  type='email'
+                  name="email"
+                  type="email"
                   value={email}
-                  placeholder='ایمیل'
+                  placeholder="ایمیل"
                   required
                 />
               </div>
               <div className={`${styles.notRegister} pt-2`}>
                 <span>ثبت نام نکرده اید؟</span>
-                <Link href='/register'>
+                <Link href="/register">
                   <span className={styles.register}> ثبت نام</span>
                 </Link>
               </div>
               <div className={`${styles.inputBox} text-center`}>
-                <input type='submit' value='ثبت' />
+                <input type="submit" value="ثبت" />
               </div>
             </form>
           </div>

@@ -24,6 +24,7 @@ import LoadingIcon from "../components/spinner/LoadingIcon";
 import playerContext from "../contexts/player/playerContext";
 import MyProfileSongOnMobile from "../components/MyProfileSongOnMobile";
 import axios from "../axios/axios";
+import Head from "next/head";
 
 const myprofile = () => {
   const { user } = useContext(authContext);
@@ -41,7 +42,7 @@ const myprofile = () => {
     ChangeShowCreateList,
     showMusic,
   } = useContext(appContext);
-  const { playThisListFromMyProflie, showMusicBarOnMoblieRatio } =
+  const { playThisListFromMyProflie, showMusicBarOnMoblieRatio, playing } =
     useContext(playerContext);
 
   const router = useRouter();
@@ -163,6 +164,8 @@ const myprofile = () => {
             : ""
         } ${styles.myprofile}`}
       >
+        <Head>{!playing && <title> پروفایل من</title>}</Head>
+
         <div className={styles.myprofile__top}>
           {/* mobile ratio */}
           <div className={styles.myprofile__mobile__show}>

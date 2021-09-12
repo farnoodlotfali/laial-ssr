@@ -20,6 +20,7 @@ import axios from "../../axios/axios";
 import playerContext from "../../contexts/player/playerContext";
 import SpinnerLoadingOnRowItem from "../../components/spinner/SpinnerLoadingOnRowItem";
 import PlaySvg from "../../components/svgs/PlaySvg";
+import Head from "next/head";
 
 export default function songPage({ data, recommender, view, songUrlData }) {
   const [show, setShow] = useState(false);
@@ -137,15 +138,22 @@ export default function songPage({ data, recommender, view, songUrlData }) {
           : ""
       } ${styles.songPage} `}
     >
+      <Head>
+        {!playing && (
+          <title>{data?.title ? data?.title : data?.media?.[0]?.name}</title>
+        )}
+      </Head>
       <div className={`${styles.musicInfo}  d-flex justify-content-around`}>
         <div className={`${styles.musicInfo__right}`}>
           <div className="d-flex justify-content-center">
             <img
               className={styles.musicInfo__image}
               src={
-                data?.media?.[0]?.image !== null
+                data?.image?.full_image_url
+                  ? data?.image?.full_image_url
+                  : data?.media?.[0]?.image !== null
                   ? data?.media?.[0]?.image
-                  : data?.person?.[0]?.image.full_image_url !== null
+                  : data?.person?.[0]?.image.full_image_url
                   ? data?.person?.[0]?.image.full_image_url
                   : "/defualtPhoto"
               }
@@ -173,19 +181,6 @@ export default function songPage({ data, recommender, view, songUrlData }) {
           <div
             className={`${styles.actions} d-flex justify-content-around mt-2`}
           >
-            {/* <div
-            //   onClick={playMusicAndShowMusicBar}
-            >
-              <Tooltip placement="bottom" title="پخش آهنگ">
-                <IconButton aria-label="play">
-                  <PlayArrowRounded
-                    fontSize="small"
-                    className={`${styles.icon} `}
-                  />
-                </IconButton>
-              </Tooltip>
-            </div> */}
-
             <div className={`${styles.favoritePart} text-center`}>
               <IconButton
                 aria-label="Favorite"

@@ -2,10 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "../styles/Login.module.css";
 import authContext from "../contexts/auth/authContext";
-import loginBackGround from "../public/login.jpg";
 import { useRouter } from "next/router";
+import Head from "next/head";
+import playerContext from "../contexts/player/playerContext";
 const Login = () => {
   const { login, user, error } = useContext(authContext);
+  const { playing } = useContext(playerContext);
   const [userInfo, setUserInfo] = useState({
     username: "",
     email: "",
@@ -40,6 +42,7 @@ const Login = () => {
         minHeight: "100vh",
       }}
     >
+      <Head>{!playing && <title> ورود</title>}</Head>
       {/* <div className={styles.color}></div>
       <div className={styles.color}></div>
       <div className={styles.color}></div> */}

@@ -4,11 +4,14 @@ import axios from "../axios/axios";
 import styles from "../styles/UserInterests.module.css";
 import authContext from "../contexts/auth/authContext";
 import InfiniteScroll from "react-infinite-scroll-component";
+import playerContext from "../contexts/player/playerContext";
+import Head from "next/head";
 
 const userinterests = () => {
   const router = useRouter();
   const { getTags, tags, tagsUrls, saveChosenTags, isUserChooseTags, user } =
     useContext(authContext);
+  const { playing } = useContext(playerContext);
   const [chosenTagsList, setChosenTagsList] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
   const [next, setNext] = useState({
@@ -80,6 +83,8 @@ const userinterests = () => {
 
   return (
     <div className={styles.userInterests}>
+      <Head>{!playing && <title> علاقه ها</title>}</Head>
+
       <div className={styles.userInterests__top}>
         <div className={styles.userInterests__info}>
           <span className={styles.userInterests__info__title}>

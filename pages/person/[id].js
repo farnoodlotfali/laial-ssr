@@ -14,6 +14,7 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import { makeStyles } from "@material-ui/core";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import Head from "next/head";
 
 const useStyles = makeStyles((theme) => ({
   summaryRoot: {
@@ -46,7 +47,7 @@ const Person = ({ data }) => {
   const classes = useStyles();
   const [readMore, setReadMore] = useState(false);
 
-  const { showMusicBarOnMoblieRatio } = useContext(playerContext);
+  const { showMusicBarOnMoblieRatio, playing } = useContext(playerContext);
   const { showMusic } = useContext(appContext);
   const router = useRouter();
   const id = router.query.id;
@@ -94,6 +95,9 @@ const Person = ({ data }) => {
           : ""
       }  ${styles.person}`}
     >
+      <Head>
+        {!playing && <title> {next.list?.[0]?.person?.[0]?.name}</title>}
+      </Head>
       <div className=" m-5 ">
         <Accordion onChange={(e, expanded) => setReadMore(expanded)}>
           <AccordionSummary

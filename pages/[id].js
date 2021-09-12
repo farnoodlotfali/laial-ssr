@@ -7,19 +7,22 @@ import TileBanner from "../components/TileBanner";
 import Spinner from "../components/spinner/Spinner";
 import { useContext, useEffect } from "react";
 import authContext from "../contexts/auth/authContext";
+import playerContext from "../contexts/player/playerContext";
 // import styles from '../styles/Home.module.css';
 
 export default function Home({ data }) {
   const { user, loadUser } = useContext(authContext);
+  const { playing } = useContext(playerContext);
   useEffect(() => {
     // loadUser();
   }, [user]);
-  console.log(data[0]?.description);
+  // console.log(data[0]?.description);
   return (
     <div className={styles.home}>
       <Head>
-        <title>Laial App</title>
-        <link rel="icon" href="/favicon.ico" />
+        {!playing && (
+          <title> سفینه - بزرگترین مرجع نواهای مذهبی - ویژه محرم ۱۴۰۰</title>
+        )}
       </Head>
       {data[0]?.description && (
         <div

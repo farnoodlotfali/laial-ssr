@@ -8,6 +8,7 @@ import RowItem from "../components/relatedToRowItem/RowItem";
 import authContext from "../contexts/auth/authContext";
 import { CloseRounded } from "@material-ui/icons";
 import { useRouter } from "next/router";
+import Head from "next/head";
 import axios from "../axios/axios";
 const Search = () => {
   const router = useRouter();
@@ -96,6 +97,8 @@ const Search = () => {
   });
   return (
     <div className={styles.search}>
+      <Head>{!playing && <title> جستجو</title>}</Head>
+
       <div className={`${styles.searchFields__option}  my-3 py-3`}>
         <form onSubmit={(e) => onSubmitHandle(e)}>
           <input

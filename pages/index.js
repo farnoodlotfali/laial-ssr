@@ -13,11 +13,7 @@ import appContext from "../contexts/app/appContext";
 
 export default function Home({ data }) {
   const { user, loadUser } = useContext(authContext);
-  // useEffect(() => {
-  //   loadUser();
-  // }, [user]);
-  // console.log(data);
-  const { showMusicBarOnMoblieRatio } = useContext(playerContext);
+  const { showMusicBarOnMoblieRatio, playing } = useContext(playerContext);
   const { showMusic } = useContext(appContext);
   return (
     <div
@@ -30,8 +26,9 @@ export default function Home({ data }) {
       } ${styles.home}`}
     >
       <Head>
-        <title>Laial App</title>
-        <link rel="icon" href="/favicon.ico" />
+        {!playing && (
+          <title> سفینه - بزرگترین مرجع نواهای مذهبی - ویژه محرم ۱۴۰۰</title>
+        )}
       </Head>
       {data ? (
         data.map((item, i) =>

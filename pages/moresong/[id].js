@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import spinerrStyles from "../../styles/LoadingIcon.module.css";
 import LoadingIcon from "../../components/spinner/LoadIcon";
 import authContext from "../../contexts/auth/authContext";
+import Head from "next/head";
+import playerContext from "../../contexts/player/playerContext";
 
 const MoreSong = ({ data }) => {
   const router = useRouter();
@@ -19,6 +21,7 @@ const MoreSong = ({ data }) => {
     loading: false,
   });
   const { user, loadUser } = useContext(authContext);
+  const { playing } = useContext(playerContext);
 
   // console.log(next);
 
@@ -50,6 +53,7 @@ const MoreSong = ({ data }) => {
 
   return (
     <div className={`${styles.moreSong} pt-5`}>
+      <Head>{!playing && <title> {data?.block?.name}</title>}</Head>
       <div className="moreSong__title text-light text-center mb-3">
         <h3> {data?.block?.name}</h3>
       </div>

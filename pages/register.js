@@ -2,9 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "../styles/Register.module.css";
 import authContext from "../contexts/auth/authContext";
+import Head from "next/head";
 import { useRouter } from "next/router";
 const Register = () => {
   const { register, user, loadUser, error } = useContext(authContext);
+  const { playing } = useContext(player);
   const [errorMsg, setErrorMsg] = useState("");
 
   const [userInfo, setUserInfo] = useState({
@@ -43,6 +45,8 @@ const Register = () => {
   };
   return (
     <div className={styles.register}>
+      <Head>{!playing && <title> ثبت نام</title>}</Head>
+
       {/* <div className={styles.color}></div>
       <div className={styles.color}></div>
       <div className={styles.color}></div> */}

@@ -6,6 +6,7 @@ import LoadingIcon from "../components/spinner/LoadIcon";
 import PersonItem from "../components/PersonItem";
 import authContext from "../contexts/auth/authContext";
 import axios from "../axios/axios";
+import Head from "next/head";
 
 const AllPerson = ({ data }) => {
   // console.log(data);
@@ -48,6 +49,8 @@ const AllPerson = ({ data }) => {
 
   return (
     <div className={styles.allPerson}>
+      <Head>{!playing && <title> اشخاص</title>}</Head>
+
       {next?.list && (
         <InfiniteScroll
           dataLength={next?.list?.length}

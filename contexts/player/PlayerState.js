@@ -61,6 +61,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "../../axios/axios";
 import Bar from "./Bar";
 import Time from "./Time";
+import Head from "next/head";
 const useStyles = makeStyles({
   rail: {
     height: "4px",
@@ -738,7 +739,21 @@ const PlayerState = (props) => {
         showMusicBarOnMoblieRatio: state.showMusicBarOnMoblieRatio,
       }}
     >
+      <Head>
+        <title>{state.songName}</title>
+
+        <link
+          rel="apple-touch-icon"
+          id="musicPhoto"
+          type="image/jpg"
+          sizes="16x16"
+          href={state.songPhoto}
+        />
+        {/* <link rel="icon" href="/favicon_safine.png" /> */}
+      </Head>
+
       {props.children}
+
       <Fragment>
         <div id="audio">
           <audio
