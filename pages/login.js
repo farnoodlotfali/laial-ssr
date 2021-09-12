@@ -103,6 +103,9 @@ const Login = () => {
                 <input type="submit" value="ورود" />
               </div>
             </form>
+            <div className="policy_page_login text-primary w-100 text-left">
+              <Link href="/privacy-policy">سیاست حفظ حریم خصوصی </Link>
+            </div>
           </div>
         </div>
       </div>

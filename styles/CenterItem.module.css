@@ -35,4 +35,10 @@
   .centerItem__info {
     font-size: 9px;
   }
+  .list input {
+    font-size: 13px;
+  }
+  .list__icons svg {
+    font-size: 17px;
+  }
 }

@@ -5,13 +5,14 @@ import Link from "next/link";
 import playerContext from "../contexts/player/playerContext";
 import styles from "../styles/MyProfile.module.css";
 import defualtPhoto from "../public/defualtPhoto.jpeg";
+import axios from "../axios/axios";
 
 const MyProfileSong = ({ item, zeroPad, truncate, deleteBtn, playlist }) => {
   const { ChangeShowMusic, showMusic, removeSongFromPlaylist } =
     useContext(appContext);
   const { setUrl, playMusic, setIds, playing, playAndPauseMusic, songId } =
     useContext(playerContext);
-  // console.log(playlist);
+  // console.log(item?.post.media[0]);
   const paly = async () => {
     if (item?.post.media[0]?.id === songId) {
       playAndPauseMusic();

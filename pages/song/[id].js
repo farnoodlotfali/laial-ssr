@@ -67,6 +67,7 @@ export default function songPage({ data, recommender, view, songUrlData }) {
     loading,
     songId,
     playAndPauseMusic,
+    showMusicBarOnMoblieRatio,
   } = useContext(playerContext);
   const {
     setWhichSongToSaveInPlaylist,
@@ -81,10 +82,7 @@ export default function songPage({ data, recommender, view, songUrlData }) {
       [e.target.name]: e.target.value,
     });
   };
-  useEffect(() => {
-    // loadUser();
-    // setsongurl();
-  }, [user, like, isAuth, songUrl]);
+
   const playMusicAndShowMusicBar = async () => {
     if (data?.media?.[0]?.id === songId) {
       playAndPauseMusic();
@@ -126,11 +124,19 @@ export default function songPage({ data, recommender, view, songUrlData }) {
           console.log(error);
         }
       }
-      user !== null && addMusicToRecentlyViewed(1, data?.id);
+      // user !== null && addMusicToRecentlyViewed(1, data?.id);
     }
   };
   return (
-    <div className={`${styles.songPage} py-4  `}>
+    <div
+      className={`${
+        showMusic
+          ? showMusicBarOnMoblieRatio
+            ? styles.songPageShowMusicBarOnMoblieRatio
+            : styles.songPageShowMusic
+          : ""
+      } ${styles.songPage} `}
+    >
       <div className={`${styles.musicInfo}  d-flex justify-content-around`}>
         <div className={`${styles.musicInfo__right}`}>
           <div className="d-flex justify-content-center">

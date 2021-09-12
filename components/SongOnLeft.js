@@ -42,7 +42,7 @@ const SongOnLeft = ({ item, playlist, number, zeroPad }) => {
     } else {
       try {
         const res = await axios.downloader.get(
-          `/${item.media[0]?.telegram_id}`
+          `/${item?.media[0]?.telegram_id}`
         );
         setUrl(res.data.download_link, playList);
 
@@ -84,7 +84,7 @@ const SongOnLeft = ({ item, playlist, number, zeroPad }) => {
 
           <div className={`${styles.song__info} mr-3 align-self-center `}>
             <div className={styles.song__title}>
-              {item?.title ? item?.title : item?.media?.[0]?.name}
+              <span>{item?.title ? item?.title : item?.media?.[0]?.name}</span>
             </div>
             <div className={styles.song__person}>{item?.person?.[0]?.name}</div>
           </div>

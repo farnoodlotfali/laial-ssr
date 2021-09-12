@@ -123,4 +123,13 @@
     width: 100%;
     flex-direction: column;
   }
+  .home {
+    padding-bottom: 50px;
+  }
+  .homeShowMusicBarOnMoblieRatio {
+    padding-bottom: 190px;
+  }
+  .homeShowMusic {
+    padding-bottom: 100px;
+  }
 }

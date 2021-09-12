@@ -434,6 +434,12 @@ position: relative; */
     padding-bottom: 75px;
     padding-top: 15px;
   }
+  .myprofileShowMusicBarOnMoblieRatio {
+    padding-bottom: 210px;
+  }
+  .myprofileShowMusic {
+    padding-bottom: 125px;
+  }
   .myprofile__top {
     height: 170px;
   }

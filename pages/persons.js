@@ -11,9 +11,6 @@ const AllPerson = ({ data }) => {
   // console.log(data);
   const { user, loadUser } = useContext(authContext);
 
-  useEffect(() => {
-    // loadUser();
-  }, [user]);
   const [next, setNext] = useState({
     list: data.results,
     next: data.next,

@@ -4,6 +4,7 @@ import { useContext } from "react";
 import appContext from "../contexts/app/appContext";
 import { DeleteRounded, Pause, PlayArrowRounded } from "@material-ui/icons";
 import playerContext from "../contexts/player/playerContext";
+import axios from "../axios/axios";
 
 const MyProfileSongOnMobile = ({ item, deleteBtn, playlist }) => {
   const { ChangeShowMusic, showMusic, removeSongFromPlaylist } =
@@ -15,7 +16,7 @@ const MyProfileSongOnMobile = ({ item, deleteBtn, playlist }) => {
   const truncate = (str, no_words) => {
     return str?.split(" ").splice(0, no_words).join(" ");
   };
-
+  // console.log(item?.post.media[0]);
   const paly = async () => {
     if (item?.post.media[0]?.id === songId) {
       playAndPauseMusic();

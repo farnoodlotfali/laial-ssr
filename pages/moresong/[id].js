@@ -20,9 +20,6 @@ const MoreSong = ({ data }) => {
   });
   const { user, loadUser } = useContext(authContext);
 
-  useEffect(() => {
-    // loadUser();
-  }, [user]);
   // console.log(next);
 
   const infiniteList = async () => {

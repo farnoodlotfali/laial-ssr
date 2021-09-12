@@ -38,6 +38,7 @@
 }
 .phoneMusicBar__title div {
   white-space: nowrap;
+  font-size: 14px;
 }
 
 .scroll {
@@ -53,8 +54,9 @@
 }
 
 .phoneMusicBar__singer {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 500;
+  color: rgb(185, 185, 185);
 }
 
 .phoneMusicBar__right {

@@ -21,7 +21,7 @@ const Register = () => {
     // console.log(user);
     if (user) {
       // props.history.back();
-      router.back();
+      router.push("/user-interests");
     }
     // loadUser();
 
@@ -143,6 +143,9 @@ const Register = () => {
                 <input type="submit" value="ثبت نام" />
               </div>
             </form>
+            <div className="policy_page_login text-primary w-100 text-left">
+              <Link href="/privacy-policy">سیاست حفظ حریم خصوصی </Link>
+            </div>
           </div>
         </div>
       </div>

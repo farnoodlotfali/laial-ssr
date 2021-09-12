@@ -100,29 +100,10 @@ export default (state, action) => {
       };
 
     case CHANGE_LOOP_STATE:
-      switch (state.noneOrLoopOrRepeat) {
-        case 0:
-          return {
-            ...state,
-            noneOrLoopOrRepeat: 1,
-            loop: true,
-            repeatOne: false,
-          };
-        case 1:
-          return {
-            ...state,
-            noneOrLoopOrRepeat: 2,
-            loop: false,
-            repeatOne: true,
-          };
-        default:
-          return {
-            ...state,
-            noneOrLoopOrRepeat: 0,
-            loop: false,
-            repeatOne: false,
-          };
-      }
+      return {
+        ...state,
+        loop: action.payload,
+      };
 
     case CHANGE_SHOW_MUSICBAR_ON_MOBILE_RATIO:
       return {

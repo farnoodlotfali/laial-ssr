@@ -23,9 +23,6 @@ const Search = () => {
     loaderMsg: "",
     loading: false,
   });
-  useEffect(() => {
-    // loadUser();
-  }, [user]);
 
   const onchange = (e) => {
     setSearchValue(([e.target.name] = e.target.value));

@@ -7,16 +7,51 @@ import spinerrStyles from "../../styles/LoadingIcon.module.css";
 import { useRouter } from "next/router";
 import authContext from "../../contexts/auth/authContext";
 import axios from "../../axios/axios";
+import playerContext from "../../contexts/player/playerContext";
+import appContext from "../../contexts/app/appContext";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import { makeStyles } from "@material-ui/core";
+import { ExpandLess, ExpandMore } from "@material-ui/icons";
 
+const useStyles = makeStyles((theme) => ({
+  summaryRoot: {
+    width: "100%",
+    display: "flex",
+    background: "black",
+    color: "white",
+    borderTopLeftRadius: "10px",
+    borderTopRightRadius: "10px",
+    borderBottom: "1px solid lightgrey",
+  },
+  summaryContent: {
+    justifyContent: "space-between",
+  },
+  detailsRoot: {
+    background: "black",
+    borderBottomLeftRadius: "10px",
+    borderBottomRightRadius: "10px",
+    color: "white",
+    textAlign: "justify",
+    direction: "rtl",
+    fontSize: "12px",
+    lineHeight: "30px",
+    "@media (max-width: 768px)": {
+      display: "grid",
+    },
+  },
+}));
 const Person = ({ data }) => {
-  //   console.log(data);
+  const classes = useStyles();
+  const [readMore, setReadMore] = useState(false);
+
+  const { showMusicBarOnMoblieRatio } = useContext(playerContext);
+  const { showMusic } = useContext(appContext);
   const router = useRouter();
   const id = router.query.id;
   const { user, loadUser } = useContext(authContext);
 
-  useEffect(() => {
-    // loadUser();
-  }, [user]);
   const [next, setNext] = useState({
     list: data.results,
     next: data.next,
@@ -50,31 +85,58 @@ const Person = ({ data }) => {
     }, 1200);
   };
   return (
-    <div className={`${styles.person} person`}>
-      <div className="person__infoAndImg py-4 d-flex justify-content-center align-items-center">
-        <div className={`${styles.card__person}`}>
-          <div className={`${styles.circle__person}`}>
-            <div className={`${styles.content__person} text-center`}>
-              <h2>Franood lotfali</h2>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Repellendus voluptatum dolorebus animi explicabo ullam est
-                expedita dolore? Praesentium excepturi delectus illo culpa.
-              </p>
+    <div
+      className={`${
+        showMusic
+          ? showMusicBarOnMoblieRatio
+            ? styles.personPageShowMusicBarOnMoblieRatio
+            : styles.personPageShowMusic
+          : ""
+      }  ${styles.person}`}
+    >
+      <div className=" m-5 ">
+        <Accordion onChange={(e, expanded) => setReadMore(expanded)}>
+          <AccordionSummary
+            classes={{
+              root: classes.summaryRoot,
+              content: classes.summaryContent,
+            }}
+          >
+            {readMore ? (
+              <div className="">
+                <span className={styles.person_expand}>بستن </span>
+                <ExpandLess fontSize="small" />
+              </div>
+            ) : (
+              <div className="">
+                <span className={styles.person_expand}>نمایش بیشتر</span>
+                <ExpandMore fontSize="small" />
+              </div>
+            )}
+
+            <span>{next.list?.[0]?.person?.[0]?.name}</span>
+          </AccordionSummary>
+
+          <AccordionDetails classes={{ root: classes.detailsRoot }}>
+            <div className="d-flex justify-content-center">
+              <div className={styles.person_information_img_information}>
+                <img
+                  src={
+                    next.list?.[0]?.media[0]?.image !== null
+                      ? next.list?.[0]?.media[0]?.image
+                      : next.list?.[0]?.person[0]?.image.full_image_url !== null
+                      ? next.list?.[0]?.person[0]?.image.full_image_url
+                      : defualtPhoto
+                  }
+                  alt=""
+                />
+              </div>
             </div>
-            <img
-              src={
-                data.results[0]?.media?.[0]?.image !== null
-                  ? data.results[0]?.media?.[0]?.image
-                  : data.results[0]?.person?.[0]?.image.full_image_url !== null
-                  ? data.results[0]?.person?.[0]?.image.full_image_url
-                  : "/defualtPhoto.jpeg"
-              }
-              alt="image"
-            />
-          </div>
-        </div>
+            <div>{next.list?.[0]?.person?.[0]?.description}</div>
+          </AccordionDetails>
+        </Accordion>
       </div>
+
       <div className="person__infiniteScroll__section">
         {next?.list && (
           <InfiniteScroll

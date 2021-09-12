@@ -1,11 +1,11 @@
-import { Pause, PlayArrowRounded } from "@material-ui/icons";
+import { Pause } from "@material-ui/icons";
 import Link from "next/link";
 import Image from "next/image";
 import { useContext } from "react";
 import appContext from "../../contexts/app/appContext";
 import playerContext from "../../contexts/player/playerContext";
 import styles from "../../styles/RowItem.module.css";
-import AbortController from "abort-controller";
+// import AbortController from "abort-controller";
 import defualtPhoto from "../../public/defualtPhoto.jpeg";
 import PlaySvg from "../svgs/PlaySvg";
 import authContext from "../../contexts/auth/authContext";
@@ -38,8 +38,12 @@ const RowItem = ({
     setIds,
     playAndPauseMusic,
   } = useContext(playerContext);
-  const { ChangeShowMusic, ChangeshowCenter, showMusic } =
-    useContext(appContext);
+  const {
+    ChangeShowMusic,
+    ChangeshowCenter,
+    showMusic,
+    addMusicToRecentlyViewed,
+  } = useContext(appContext);
   const { changeShowLoginModal, checkIfForce, user } = useContext(authContext);
   const playMusicAndShowMusicBar = async () => {
     // نشان دادن موزیک و پخش موزیک
@@ -47,6 +51,7 @@ const RowItem = ({
     if (checkIfForce()) {
       changeShowLoginModal(true);
     } else {
+      // user !== null && addMusicToRecentlyViewed(1, postId);
       if (!showMusic) {
         ChangeShowMusic(true);
       }
@@ -182,12 +187,13 @@ const RowItem = ({
             <div className={styles.steady__rowItem__title}>
               {truncate(title ? title : media?.name, 4)}
             </div>
-            {/* {media?.name} */}
+            <div className={styles.scroll__rowItem__title}>
+              {title ? title : media?.name}
+            </div>
           </h4>
         </Link>
         <Link href={`/person/${person?.[0]?.slug}`}>
           <h4 className={`${styles.rowItem__person} text-center`}>
-            {/* حاج محمد شریفی */}
             {person?.[0]?.name}
           </h4>
         </Link>

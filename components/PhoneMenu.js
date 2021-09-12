@@ -1,14 +1,15 @@
-import { useContext } from 'react';
-import styles from '../styles/phoneMenu.module.css';
-import appContext from '../contexts/app/appContext';
+import { useContext } from "react";
+import styles from "../styles/phoneMenu.module.css";
+import appContext from "../contexts/app/appContext";
 import {
   Headset,
   Home,
   MenuRounded,
   MusicNote,
   Search,
-} from '@material-ui/icons';
-import Link from 'next/link';
+} from "@material-ui/icons";
+import Link from "next/link";
+import playerContext from "../contexts/player/playerContext";
 const PhoneMenu = () => {
   const {
     showRightList,
@@ -18,36 +19,41 @@ const PhoneMenu = () => {
     ChangeShowMusic,
     showMusic,
   } = useContext(appContext);
+  const { setShowMusicBarOnMoblieRatio, showMusicBarOnMoblieRatio } =
+    useContext(playerContext);
   return (
     <div className={styles.phoneMenu}>
-      <div className='phoneMenu__items d-flex justify-content-around py-2 '>
+      <div className="phoneMenu__items d-flex justify-content-around py-2 ">
         <div
           className={styles.phoneMenu__item}
           onClick={() => showRightList(RightList ? false : true)}
         >
-          <MenuRounded fontSize='large' />
+          <MenuRounded fontSize="large" />
         </div>
         <div className={styles.phoneMenu__item}>
-          <Link href='/'>
-            <Home fontSize='large' />
+          <Link href="/">
+            <Home fontSize="large" />
           </Link>
         </div>
         <div className={styles.phoneMenu__item}>
-          <Link href='/search'>
-            <Search fontSize='large' />
+          <Link href="/search">
+            <Search fontSize="large" />
           </Link>
         </div>
         <div
           className={styles.phoneMenu__item}
           onClick={() => showCenterList(centerList ? false : true)}
         >
-          <Headset fontSize='large' />
+          <Headset fontSize="large" />
         </div>
         <div
           className={styles.phoneMenu__item}
-          onClick={() => ChangeShowMusic(showMusic ? false : true)}
+          onClick={() => {
+            ChangeShowMusic(showMusic ? false : true);
+            showMusicBarOnMoblieRatio && setShowMusicBarOnMoblieRatio();
+          }}
         >
-          <MusicNote fontSize='large' />
+          <MusicNote fontSize="large" />
         </div>
       </div>
     </div>

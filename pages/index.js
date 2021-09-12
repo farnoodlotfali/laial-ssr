@@ -7,6 +7,8 @@ import TileBanner from "../components/TileBanner";
 import Spinner from "../components/spinner/Spinner";
 import { useContext, useEffect } from "react";
 import authContext from "../contexts/auth/authContext";
+import playerContext from "../contexts/player/playerContext";
+import appContext from "../contexts/app/appContext";
 // import styles from '../styles/Home.module.css';
 
 export default function Home({ data }) {
@@ -15,8 +17,18 @@ export default function Home({ data }) {
   //   loadUser();
   // }, [user]);
   // console.log(data);
+  const { showMusicBarOnMoblieRatio } = useContext(playerContext);
+  const { showMusic } = useContext(appContext);
   return (
-    <div className={styles.home}>
+    <div
+      className={`${
+        showMusic
+          ? showMusicBarOnMoblieRatio
+            ? styles.homeShowMusicBarOnMoblieRatio
+            : styles.homeShowMusic
+          : ""
+      } ${styles.home}`}
+    >
       <Head>
         <title>Laial App</title>
         <link rel="icon" href="/favicon.ico" />

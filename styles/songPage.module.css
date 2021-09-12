@@ -1,5 +1,7 @@
 .songPage {
   background-color: rgb(18, 18, 18);
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
 .musicInfo__right {
@@ -174,9 +176,15 @@
   top: 15%;
 }
 @media (max-width: 768px) {
-  /* .carousel {
-    height: 210px;
-  } */
+  .songPage {
+    padding-bottom: 50px;
+  }
+  .songPageShowMusicBarOnMoblieRatio {
+    padding-bottom: 190px;
+  }
+  .songPageShowMusic {
+    padding-bottom: 110px;
+  }
   .rowList {
     margin-top: 0 !important;
   }

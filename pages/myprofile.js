@@ -39,8 +39,10 @@ const myprofile = () => {
     myProfilemySonglistId,
     showLeftList,
     ChangeShowCreateList,
+    showMusic,
   } = useContext(appContext);
-  const { playThisListFromMyProflie } = useContext(playerContext);
+  const { playThisListFromMyProflie, showMusicBarOnMoblieRatio } =
+    useContext(playerContext);
 
   const router = useRouter();
   const [isUserExist, setIsUserExist] = useState(false);
@@ -152,7 +154,15 @@ const myprofile = () => {
   };
   return (
     isUserExist && (
-      <div className={styles.myprofile}>
+      <div
+        className={`${
+          showMusic
+            ? showMusicBarOnMoblieRatio
+              ? styles.myprofileShowMusicBarOnMoblieRatio
+              : styles.myprofileShowMusic
+            : ""
+        } ${styles.myprofile}`}
+      >
         <div className={styles.myprofile__top}>
           {/* mobile ratio */}
           <div className={styles.myprofile__mobile__show}>

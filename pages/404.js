@@ -6,9 +6,6 @@ import styles from "../styles/Page404.module.css";
 const Page404 = () => {
   const { user, loadUser } = useContext(authContext);
 
-  useEffect(() => {
-    // loadUser();
-  }, [user]);
   return (
     <div className={`${styles.notFound} d-flex`}>
       <div className={` ${styles.notFound__content}  justify-content-center`}>

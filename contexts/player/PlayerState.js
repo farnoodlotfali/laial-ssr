@@ -31,6 +31,7 @@ import {
   PlayCircleFilledRounded,
   PlaylistAddRounded,
   QueueMusic,
+  RepeatOneRounded,
   RepeatRounded,
   ShuffleRounded,
   SkipNextRounded,
@@ -54,9 +55,12 @@ import {
   SET_PROGRESS,
   CHANGE_SHOW_MUSICBAR_ON_MOBILE_RATIO,
   CHANGE_SHUFFLE,
+  CHANGE_LOOP_STATE,
 } from "./types";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "../../axios/axios";
+import Bar from "./Bar";
+import Time from "./Time";
 const useStyles = makeStyles({
   rail: {
     height: "4px",
@@ -128,9 +132,10 @@ const PlayerState = (props) => {
     setWhichSongToSaveInPlaylist,
     LimitListPlayNonLogin,
     addMusicToMAINPlaylist,
+    addMusicToRecentlyViewed,
   } = useContext(appContext);
   const classes = useStyles();
-  const { isAuth, forceLogin } = useContext(authContext);
+  const { isAuth, forceLogin, checkIfForce, user } = useContext(authContext);
 
   const initialState = {
     playList: [],
@@ -140,7 +145,7 @@ const PlayerState = (props) => {
     forceStop: false,
     seek: false,
     shuffle: false,
-    loop: false,
+    loop: "off",
     repeatOne: false,
     noneOrLoopOrRepeat: 0,
     duration: 0,
@@ -227,41 +232,94 @@ const PlayerState = (props) => {
   };
   const nextMusic = async (audioElement = audioRef.current) => {
     audioElement.pause();
-
     putToMusicChangeList(audioElement.currentTime, "next");
-    let last = null;
-    // console.log(playList);
+    setNewProgress(0);
+
     if (playList !== undefined) {
       for (let i = 0; i < playList.length; i++) {
-        if (state.songId === playList[i].media[0].id) {
+        if (
+          playList[i]?.post
+            ? state.songId === playList[i].post.media[0].id
+            : state.songId === playList[i].media[0].id
+        ) {
           let which;
           if (state.shuffle) {
             which = Math.floor(Math.random() * Math.floor(playList?.length));
           } else {
             which = i + 1;
           }
-          let chosen =
-            playList[which] !== undefined ? playList[which] : playList[0];
-          setIds(
-            chosen.media[0]?.telegram_id,
-            chosen.media[0]?.id,
-            chosen.media[0]?.duration,
-            chosen.media[0]?.name,
-            chosen.person?.[0]?.name,
-            chosen?.media?.[0]?.image !== null
-              ? chosen?.media?.[0]?.image
-              : chosen?.person?.[0]?.image.full_image_url
-          );
+          let chosen = playList[which]?.post
+            ? playList[which] !== undefined
+              ? playList[which].post
+              : state.loop === "loop"
+              ? playList[0].post
+              : -1
+            : playList[which] !== undefined
+            ? playList[which]
+            : state.loop === "loop"
+            ? playList[0]
+            : -1;
+          if (chosen !== -1) {
+            if (checkIfForce()) {
+              changeShowLoginModal(true);
+            } else {
+              const sendTitle = chosen?.meta_title
+                ? chosen?.meta_title
+                : chosen?.title && chosen?.title !== ""
+                ? chosen?.title
+                : chosen?.media?.name;
+              const sendDescription = chosen?.meta_description
+                ? chosen?.meta_description
+                : chosen?.description && chosen?.description !== ""
+                ? chosen?.description
+                : chosen?.media?.name;
 
-          try {
-            const res = await axios.downloader.get(
-              `${chosen.media[0]?.telegram_id}`
-            );
-            setUrl(res.data.download_link, playList);
+              setIds(
+                chosen.media[0]?.telegram_id,
+                chosen.media[0]?.id,
+                chosen.media[0]?.duration,
+                chosen?.title ? chosen?.title : chosen.media[0]?.name,
+                chosen.person?.[0]?.name,
+                chosen?.image?.full_image_url
+                  ? chosen?.image?.full_image_url
+                  : chosen?.media?.[0]?.image !== null
+                  ? chosen?.media?.[0]?.image
+                  : chosen?.person?.[0]?.image.full_image_url,
+                chosen.id,
+                chosen.slug,
+                chosen?.meta_title
+                  ? chosen?.meta_title
+                  : chosen?.title && chosen?.title !== ""
+                  ? chosen?.title
+                  : chosen?.media?.name,
+                chosen?.meta_description
+                  ? chosen?.meta_description
+                  : chosen?.description && chosen?.description !== ""
+                  ? chosen?.description
+                  : chosen?.media?.name
+              );
 
-            playMusic();
-          } catch (error) {
-            console.log(error);
+              if (chosen.media[0]?.path) {
+                setUrl(chosen.media[0]?.path, playList);
+                playMusic();
+              } else {
+                try {
+                  const res = await axios.downloader.get(
+                    `/${chosen.media[0]?.telegram_id}`
+                  );
+                  setUrl(res.data.download_link, playList);
+
+                  playMusic();
+                } catch (error) {
+                  console.log(error);
+                }
+              }
+              // changeHomeMeta(sendTitle, sendDescription);
+            }
+          } else {
+            dispatch({
+              type: PAUSE_MUSIC,
+            });
           }
         }
       }
@@ -269,6 +327,96 @@ const PlayerState = (props) => {
 
     setNewProgress(0);
   };
+
+  const previousMusic = async (audioElement = audioRef.current) => {
+    audioElement.pause();
+
+    putToMusicChangeList(audioElement.currentTime, "previous");
+    setNewProgress(0);
+
+    if (playList !== undefined) {
+      for (let i = 0; i < playList.length; i++) {
+        if (
+          playList[i]?.post
+            ? state.songId === playList[i].post.media[0].id
+            : state.songId === playList[i].media[0].id
+        ) {
+          let which;
+          if (state.shuffle) {
+            which = Math.floor(Math.random() * Math.floor(playList?.length));
+          } else {
+            which = i - 1;
+          }
+          let chosen = playList[which]?.post
+            ? playList[which] !== undefined
+              ? playList[which].post
+              : playList[playList.length - 1].post
+            : playList[which] !== undefined
+            ? playList[which]
+            : playList[playList.length - 1];
+
+          if (checkIfForce()) {
+            changeShowLoginModal(true);
+          } else {
+            const sendTitle = chosen?.meta_title
+              ? chosen?.meta_title
+              : chosen?.title && chosen?.title !== ""
+              ? chosen?.title
+              : chosen?.media?.name;
+            const sendDescription = chosen?.meta_description
+              ? chosen?.meta_description
+              : chosen?.description && chosen?.description !== ""
+              ? chosen?.description
+              : chosen?.media?.name;
+
+            setIds(
+              chosen.media[0]?.telegram_id,
+              chosen.media[0]?.id,
+              chosen.media[0]?.duration,
+              chosen?.title ? chosen?.title : chosen.media[0]?.name,
+              chosen.person?.[0]?.name,
+              chosen?.image?.full_image_url
+                ? chosen?.image?.full_image_url
+                : chosen?.media?.[0]?.image !== null
+                ? chosen?.media?.[0]?.image
+                : chosen?.person?.[0]?.image.full_image_url,
+              chosen.id,
+              chosen.slug,
+              chosen?.meta_title
+                ? chosen?.meta_title
+                : chosen?.title && chosen?.title !== ""
+                ? chosen?.title
+                : chosen?.media?.name,
+              chosen?.meta_description
+                ? chosen?.meta_description
+                : chosen?.description && chosen?.description !== ""
+                ? chosen?.description
+                : chosen?.media?.name
+            );
+
+            if (chosen.media[0]?.path) {
+              setUrl(chosen.media[0]?.path, playList);
+              playMusic();
+            } else {
+              try {
+                const res = await axios.downloader.get(
+                  `/${chosen.media[0]?.telegram_id}`
+                );
+                setUrl(res.data.download_link, playList);
+
+                playMusic();
+              } catch (error) {
+                console.log(error);
+              }
+            }
+            // changeHomeMeta(sendTitle, sendDescription);
+          }
+        }
+      }
+    }
+    setNewProgress(0);
+  };
+
   const handleNext = () => {
     //  موزیک بعدی
     nextMusic(audioRef.current);
@@ -281,51 +429,7 @@ const PlayerState = (props) => {
     // setProgress(0);
     setNewProgress(0);
   };
-  const previousMusic = async (audioElement = audioRef.current) => {
-    audioElement.pause();
 
-    putToMusicChangeList(audioElement.currentTime, "previous");
-    let last = null;
-    if (playList !== undefined) {
-      for (let i = 0; i < playList.length; i++) {
-        if (state.songId === playList[i].media[0].id) {
-          let which;
-          if (state.shuffle) {
-            which = Math.floor(Math.random() * Math.floor(playList?.length));
-          } else {
-            which = i - 1;
-          }
-          let chosen =
-            playList[which] !== undefined
-              ? playList[which]
-              : playList[playList.length - 1];
-
-          setIds(
-            chosen.media[0]?.telegram_id,
-            chosen.media[0]?.id,
-            chosen.media[0]?.duration,
-            chosen.media[0]?.name,
-            chosen.person?.[0]?.name,
-            chosen?.media?.[0]?.image !== null
-              ? chosen?.media?.[0]?.image
-              : chosen?.person?.[0]?.image.full_image_url
-          );
-
-          try {
-            const res = await axios.downloader.get(
-              `/${chosen.media[0]?.telegram_id}`
-            );
-            setUrl(res.data.download_link, playList);
-
-            playMusic();
-          } catch (error) {
-            console.log(error);
-          }
-        }
-      }
-    }
-    setNewProgress(0);
-  };
   const setIds = (
     tId,
     id,
@@ -338,6 +442,7 @@ const PlayerState = (props) => {
     newTitle,
     newDesc
   ) => {
+    user !== null && addMusicToRecentlyViewed(1, postId);
     dispatch({
       type: SET_IDS,
       payload: {
@@ -440,7 +545,7 @@ const PlayerState = (props) => {
   const handleChange = (newDuration) => {
     // تنظیم مدت زمان هنگام کلیک
     // state.seek = true;
-    state.seek = true;
+    // state.seek = true;
     changeDuration(audioRef.current, newDuration);
     setNewProgress(newDuration);
   };
@@ -546,7 +651,55 @@ const PlayerState = (props) => {
       //   .catch((err) => console.log(err));
     }
   };
+  const PauseMusicKey = () => {
+    if (audioRef.current.paused) {
+      if (!audioRef.current.ended) {
+        dispatch({
+          type: PAUSE_MUSIC,
+        });
+      }
+    }
+  };
+  const playMusicKey = (audioElement = audioRef.current) => {
+    if (audioElement !== undefined) {
+      if (!state.playing) {
+        dispatch({
+          type: PLAY_MUSIC,
+        });
+      }
+    }
+  };
 
+  const changeLoop = () => {
+    let whichSituation = "off";
+    switch (state.loop) {
+      case "off":
+        whichSituation = "loop";
+        break;
+      case "loop":
+        whichSituation = "once";
+        break;
+      case "once":
+        whichSituation = "off";
+        break;
+    }
+
+    dispatch({
+      type: CHANGE_LOOP_STATE,
+      payload: whichSituation,
+    });
+  };
+  const changeShuffle = () => {
+    dispatch({
+      type: CHANGE_SHUFFLE,
+    });
+  };
+  const repeatSongAgain = (audioElement = audioRef.current) => {
+    audioElement.pause();
+    audioElement.load();
+    setNewProgress(0);
+    audioElement.play();
+  };
   return (
     <PlayerContext.Provider
       value={{
@@ -558,8 +711,8 @@ const PlayerState = (props) => {
         setUrl,
         playMusic,
         handleChange,
-        // changeShuffle,
-        // changeLoop,
+        changeShuffle,
+        changeLoop,
         setIds,
         playAndPauseMusic,
         muteAndUnmuteMusic,
@@ -577,7 +730,7 @@ const PlayerState = (props) => {
         songSinger: state.songSinger,
         songName: state.songName,
         shuffle: state.shuffle,
-        // loop: loop,
+        loop: state.loop,
         totalDuration: state.totalDuration,
         songId: state.songId,
         songPhoto: state.songPhoto,
@@ -590,6 +743,7 @@ const PlayerState = (props) => {
         <div id="audio">
           <audio
             ref={audioRef}
+            id="audio2"
             className="player"
             // autoPlay={state.playing}
             src={state.currentUrl}
@@ -597,19 +751,29 @@ const PlayerState = (props) => {
             //   "https://files.musico.ir/Song/Ehsan%20Daryadel%20-%20Koochamoon%20(320).mp3"
             // }
             onLoadedMetadata={async () => {
-              // if (checkIfForce()) {
-              //   changeShowLoginModal(true);
-              //   dispatch({
-              //     type: FORCE_STOP,
-              //   });
-              // } else {
-              // audioRef.current.load();
-              await audioRef.current.play();
-              dispatch({
-                type: PLAY_MUSIC,
-              });
-              // }
+              if (checkIfForce()) {
+                changeShowLoginModal(true);
+                dispatch({
+                  type: FORCE_STOP,
+                });
+              } else {
+                await audioRef.current.play();
+                dispatch({
+                  type: PLAY_MUSIC,
+                });
+              }
             }}
+            onEnded={() => {
+              if (audioRef?.current && audioRef?.current?.ended) {
+                if (state.loop === "once") {
+                  repeatSongAgain();
+                } else nextMusic();
+              } else if (audioRef?.current?.ended) {
+                dispatch({ type: PAUSE_MUSIC });
+              }
+            }}
+            onPause={PauseMusicKey}
+            onPlay={playMusicKey}
             type="audio/mpeg"
             preload="metadata"
           ></audio>
@@ -635,26 +799,14 @@ const PlayerState = (props) => {
                 <div
                   className={`${phonestyles.current_time} align-self-center `}
                 >
-                  {Math.floor(audioRef.current?.currentTime / 60) +
-                    ":" +
-                    zeroPad(Math.floor(audioRef.current?.currentTime % 60), 2)}
+                  <Time />
                 </div>
 
                 <div className={phonestyles.player}>
-                  <Slider
-                    classes={{
-                      rail: classes.rail,
-                      track: classes.rail,
-                      thumb: classes.thumb,
-                    }}
-                    variant="determinate"
-                    value={state.currentProgress}
-                    onChange={(e, newDuration) => handleChange(newDuration)}
-                  />
+                  <Bar handleChange={handleChange} loading={state.loading} />
                 </div>
 
                 <div className={`${phonestyles.last_time} align-self-center`}>
-                  {" "}
                   {Math.floor(state.totalDuration / 60) +
                     ":" +
                     zeroPad(Math.floor(state.totalDuration % 60), 2)}
@@ -682,21 +834,26 @@ const PlayerState = (props) => {
                     )}
                   </div>
                   <div
-                    // onClick={() => changeShuffle()}
-                    className={phonestyles.icon}
+                    onClick={() => changeShuffle()}
+                    className={`${phonestyles.icon}  ${
+                      state.shuffle ? "" : styles.icon_press
+                    } align-self-center`}
                   >
                     <ShuffleRounded style={{ fontSize: 20 }} />
                   </div>
 
                   <div
                     className={phonestyles.icon}
-
-                    // onClick={changeLoop}
-                    // className={`${phonestyles.icon}   ${
-                    //   loop ? 'icon-press' : ''
-                    // } align-self-center `}
+                    onClick={changeLoop}
+                    className={`${phonestyles.icon}  ${
+                      state.loop === "off" ? styles.icon_press : ""
+                    } align-self-center`}
                   >
-                    <RepeatRounded style={{ fontSize: 20 }} />
+                    {state.loop !== "once" ? (
+                      <RepeatRounded style={{ fontSize: 20 }} />
+                    ) : (
+                      <RepeatOneRounded style={{ fontSize: 20 }} />
+                    )}
                   </div>
                 </div>
                 <div className={phonestyles.mobileSound}>
@@ -830,14 +987,12 @@ const PlayerState = (props) => {
                     </div>
                   </div>
                 </div>
-                <div
-                  className={`${styles.musicBar__center} ${styles.player} mt-3`}
-                >
+                <div className={`${styles.musicBar__center} ${styles.player} `}>
                   <div className="player__actions d-flex justify-content-center ">
                     <div
-                      // onClick={() => changeShuffle()}
+                      onClick={() => changeShuffle()}
                       className={`${styles.icon}  ${
-                        state.shuffle ? `${styles.icon_press}` : ""
+                        state.shuffle ? "" : styles.icon_press
                       } align-self-center`}
                     >
                       <ShuffleRounded style={{ fontSize: 25 }} />
@@ -872,42 +1027,32 @@ const PlayerState = (props) => {
                       <SkipNextRounded style={{ fontSize: 35 }} />
                     </div>
                     <div
-                      // onClick={changeLoop}
+                      onClick={changeLoop}
                       className={`${styles.icon}  ${
-                        state.shuffle ? `${styles.icon_press}` : ""
+                        state.loop === "off" ? `${styles.icon_press}` : ""
                       } align-self-center`}
                     >
-                      <RepeatRounded style={{ fontSize: 25 }} />
+                      {state.loop !== "once" ? (
+                        <RepeatRounded style={{ fontSize: 25 }} />
+                      ) : (
+                        <RepeatOneRounded style={{ fontSize: 25 }} />
+                      )}
                     </div>
                   </div>
-                  <div className={`${styles.player__zone} d-flex mt-2`}>
+                  <div className={`${styles.player__zone} d-flex `}>
                     <div
                       className={`${styles.current_time} align-self-center text-right`}
                     >
-                      {Math.floor(audioRef.current?.currentTime / 60) +
-                        ":" +
-                        zeroPad(
-                          Math.floor(audioRef.current?.currentTime % 60),
-                          2
-                        )}
+                      <Time />
                     </div>
                     <ClickAwayListener onClickAway={() => (state.seek = false)}>
                       <div
                         className={`${styles.playerMusic} mt-1 align-self-center mx-3 `}
                         onMouseUp={() => (state.seek = false)}
                       >
-                        <Slider
-                          // className={styles.playerSlider}
-                          classes={{
-                            rail: classes.rail,
-                            track: classes.rail,
-                            thumb: classes.thumb,
-                          }}
-                          variant="determinate"
-                          value={state.currentProgress}
-                          onChange={(e, newDuration) =>
-                            handleChange(newDuration)
-                          }
+                        <Bar
+                          handleChange={handleChange}
+                          loading={state.loading}
                         />
                       </div>
                     </ClickAwayListener>
@@ -921,9 +1066,9 @@ const PlayerState = (props) => {
                   </div>
                 </div>
                 <div
-                  className={`${styles.playlist_sound}   ${styles.musicBar__left} mt-3 mb-2`}
+                  className={`${styles.playlist_sound}   ${styles.musicBar__left} `}
                 >
-                  <div className="d-flex justify-content-around  ">
+                  <div className="d-flex align-items-center ">
                     <div className={styles.icon}>
                       {/* {isAuth && ( */}
                       <PlaylistAddRounded
@@ -935,7 +1080,7 @@ const PlayerState = (props) => {
                       {/* )} */}
                     </div>
                     <div
-                      className={`${styles.icon} ${styles.playlist_sound_playlist}  d-flex justify-content-end align-self-end mb-2 `}
+                      className={`${styles.icon} ${styles.playlist_sound_playlist}  d-flex justify-content-end align-self-end  `}
                       onClick={() => showLeftList(true)}
                     >
                       <QueueMusic fontSize="large" />
@@ -960,7 +1105,7 @@ const PlayerState = (props) => {
                     </div>
                     <div
                       className={`${styles.soundIcon}  col-2 p-0 d-flex align-self-center mr-2`}
-                      // onClick={() => muteAndUnmuteMusic(audioRef.current)}
+                      onClick={() => muteAndUnmuteMusic(audioRef.current)}
                     >
                       {state.mute ? <VolumeOff /> : <VolumeUp />}
                     </div>

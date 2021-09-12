@@ -1,5 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "../styles/TileBanner.module.css";
+import Link from "next/link";
 
 const TileBanner = ({ imgs }) => {
   return (
@@ -33,6 +34,17 @@ const TileBanner = ({ imgs }) => {
             src={img?.full_image_url}
             alt="logo"
           />
+          {img.url && (
+            <div className={styles.tileBanner__show}>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <a dideo-checked="true" href={`${img.url}`}>
+                نمایش
+              </a>
+            </div>
+          )}
         </SwiperSlide>
       ))}
     </Swiper>

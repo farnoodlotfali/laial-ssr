@@ -174,7 +174,7 @@ const AuthState = (props) => {
   const getTags = async () => {
     try {
       const res = await axios.simpleApi.get("/tags");
-      console.log(res.data);
+      // console.log(res.data);
       dispatch({
         type: GET_TAGS,
         payload: res.data,

@@ -54,6 +54,9 @@
   font-size: 17px;
   max-height: 47px;
   overflow: hidden;
+  /* text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 240px; */
 }
 .song__person {
   font-weight: 600;
