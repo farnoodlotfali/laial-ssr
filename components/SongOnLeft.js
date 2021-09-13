@@ -53,6 +53,9 @@ const SongOnLeft = ({ item, playlist, number, zeroPad }) => {
       }
     }
   };
+  const myloader = ({ src }) => {
+    return src;
+  };
   // console.log(item?.media[0]);
   return (
     <div className="songOnLeft">
@@ -77,6 +80,7 @@ const SongOnLeft = ({ item, playlist, number, zeroPad }) => {
                 src={barOnPlayingMusic}
                 layout="fill"
                 alt=""
+                loader={myloader}
                 className={styles.song__imageBarOnPlayingMusic}
               />
             )}

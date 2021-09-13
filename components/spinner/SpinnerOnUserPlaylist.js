@@ -1,6 +1,9 @@
 import Image from "next/image";
 
 const SpinnerOnUserPlaylist = () => {
+  const myloader = ({ src }) => {
+    return src;
+  };
   return (
     <div className="spinner" style={{ width: "120px", height: "120px" }}>
       <Image
@@ -12,6 +15,7 @@ const SpinnerOnUserPlaylist = () => {
           margin: "auto",
           display: "block",
         }}
+        loader={myloader}
         width={"100%"}
         height={"100%"}
       />

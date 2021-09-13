@@ -129,7 +129,9 @@ const RowItem = ({
     typeof window === "undefined"
       ? Buffer.from(str).toString("base64")
       : window.btoa(str);
-
+  const myloader = ({ src }) => {
+    return src;
+  };
   return (
     <div className={styles.rowItem}>
       <div className={`${styles.rowItem__image}`}>
@@ -155,6 +157,7 @@ const RowItem = ({
             }
             // alt="logo"
             loading="lazy"
+            loader={myloader}
             placeholder="blur"
             blurDataURL={`data:image/svg+xml;base64,${toBase64(
               shimmer(700, 475)

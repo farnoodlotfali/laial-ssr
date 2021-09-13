@@ -153,6 +153,9 @@ const myprofile = () => {
       }
     }, 1200);
   };
+  const myloader = ({ src }) => {
+    return src;
+  };
   return (
     isUserExist && (
       <div
