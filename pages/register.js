@@ -2,11 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "../styles/Register.module.css";
 import authContext from "../contexts/auth/authContext";
+import playerContext from "../contexts/player/playerContext";
 import Head from "next/head";
 import { useRouter } from "next/router";
 const Register = () => {
   const { register, user, loadUser, error } = useContext(authContext);
-  const { playing } = useContext(player);
+  const { playing } = useContext(playerContext);
   const [errorMsg, setErrorMsg] = useState("");
 
   const [userInfo, setUserInfo] = useState({

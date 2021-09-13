@@ -6,6 +6,7 @@ import LoadingIcon from "../components/spinner/LoadingIcon";
 import PersonItem from "../components/PersonItem";
 import RowItem from "../components/relatedToRowItem/RowItem";
 import authContext from "../contexts/auth/authContext";
+import playerContext from "../contexts/player/playerContext";
 import { CloseRounded } from "@material-ui/icons";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -14,6 +15,7 @@ const Search = () => {
   const router = useRouter();
   const inputRef = useRef();
   const { user, loadUser } = useContext(authContext);
+  const { playing } = useContext(playerContext);
 
   const [next, setNext] = useState({
     next: "",
