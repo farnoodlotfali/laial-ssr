@@ -82,6 +82,7 @@ const SongOnLeft = ({ item, playlist, number, zeroPad }) => {
                 alt=""
                 loader={myloader}
                 className={styles.song__imageBarOnPlayingMusic}
+                unoptimized
               />
             )}
           </div>

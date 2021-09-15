@@ -9,15 +9,16 @@ const SpinnerOnUserPlaylist = () => {
       <Image
         src={"/Spinner2.gif"}
         alt="..loading"
-        style={{
-          width: "100%",
-          height: "100%",
-          margin: "auto",
-          display: "block",
-        }}
+        // style={{
+        //   width: "100%",
+        //   height: "100%",
+        //   margin: "auto",
+        //   display: "block",
+        // }}
         loader={myloader}
         width={"100%"}
         height={"100%"}
+        unoptimized
       />
     </div>
   );

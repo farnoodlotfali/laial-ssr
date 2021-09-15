@@ -174,7 +174,12 @@ const myprofile = () => {
           <div className={styles.myprofile__mobile__show}>
             <div className={styles.myprofile__mobile__show__right}>
               <div className={styles.myprofile__mobile__show__userImg}>
-                <Image src={defualtPhoto} alt="userImg" />
+                <Image
+                  loader={myloader}
+                  src={defualtPhoto}
+                  alt="userImg"
+                  unoptimized
+                />
               </div>
               <div
                 className={styles.myprofile__mobile__show__changeCurrentPass}
@@ -193,25 +198,25 @@ const myprofile = () => {
                   className={styles.myprofile__mobile__show__userinfo__inputbox}
                 >
                   <label> نام : </label>
-                  <span> {user.first_name} </span>
+                  <span> {user?.first_name} </span>
                 </div>
                 <div
                   className={styles.myprofile__mobile__show__userinfo__inputbox}
                 >
                   <label> نام خانوادگی :</label>
-                  <span>{user.last_name}</span>
+                  <span>{user?.last_name}</span>
                 </div>
                 <div
                   className={styles.myprofile__mobile__show__userinfo__inputbox}
                 >
                   <label> ایمیل :</label>
-                  <span>{user.email} </span>
+                  <span>{user?.email} </span>
                 </div>
                 <div
                   className={styles.myprofile__mobile__show__userinfo__inputbox}
                 >
                   <label> نام کاربری :</label>
-                  <span>{user.username} </span>
+                  <span>{user?.username} </span>
                 </div>
               </div>
             </div>
@@ -219,24 +224,29 @@ const myprofile = () => {
 
           {/* web ratio */}
           <div className={styles.userImg}>
-            <Image src={defualtPhoto} alt="userImg" />
+            <Image
+              loader={myloader}
+              src={defualtPhoto}
+              alt="userImg"
+              unoptimized
+            />
           </div>
           <div className={`${styles.userinfo}  d-flex`}>
             <div className={styles.userinfo__inputbox}>
               <label> نام </label>
-              <span>{user.first_name} </span>
+              <span>{user?.first_name} </span>
             </div>
             <div className={styles.userinfo__inputbox}>
               <label> نام خانوادگی</label>
-              <span>{user.last_name}</span>
+              <span>{user?.last_name}</span>
             </div>
             <div className={styles.userinfo__inputbox}>
               <label> ایمیل</label>
-              <span>{user.email} </span>
+              <span>{user?.email} </span>
             </div>
             <div className={styles.userinfo__inputbox}>
               <label> نام کاربری</label>
-              <span>{user.username} </span>
+              <span>{user?.username} </span>
             </div>
           </div>
           <div className={styles.changeCurrentPass}>

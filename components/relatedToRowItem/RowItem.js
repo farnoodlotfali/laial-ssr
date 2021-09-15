@@ -155,6 +155,7 @@ const RowItem = ({
                 ? person?.[0]?.image?.full_image_url
                 : defualtPhoto
             }
+            unoptimized
             // alt="logo"
             loading="lazy"
             loader={myloader}
