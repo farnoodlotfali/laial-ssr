@@ -33,14 +33,14 @@
 }
 .play__music {
   position: absolute;
-  bottom: 40%;
+  bottom: 45%;
   justify-content: center;
   display: flex;
   width: 100%;
 }
 .play__music svg {
   color: white;
-  font-size: 11vw;
+  font-size: 100px;
   opacity: 0.7;
   cursor: pointer;
   background: none;
@@ -178,7 +178,7 @@
 
 .rowItemSpinnerLoading {
   position: absolute;
-  top: 15%;
+  top: 9%;
   left: 15%;
 }
 .rowItem:hover .scroll__rowItem__title {

@@ -16,8 +16,8 @@ const SpinnerLoadingOnRowItem = () => {
         style={{
           widows: "200px",
           display: "block",
-          width: "100px",
-          height: "75px",
+          width: "60px",
+          height: "90px",
         }}
       />
     </div>

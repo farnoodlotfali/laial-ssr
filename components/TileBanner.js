@@ -2,8 +2,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "../styles/TileBanner.module.css";
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const TileBanner = ({ imgs }) => {
+  const [images, setimages] = useState(false);
   const shimmer = (w, h) => `
   <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
@@ -25,7 +27,9 @@ const TileBanner = ({ imgs }) => {
   const myloader = ({ src }) => {
     return src;
   };
-  console.log(imgs);
+  useEffect(() => {
+    imgs && setimages(true);
+  }, []);
   return (
     <Swiper
       className={styles.tileBannerSlider}
@@ -71,7 +75,7 @@ const TileBanner = ({ imgs }) => {
             layout="fill"
           />
 
-          {img.url && (
+          {images && img.url && (
             <div className={styles.tileBanner__show}>
               <span></span>
               <span></span>

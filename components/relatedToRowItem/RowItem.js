@@ -169,7 +169,9 @@ const RowItem = ({
 
         {loading && media?.id === songId ? (
           <div className={styles.rowItemSpinnerLoading}>
-            <SpinnerLoadingOnRowItem />
+            <SpinnerLoadingOnRowItem
+              styleSpinnerLoadingOnRowItem={styles.spinnerLoadingOnRowItem}
+            />
             <div className="text-light text-center">در حال آماده سازی</div>
           </div>
         ) : playing && media?.id === songId ? (
