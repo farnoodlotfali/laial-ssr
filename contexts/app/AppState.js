@@ -43,7 +43,8 @@ const AppState = (props) => {
   useEffect(() => {
     getMenu();
     getConfig();
-    getRecentlyViewedSongsPlaylist();
+    // getRecentlyViewedSongsPlaylist();
+    // getAllPlaylists();
   }, []);
   const [state, dispatch] = useReducer(appReducer, initialState);
   const getMenu = async () => {

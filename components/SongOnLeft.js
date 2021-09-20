@@ -103,13 +103,13 @@ const SongOnLeft = ({ item, playlist, number, zeroPad }) => {
               zeroPad(Math.floor(item?.media?.[0]?.duration % 60), 2)}
           </div>
 
-          <div className="deleteSongBtn d-flex align-self-center ">
+          {/* <div className="deleteSongBtn d-flex align-self-center ">
             <Tooltip placement="right" title="Delete ">
               <IconButton aria-label="delete" color="inherit">
                 <Delete fontSize="inherit" />
               </IconButton>
             </Tooltip>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

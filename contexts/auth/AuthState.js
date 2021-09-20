@@ -47,13 +47,20 @@ const AuthState = (props) => {
         ? true
         : false,
   };
-  const { getAllPlaylists, LimitListPlayNonLogin } = useContext(appContext);
+  const {
+    getAllPlaylists,
+    LimitListPlayNonLogin,
+    getRecentlyViewedSongsPlaylist,
+  } = useContext(appContext);
 
   const [state, dispatch] = useReducer(authReducer, initialState);
   const router = useRouter();
 
   useEffect(() => {
     loadUser();
+    // if (state.user) {
+    //   getRecentlyViewedSongsPlaylist()
+    // }
     // eslint-disable-next-line
   }, [state.user]);
   //load user
