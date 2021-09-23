@@ -1,9 +1,153 @@
+/* for flickity , not swiper */
+.tileBanner {
+  background-color: rgb(18, 18, 18);
+  margin-top: 20px;
+}
+.carousel {
+  padding-bottom: 10px;
+  padding-right: 10px;
+}
+.carouselCell {
+  width: 330px;
+  height: 200px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  justify-content: center;
+}
+.itemImg {
+  border-radius: 10px;
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+
+.tileBanner__show {
+  position: absolute;
+  display: inline-block;
+  padding: 4px;
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  overflow: hidden;
+  transition: 0.2s;
+  bottom: 10%;
+  left: 8%;
+  min-width: 70px;
+  border: 1px solid rgb(150, 150, 150);
+  border-radius: 12px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.tileBanner__show:hover {
+  text-decoration: none;
+  color: black;
+  background-color: whitesmoke;
+  box-shadow: 0 0 10px whitesmoke, 0 0 40px whitesmoke, 0 0 80px whitesmoke;
+  transition-delay: 1s;
+  cursor: pointer;
+}
+.tileBanner__show:hover a {
+  transition-delay: 1s;
+  color: black;
+}
+.tileBanner__show a {
+  color: white;
+}
+.tileBanner__show a {
+  text-decoration: none;
+}
+.tileBanner__show a:hover {
+  text-decoration: none;
+}
+
+.tileBanner__show span {
+  position: absolute;
+  display: block;
+}
+
+.tileBanner__show span:nth-child(1) {
+  top: 0;
+  left: -100%;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, whitesmoke);
+}
+
+.tileBanner__show:hover span:nth-child(1) {
+  left: 100%;
+  transition: 1s;
+}
+.tileBanner__show span:nth-child(3) {
+  bottom: 0;
+  right: -100%;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(270deg, transparent, whitesmoke);
+}
+
+.tileBanner__show:hover span:nth-child(3) {
+  right: 100%;
+  transition: 1s;
+  transition-delay: 0.5s;
+}
+.tileBanner__show span:nth-child(2) {
+  top: -100%;
+  right: 0;
+  height: 100%;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, whitesmoke);
+}
+
+.tileBanner__show:hover span:nth-child(2) {
+  top: 100%;
+  transition: 1s;
+  transition-delay: 0.25s;
+}
+.tileBanner__show span:nth-child(4) {
+  bottom: -100%;
+  left: 0;
+  height: 100%;
+  width: 2px;
+  background: linear-gradient(360deg, transparent, whitesmoke);
+}
+
+.tileBanner__show:hover span:nth-child(4) {
+  bottom: 100%;
+  transition: 1s;
+  transition-delay: 0.75s;
+}
+@media (max-width: 768px) {
+  .tileBanner {
+    margin-top: 0px;
+  }
+  .carousel {
+    padding-bottom: 0px;
+  }
+
+  .carouselCell {
+    height: 125px;
+    width: 45%;
+  }
+  .itemImg {
+    height: 100%;
+    width: 100%;
+  }
+  .tileBanner__show {
+    min-width: 50px;
+    font-size: 12px;
+  }
+}
+
+/* for swiper, not flickity */
+/* 
 .tileBannerSlider {
   background-color: rgb(18, 18, 18);
-  /* margin-top: 20px; */
   height: 200px;
   margin-right: 10px;
 }
+
 .itemImg {
   border-radius: 10px;
   width: 100%;
@@ -22,7 +166,6 @@
   left: 8%;
   min-width: 70px;
   border: 1px solid rgb(150, 150, 150);
-  /* background-color: rgb(0, 0, 0); */
   border-radius: 12px;
   text-align: center;
   font-size: 14px;
@@ -34,9 +177,7 @@
   background-color: whitesmoke;
   box-shadow: 0 0 10px whitesmoke, 0 0 40px whitesmoke, 0 0 80px whitesmoke;
   transition-delay: 1s;
-  /* border: none; */
   cursor: pointer;
-  /* font-weight: 700; */
 }
 .tileBanner__show:hover a {
   transition-delay: 1s;
@@ -112,10 +253,9 @@
 @media (max-width: 768px) {
   .tileBannerSlider {
     height: 150px;
-    /* margin-top: -3rem; */
   }
   .tileBanner__show {
     min-width: 50px;
     font-size: 12px;
   }
-}
+} */

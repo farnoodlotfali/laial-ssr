@@ -5,9 +5,16 @@ import authContext from "../contexts/auth/authContext";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import playerContext from "../contexts/player/playerContext";
+import appContext from "../contexts/app/appContext";
+import Modal from "@material-ui/core/Modal";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
+import { CloseRounded } from "@material-ui/icons";
+
 const Login = () => {
   const { login, user, error } = useContext(authContext);
   const { playing } = useContext(playerContext);
+  const { forgetPassword } = useContext(appContext);
   const [userInfo, setUserInfo] = useState({
     username: "",
     email: "",
@@ -31,6 +38,23 @@ const Login = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  const [emailForRest, setEmailForRest] = useState("");
+  const [forgetPasswordMsg, setForgetPasswordMsg] = useState("");
+  const [open, setOpen] = useState(false);
+  const [showMsg, setShowMsg] = useState({
+    showMsg: false,
+    msg: " ",
+  });
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <div
       className={styles.login}
@@ -96,10 +120,63 @@ const Login = () => {
                   <span className={styles.register}> ثبت نام</span>
                 </Link>
               </div>
-              <div className={`${styles.notRegister} pt-2`}>
-                <Link href="/forgetpass">
-                  <span className={styles.register}> فراموشی رمز عبور؟</span>
-                </Link>
+              <div className={`${styles.forgetPass} text-center pt-2`}>
+                <span className={`${styles.register}  `} onClick={handleOpen}>
+                  فراموشی رمز عبور؟
+                </span>
+                <Modal
+                  className={styles.forgetPassModal}
+                  // className={classes.modal}
+                  open={open}
+                  onClose={handleClose}
+                  closeAfterTransition
+                  BackdropComponent={Backdrop}
+                  BackdropProps={{
+                    timeout: 500,
+                  }}
+                >
+                  <Fade in={open}>
+                    <div className={styles.forgetPass__content}>
+                      <div
+                        className={styles.forgetPass__content__close}
+                        onClick={handleClose}
+                      >
+                        <CloseRounded />
+                      </div>
+                      <h2>فراموشی رمز</h2>
+                      <p>ایمیل خود را جهت بازیابی رمز وارد کنید</p>
+                      <div className={styles.forgetPass__form}>
+                        <input
+                          onChange={(e) => setEmailForRest(e.target.value)}
+                          name="emailForRest"
+                          value={emailForRest}
+                          type="email"
+                        />
+
+                        <button
+                          onClick={async () => {
+                            const status = await forgetPassword(emailForRest);
+                            if (status === 200) {
+                              setForgetPasswordMsg(
+                                "درخواست شما ثبت شد،لطفا صندوق ایمیل خود را چک کنید"
+                              );
+                            } else {
+                              setForgetPasswordMsg("!خطا");
+                            }
+                            setTimeout(() => {
+                              setOpen(false);
+                            }, 6000);
+                          }}
+                        >
+                          بازیابی
+                        </button>
+                        <div className={styles.forgetPasswordMsg}>
+                          {forgetPasswordMsg}
+                        </div>
+                      </div>
+                    </div>
+                  </Fade>
+                </Modal>
               </div>
               {/* <div className={`${styles.formMsg }pt-2`}>{errorMsg}</div> */}
               <div className={`${styles.inputBox} text-center`}>

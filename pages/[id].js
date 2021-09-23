@@ -70,7 +70,8 @@ export const getServerSideProps = async ({ params }) => {
 
   try {
     data = await axios.instanceApi.get(`/page/${params?.id}/`);
-    if (!data.data[0]) {
+
+    if (!data.data.data[0]) {
       return {
         notFound: true,
       };

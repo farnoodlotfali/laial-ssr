@@ -40,9 +40,10 @@ https://flickity.metafizzy.co
   overflow: hidden;
   position: relative;
   height: 100%;
-  height: 240px !important;
 
-  padding-top: 7px;
+  /* height: 240px !important;
+
+  padding-top: 7px; */
 }
 
 .flickity-slider {
@@ -178,6 +179,6 @@ https://flickity.metafizzy.co
     height: 170px;
   } */
   .flickity-viewport {
-    height: 185px !important;
+    /* height: 185px !important; */
   }
 }

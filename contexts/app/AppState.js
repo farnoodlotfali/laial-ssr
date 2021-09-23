@@ -462,6 +462,29 @@ const AppState = (props) => {
       console.log(error);
     }
   };
+  const forgetPassword = async (email) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const formData = {
+      email: email,
+    };
+    try {
+      const res = await axios.instanceApi.post(
+        `/account/password_reset/`,
+        formData,
+        config
+      );
+      // console.log(res.status);
+
+      return res.status;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <AppContext.Provider
       value={{
@@ -485,6 +508,7 @@ const AppState = (props) => {
         ChangeShowCreateList,
         addToLikedSongPlaylist,
         addMusicToRecentlyViewed,
+        forgetPassword,
         showMusic: state.showMusic,
         menu: state.menu,
         RightList: state.RightList,
