@@ -98,8 +98,13 @@ const Center = () => {
     //     name: SongListName,
     //   },
     // ];
-
-    const success = await makeNewPlaylist(SongListName);
+    let form = [
+      {
+        name: SongListName,
+        status: "publish",
+      },
+    ];
+    const success = await makeNewPlaylist(form);
 
     if (success) {
       setShowMsg({

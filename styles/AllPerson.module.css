@@ -7,5 +7,6 @@
 .infiniteScroll {
   display: flex;
   flex-wrap: wrap;
+  direction: rtl;
   justify-content: center;
 }

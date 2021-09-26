@@ -34,7 +34,7 @@
 }
 .play__music {
   position: absolute;
-  bottom: 45%;
+  bottom: 43%;
   justify-content: center;
   display: flex;
   width: 100%;
@@ -242,5 +242,8 @@
   }
   .rowItem:hover .steady__rowItem__title {
     display: block;
+  }
+  .play__music {
+    bottom: 38%;
   }
 }

@@ -141,7 +141,7 @@ const Person = ({ data }) => {
         </Accordion>
       </div>
 
-      <div className="person__infiniteScroll__section">
+      <div className={styles.person__infiniteScroll__section}>
         {next?.list && (
           <InfiniteScroll
             dataLength={next?.list?.length}

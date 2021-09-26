@@ -8,6 +8,7 @@
   flex-wrap: wrap;
   justify-content: center;
   height: 100%;
+  direction: rtl;
   padding-top: 10px;
 }
 
@@ -114,6 +115,9 @@
   height: 100%;
   border-radius: 10px;
   width: 100%;
+}
+.personPageShowMusic {
+  padding-bottom: 60px;
 }
 @media (max-width: 600px) {
   .person {

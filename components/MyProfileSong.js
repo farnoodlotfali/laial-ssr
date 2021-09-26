@@ -17,31 +17,32 @@ const MyProfileSong = ({ item, zeroPad, truncate, deleteBtn, playlist }) => {
     if (item?.post.media[0]?.id === songId) {
       playAndPauseMusic();
     } else {
-      setIds(
-        item?.post.media[0]?.telegram_id,
-        item?.post.media[0]?.id,
-        item?.post.media[0]?.duration,
-        item?.post?.title ? item?.post?.title : item?.post.media[0]?.name,
-        item?.post.person?.[0]?.name,
-        item?.post?.image?.full_image_url
-          ? item?.post?.image?.full_image_url
-          : item?.post?.media?.[0]?.image !== null
-          ? item?.post?.media?.[0]?.image
-          : item?.post?.person?.[0]?.image.full_image_url,
-        item?.post.id,
-        item?.post?.slug,
-        item?.post?.meta_title ? item?.post?.meta_title : item?.post?.title,
-        item?.post?.meta_description
-          ? item?.post?.meta_description
-          : item?.post?.description
-      );
       if (item?.post.media[0]?.path) {
         // console.log("path");
+
         setUrl(item?.post.media[0]?.path, playlist);
         playMusic();
         if (!showMusic) {
           ChangeShowMusic(true);
         }
+        setIds(
+          item?.post.media[0]?.telegram_id,
+          item?.post.media[0]?.id,
+          item?.post.media[0]?.duration,
+          item?.post?.title ? item?.post?.title : item?.post.media[0]?.name,
+          item?.post.person?.[0]?.name,
+          item?.post?.image?.full_image_url
+            ? item?.post?.image?.full_image_url
+            : item?.post?.media?.[0]?.image !== null
+            ? item?.post?.media?.[0]?.image
+            : item?.post?.person?.[0]?.image.full_image_url,
+          item?.post.id,
+          item?.post?.slug,
+          item?.post?.meta_title ? item?.post?.meta_title : item?.post?.title,
+          item?.post?.meta_description
+            ? item?.post?.meta_description
+            : item?.post?.description
+        );
       } else {
         try {
           const res = await axios.downloader.get(
@@ -53,6 +54,24 @@ const MyProfileSong = ({ item, zeroPad, truncate, deleteBtn, playlist }) => {
             ChangeShowMusic();
           }
           playMusic();
+          setIds(
+            item?.post.media[0]?.telegram_id,
+            item?.post.media[0]?.id,
+            item?.post.media[0]?.duration,
+            item?.post?.title ? item?.post?.title : item?.post.media[0]?.name,
+            item?.post.person?.[0]?.name,
+            item?.post?.image?.full_image_url
+              ? item?.post?.image?.full_image_url
+              : item?.post?.media?.[0]?.image !== null
+              ? item?.post?.media?.[0]?.image
+              : item?.post?.person?.[0]?.image.full_image_url,
+            item?.post.id,
+            item?.post?.slug,
+            item?.post?.meta_title ? item?.post?.meta_title : item?.post?.title,
+            item?.post?.meta_description
+              ? item?.post?.meta_description
+              : item?.post?.description
+          );
         } catch (error) {
           console.log(error);
         }

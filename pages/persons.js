@@ -5,12 +5,14 @@ import { useContext, useEffect, useState } from "react";
 import LoadingIcon from "../components/spinner/LoadIcon";
 import PersonItem from "../components/PersonItem";
 import authContext from "../contexts/auth/authContext";
+import playerContext from "../contexts/player/playerContext";
 import axios from "../axios/axios";
 import Head from "next/head";
 
 const AllPerson = ({ data }) => {
   // console.log(data);
   const { user, loadUser } = useContext(authContext);
+  const { playing } = useContext(playerContext);
 
   const [next, setNext] = useState({
     list: data.results,
@@ -27,9 +29,7 @@ const AllPerson = ({ data }) => {
     });
     setTimeout(async () => {
       try {
-        const res = await axios.simpleApi.get(
-          `/persons/${params.slug}/?page=${next.page}`
-        );
+        const res = await axios.simpleApi.get(`/persons/?page=${next.page}`);
         // console.log(res.data);
 
         setNext({

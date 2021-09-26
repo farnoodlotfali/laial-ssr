@@ -1,4 +1,5 @@
 .moreSong {
+  padding-bottom: 60px;
 }
 .moreSong__infiniteScroll__section {
   min-height: 100vh;
@@ -14,6 +15,7 @@
   flex-wrap: wrap;
   justify-content: center;
   padding-top: 10px;
+  direction: rtl;
 }
 @media (max-width: 768px) {
   .moreSong {
