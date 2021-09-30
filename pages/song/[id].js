@@ -25,8 +25,7 @@ import Head from "next/head";
 export default function songPage({ data, recommender, view, songUrlData }) {
   const [show, setShow] = useState(false);
   const [like, setLike] = useState(data.likes);
-  const [songUrl, setSongUrl] = useState(data.likes);
-
+  const [songUrl, setSongUrl] = useState(data?.media?.[0]?.path || "");
   const router = useRouter();
   const id = router.query.id;
   const flickityOptions = {
@@ -274,7 +273,7 @@ export default function songPage({ data, recommender, view, songUrlData }) {
             </div>
 
             <div>
-              <a href={songUrl} dideo-checked="true">
+              <a href={songUrl} dideo-checked="true" target="_blank">
                 <Tooltip placement="bottom" title="دانلود">
                   <IconButton aria-label="download">
                     <GetAppRounded

@@ -7,6 +7,7 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import styles from "../styles/Center.module.css";
+import Link from "next/link";
 
 import { PostAddRounded } from "@material-ui/icons";
 import appContext from "../contexts/app/appContext";
@@ -17,6 +18,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import authContext from "../contexts/auth/authContext";
+import { Button } from "react-bootstrap";
 
 const useStyles = makeStyles({
   paper: {
@@ -184,40 +186,57 @@ const Center = () => {
           timeout={500}
           in={centerList}
         >
-          <div className={`${styles.playlist} py-3 pl-1  pr-4 text-white`}>
-            <div className="playlist__title justify-content-around pl-3 d-flex ">
-              <div className={`${styles.title} ml-4`}>
-                {isAddingSong ? (
-                  <span>آهنگ به کدام لیست اضافه شود؟</span>
-                ) : (
-                  <span>لیست های من</span>
-                )}
-              </div>
+          {isAuth ? (
+            <div className={`${styles.playlist} py-3 pl-1  pr-4 text-white`}>
+              <div className="playlist__title justify-content-around pl-3 d-flex ">
+                <div className={`${styles.title} ml-4`}>
+                  {isAddingSong ? (
+                    <span>آهنگ به کدام لیست اضافه شود؟</span>
+                  ) : (
+                    <span>لیست های من</span>
+                  )}
+                </div>
 
-              <div
-                className={styles.addBtn}
-                onClick={() => ChangeShowCreateList(true)}
-              >
-                <PostAddRounded fontSize="large" />
-                <span>لیست جدید</span>
+                <div
+                  className={styles.addBtn}
+                  onClick={() => ChangeShowCreateList(true)}
+                >
+                  <PostAddRounded fontSize="large" />
+                  <span>لیست جدید</span>
+                </div>
+              </div>
+              <div className={`my-2 ml-4 ${styles.playlist__line}`} />
+              <div className={styles.playlist__lists}>
+                {userPlaylists !== null &&
+                  userPlaylists.map(
+                    (list) =>
+                      mainPlaylistId !== list.id && (
+                        <CenterItem
+                          key={list.id}
+                          name={list.name}
+                          id={list.id}
+                          items={list.items}
+                        />
+                      )
+                  )}
               </div>
             </div>
-            <div className={`my-2 ml-4 ${styles.playlist__line}`} />
-            <div className={styles.playlist__lists}>
-              {userPlaylists !== null &&
-                userPlaylists.map(
-                  (list) =>
-                    mainPlaylistId !== list.id && (
-                      <CenterItem
-                        key={list.id}
-                        name={list.name}
-                        id={list.id}
-                        items={list.items}
-                      />
-                    )
-                )}
+          ) : (
+            <div className={`${styles.playlist} py-3 pl-1  pr-4 text-white`}>
+              <div className="playlist__title justify-content-around pl-3 d-flex ">
+                <div className={` ml-4`}>
+                  <span>برای ذخیره آهنگ به لیست، میبایست ثبت نام کنید</span>
+                </div>
+              </div>
+              <div className={`my-2 ml-4 ${styles.playlist__line}`} />
+              <div className=" d-flex justify-content-center">
+                <Link href="/login">
+                  <span className={styles.loginBtn}>ثبت نام</span>
+                </Link>
+                <Button onClick={() => showCenterList(false)}>بستن</Button>
+              </div>
             </div>
-          </div>
+          )}
         </Slide>
       </Modal>
     </div>

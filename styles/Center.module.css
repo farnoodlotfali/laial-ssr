@@ -101,6 +101,14 @@
 .center__input_dialog__btn:hover {
   background: rgb(97, 97, 99);
 }
+.loginBtn {
+  padding: 6px;
+  border-radius: 5px;
+  background-color: #0b5ed7;
+  margin-left: 10px;
+  cursor: pointer;
+  align-items: center;
+}
 @media (max-width: 768px) {
   .playlist {
     min-width: 350px;
