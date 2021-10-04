@@ -86,6 +86,7 @@ const MoreSong = ({ data }) => {
                   meta_title={item.meta_title}
                   description={item.description}
                   title={item.title}
+                  context={next?.list}
                 />
                 // </div>
               ))}
